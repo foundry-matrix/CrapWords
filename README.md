@@ -21,7 +21,7 @@ npm install lab chai gulp gulp-lab --save-dev     // Note: add lab to your devde
 ```
 
 ## Writing our test first
-Make a *test* folder in your root. Within that, make a test file (I prefer to call my e.g. server test __server.js, but that's preference)
+Make a *test* folder in your root. Within that, make a test file (I prefer to name my tests __filename.js e.g.  a server test would be __server.js, but that's preference)
 With lab, we must not only require lab but also export a script:
 ```js
 var lab = exports.lab = require("lab").script();
@@ -56,8 +56,8 @@ if (!module.parent) {
 
 
 ## Using gulp
-Gulp is a basic way to automate and speed up our workflow. We can set gulp up to easily run tasks for us, be they build, test, linting or otherwise. With the help of gulp, we can have a terminal always present on the screen, running tests and linting when those files change.
-Gulp is set up in this example to run our tests on save within the api and test folders. These options can be changed in the gulpfile according to your file structure.
+Gulp is an easy way to automate and speed up our workflow. We can set gulp up to run tasks for us, be they build, test, linting or otherwise. With the help of gulp, we can have a terminal always present on the screen, running tests and linting our code when designated files change.
+Gulp is set up in this example to watch our api and test folders, and run our tests when any javascript files in these folders change. These options can be changed in the gulpfile according to your file structure.
 We use gulp-lab to facilitate easy gulp interaction with our lab tests.
 
 
