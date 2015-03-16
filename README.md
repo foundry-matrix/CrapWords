@@ -43,7 +43,7 @@ lab.experiment("My blah blah: ", function() {
 ## A basic server
 Make a basic hapi server file, preferably in some non-root folder. Remember to export the server.
 
-Note the following crucial step if you don't want your server to start every time you test:
+If you have just one file for your server, you'll need to include the following if you don't want your server to start every time you test. An alternative is to import your server into a dedicated file for starting it (see app.js).
 ```js
 if (!module.parent) {
   server.start()
