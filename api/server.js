@@ -1,11 +1,12 @@
 var Hapi 	= require("hapi");
 var server 	= new Hapi.Server();
 
+/* $lab:coverage:off$ */
 server.connection({
 	host: "localhost",
-	// $lab:coverage:off$
 	port: process.env.PORT || 8080
 });
+/* $lab:coverage:on$ */
 
 server.route({
 	path: "/",
