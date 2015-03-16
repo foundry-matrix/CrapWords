@@ -5,12 +5,12 @@ A basic hapi-lab-gulp setup for starting a project.
 
 Either **clone** this directory and simply npm install, OR if you want to do it yourself:
 
-```
+```js
 npm init --> test: "./node_modules/lab/bin/lab -c -v" // (optional as we run tests with gulp)
 ```
 -c gives us coverage, -v gives us verbose output.
 
-```
+```js
 npm install lab -g                                // Install lab globally
 npm install hapi --save                           // Installing hapi
 npm install lab chai gulp gulp-lab --save-dev     // Note: add lab to your devdep even when installing -g.
@@ -26,12 +26,12 @@ var Lab = require("lab");
 var lab = exports.lab = Lab.script();
 ```
 We must also import an assertion library. Chai's assert has been chosen in this example.
-```
+```js
 var assert = require("chai").assert
 ```
 
 We can then get testing. The lab testing structure is as follows:
-```
+```js
 lab.experiment("My blah blah: ", function() {
   lab.test("Should, more specifically, blah blah", function(done) {
     assert.equal(actual, expected, "comments blah blah blah");
@@ -44,7 +44,7 @@ lab.experiment("My blah blah: ", function() {
 Make a basic hapi server file, preferably in some non-root folder. Remember to export the server.
 
 Note the following crucial step if you don't want your server to start every time you test:
-```
+```js
 if (!module.parent) {
   server.start()
 }
