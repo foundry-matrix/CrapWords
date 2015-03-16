@@ -25,6 +25,6 @@ lab.experiment("A basic server test: ", function() {
 			assert.equal(response.statusCode, 200, "should return a 200 status code");
 			assert.equal(typeof response.result, "string", "should reply with a string");
 			done();
-		})
+		});
 	});
 });
