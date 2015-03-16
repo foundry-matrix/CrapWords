@@ -43,6 +43,8 @@ lab.experiment("My blah blah: ", function() {
   });
 });
 ```
+The aim here is to write a failing test, but one that you wish to pass. A simple example is writing a test for a 200 Status Code response to a "/" GET request. Once the test is failing, write code incrementally to make it pass. The goal is to have as short feedback loops as possible, and to generate sufficiently robust code such that you don't need to worry about building on it or adding to it later. Having a rock-solid codebase gives you more freedom.
+If you can't think of how to test something, then you're probably trying to do something too complicated in one go. "Untestable" code often is just a weak way of describing code that tries to do too much all at once, and tightly couples things that shouldn't be so tightly coupled. 
 
 ## A basic server
 Make a basic hapi server file, preferably in some non-root folder (we chose the api folder). Remember to export the server.
