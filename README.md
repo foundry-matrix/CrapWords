@@ -3,7 +3,11 @@ A basic hapi-lab-gulp setup for starting a project.
 
 ## Installation:
 
-Either **clone** this directory and simply npm install, OR if you want to do it yourself:
+Either **clone** this directory and simply 
+1. npm install
+2. npm install gulp lab -g
+
+OR ALTERNATIVELY if you want to do it yourself:
 
 ```js
 npm init --> test: "./node_modules/lab/bin/lab -c -v" // (optional as we run tests with gulp)
