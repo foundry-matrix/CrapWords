@@ -39,7 +39,7 @@ We can then get testing. The lab testing structure is as follows:
 lab.experiment("My blah blah: ", function() {
   lab.test("Should, more specifically, blah blah", function(done) {
     assert.equal(actual, expected, "comments blah blah blah");
-    done()
+    done();
   });
 });
 ```
@@ -50,7 +50,7 @@ Make a basic hapi server file, preferably in some non-root folder (we chose the 
 If you have just one file for your server, you'll need to include the following if you don't want your server to start every time you test. An alternative is to import your server into a dedicated file for starting it (see app.js).
 ```js
 if (!module.parent) {
-  server.start()
+  server.start();
 }
 ```
 
