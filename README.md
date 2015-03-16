@@ -52,6 +52,7 @@ if (!module.parent) {
 
 
 ## Using gulp
+Gulp is a basic way to automate and speed up our workflow. We can set gulp up to easily run tasks for us, be they build, test, linting or otherwise. With the help of gulp, we can have a terminal always present on the screen, running tests and linting when those files change.
 Gulp is set up in this example to run our tests on save within the api and test folders. These options can be changed in the gulpfile according to your file structure.
 We use gulp-lab to facilitate easy gulp interaction with our lab tests.
 
