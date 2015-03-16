@@ -31,7 +31,7 @@ var lab = exports.lab = Lab.script();
 ```
 We must also import an assertion library. Chai's assert has been chosen in this example.
 ```js
-var assert = require("chai").assert
+var assert = require("chai").assert;
 ```
 
 We can then get testing. The lab testing structure is as follows:
