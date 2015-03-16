@@ -19,7 +19,7 @@ npm install lab chai gulp gulp-lab --save-dev     // Note: add lab to your devde
 ## Writing our test first
 Make a *test* folder in your root. Within that, make a test file (I prefer to call my e.g. server test __server.js, but that's preference)
 With lab, we must not only require lab but also export a script:
-```
+```js
 var lab = exports.lab = require("lab").script();
 // OR
 var Lab = require("lab");
