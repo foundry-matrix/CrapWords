@@ -51,3 +51,6 @@ if (!module.parent) {
 ```
 
 
+## Using gulp
+Gulp is set up in this example to run our tests on save within the lib and test folders. These options can be changed in the gulpfile according to your file structure.
+We use gulp-lab to facilitate easy gulp interaction with our lab tests.
