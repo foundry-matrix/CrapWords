@@ -7,7 +7,7 @@ gulp.task("lab", function (){
 });
 
 gulp.task("watch-lab", function() {
-	gulp.watch(["test/**.js", "lib/**.js"], ["lab"]);
+	gulp.watch(["test/**.js", "api/**.js"], ["lab"]);
 });
 
 gulp.task("default", ["lab", "watch-lab"]);

@@ -1,6 +1,6 @@
 var lab 	= exports.lab = require("lab").script();
 var assert 	= require("chai").assert;
-var server 	= require("../lib/server.js");
+var server 	= require("../api/server.js");
 
 lab.experiment("This trivial test: ", function() {
 
