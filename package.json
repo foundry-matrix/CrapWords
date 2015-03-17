@@ -15,8 +15,12 @@
     "lab": "^5.5.0"
   },
   "dependencies": {
+    "bell": "^2.2.0",
     "hapi": "^8.4.0",
+    "hapi-auth-cookie": "^2.0.0",
+    "hoek": "^2.11.1",
     "joi": "^6.0.8",
+    "moment": "^2.9.0",
     "mongojs": "^0.18.2"
   }
 }
