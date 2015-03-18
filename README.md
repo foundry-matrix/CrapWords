@@ -5,7 +5,7 @@ The front-end has been left intentionally barebones. You won't find a single lin
 
 Users can: 
 - create new blogposts, which will then be saved to a MongoDB database using the mongojs module. 
-- read blogposts; either the individual ones or a blogpost category. If a user navigates to a category URL, (e.g. platform.com/marketing), they will then see a list of blogposts belonging to that category. Joi has been used to impose some restrictions on the requests the users send to the application. This preserves the integrity of the data that makes it into the database. 
+- read blogposts; either the individual ones or a blogpost category. If a user navigates to a category URL, (e.g. /marketing), they will then see a list of blogposts belonging to that category. Joi has been used to impose some restrictions on the requests the users send to the application. This preserves the integrity of the data that makes it into the database. 
 - update blogposts, which will therefore update the entry in the database. 
 - delete blogposts. 
 

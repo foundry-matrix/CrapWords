@@ -14,12 +14,9 @@ server.connection({
 /* $lab:coverage:on$ */
 
 
+//** HARDCODED VARIABLES **//
 var nav = '<nav><a href="/">Home</a> <a href="/profile">Profile</a> <a href="/twitter">Twitter </a>  <a href="/facebook">Facebook login </a><a href="/logout">Log out </a> </nav>';
-
-
 var categoryArray = ['tech','apps','marketing'];
-
-
 var users = {
     per: {
         id: 'per',
@@ -28,6 +25,8 @@ var users = {
     }
 };
 
+
+//** AUTHENTICATION **//
 var login = function(request,reply){
         console.log('request handler for "/login"');
         if (request.auth.isAuthenticated) {
@@ -96,6 +95,9 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
     });
 
 
+
+//** AUTHENTICATION ROUTES **//
+
     server.route({
         method: ['GET','POST'],
         path: '/login',
@@ -108,42 +110,6 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
             plugins: {
                 'hapi-auth-cookie': {
                     reddirectTo: false
-                }
-            }
-        }
-    });
-
-
-    server.route({
-        method: 'GET',
-        path: '/',
-        config: {
-            auth: {
-                strategy: 'session',
-                mode: 'try'
-            },
-            handler: function(request, reply){
-                console.log('request handler for "/"');
-                // console.log('REQUEST.AUTH: ', request.auth);
-
-                console.log('isAuthenticated: ', request.auth.isAuthenticated);
-                if (request.auth.isAuthenticated){
-                      var t = request.auth.credentials;
-                    reply(nav + '<h1>Hello, ' + t.fullName + '</h1><p>Here\'s a nice picture of you I found:</p><img src="' + t.avatar + '"/>');
-                }
-                else {
-                    reply(nav   + '<h1>Hello</h1><p>You should <a href="/login">log in</a>.</p>' 
-                                + '<form method="post" action="/login">'
-                                + 'Username: <input type="text" name="username"><br>'
-                                + 'Password: <input type="password" name="password"><br/>'
-                                + '<input type="submit" value="Login"></form><br>'
-                                + '<form method="post">'
-                                + '<h2>Write your blogpost</h2>'
-                                + '<h3>Author</h3><input type="text" name="author",rows="2",cols="10">'
-                                + '<h3>Title</h3><input type="text" name="title",rows="2",cols="10">'
-                                + '<h3>Text</h3><textarea name="text" rows="10" cols="90"></textarea>'
-                                + '<input type="submit", value="Save blog">'
-                                + '</form>');
                 }
             }
         }
@@ -232,19 +198,44 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
 
 
 
+//** ROUTES **//
 
 
-
-
-   /* server.route({					//HOMEPAGE
+    server.route({					//HOMEPAGE
         method: 'GET',
         path: '/',
-        handler: function (request, reply) {
-            reply('Hapi Blog');
+        config: {
+            auth: {
+                strategy: 'session',
+                mode: 'try'
+            },
+            handler: function(request, reply){
+                console.log('request handler for "/"');
+                console.log('isAuthenticated: ', request.auth.isAuthenticated);
+                if (request.auth.isAuthenticated){
+                      var t = request.auth.credentials;
+                    reply(nav + '<h1>Hello, ' + t.fullName + '</h1><p>Here\'s a nice picture of you I found:</p><img src="' + t.avatar + '"/>');
+                }
+                else {
+                    reply(nav   + '<h1>Hello</h1><p>You should <a href="/login">log in</a>.</p>' 
+                                + '<form method="post" action="/login">'
+                                + 'Username: <input type="text" name="username"><br>'
+                                + 'Password: <input type="password" name="password"><br/>'
+                                + '<input type="submit" value="Login"></form><br>'
+                                + '<form method="post">'
+                                + '<h2>Write your blogpost</h2>'
+                                + '<h3>Author</h3><input type="text" name="author",rows="2",cols="10">'
+                                + '<h3>Category</h3><input type="text" name="category",rows="2",cols="10">'
+                                + '<h3>Title</h3><input type="text" name="title",rows="2",cols="10">'
+                                + '<h3>Text</h3><textarea name="text" rows="10" cols="90"></textarea>'
+                                + '<input type="submit", value="Save blog">'
+                                + '</form>');
+                }
+            }
         }
     });
 
-*/
+
 
     server.route({					//CATEGORY
         method: 'GET',
@@ -262,12 +253,18 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
     });
 
 
-    server.route({					//BLOGPOST
+    server.route({					//VIEWING A BLOGPOST
         method: 'GET',
         path: '/{category}/{id}',
         handler: function (request, reply) {
-            reply('Blog Post here, category: ' + request.params.category +  
-            	', id: '+request.params.id);
+        	model.readBlog(function(fetchedBlog){
+        		console.log('server says ----', fetchedBlog);
+        		reply('Blog Post here, category: ' + request.params.category +  
+            	', id: '+request.params.id + '<br>' 
+            	+ 'Title:' +fetchedBlog[0].title + '<br>' 
+            	+ 'Text:' + fetchedBlog[0].text + '<br><br>' + 'NOTE: 	At the moment the db fetches a hardcoded entry only. Later, it will fetch the right blogpost depending on the URL. See the Viewing a Blogpost function at line 256 of server.js for details'
+            	);
+        	});
         },
         config: {
             validate: {
@@ -282,46 +279,25 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
 
 
 
-    // payload output 'data' will read POST payload into memory. Can also be put in a file or made available as a stream
-    // payload parse 'true' is the default value, but worth knowing about. Uses the content-type header to parse the payload. set to false if you want the raw payload.
-    server.route({
+    server.route({					//POSTING A BLOGPOST
         method: 'POST',
         config: { payload: {output: 'data', parse: true} },
         path: '/',
         handler: function (request, reply) {
-        	model.saveBlog(request.payload.title, request.payload.text, request.payload.author);
+        	model.saveBlog(request.payload.title, request.payload.text, request.payload.author, request.payload.category);
             reply('New Post Added. Your blog post is: ' + request.payload.text);
-
         }
     });
-
-    // PUT has a payload too..
-    server.route({
-        method: 'PUT',
-        config: { payload: {output: 'data', parse: true} },
-        path: '/{id}',
-        handler: function (request, reply) {
-            // code here to handle post update
-            reply('Post '+request.params.id +' updated');
-        }
-    });
-
-    server.route({
-        method: 'DELETE',
-        path: '/{id}',
-        handler: function (request, reply) {
-            // code here to delete post
-            reply('Post '+request.params.id +' deleted');
-        }
-    });
-
-
 });
 
+
+
+//** RUNNING THE SERVER **//
 
 server.start(function () {
     console.log('Server running at:', server.info.uri);
 });
+
 
 
 module.exports = server;
