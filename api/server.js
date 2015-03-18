@@ -4,6 +4,7 @@ var Joi = require('joi');
 var Bell = require('bell');
 var Cookie = require('hapi-auth-cookie');
 var server = new Hapi.Server();
+var model = require('../model.js');
 
 /* $lab:coverage:off$ */
 server.connection({
@@ -29,7 +30,6 @@ var users = {
 
 var login = function(request,reply){
         console.log('request handler for "/login"');
-        console.log(request.method);
         if (request.auth.isAuthenticated) {
             return reply.redirect('/');
         }
@@ -124,7 +124,7 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
             },
             handler: function(request, reply){
                 console.log('request handler for "/"');
-                console.log('REQUEST.AUTH: ', request.auth);
+                // console.log('REQUEST.AUTH: ', request.auth);
 
                 console.log('isAuthenticated: ', request.auth.isAuthenticated);
                 if (request.auth.isAuthenticated){
@@ -136,7 +136,14 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
                                 + '<form method="post" action="/login">'
                                 + 'Username: <input type="text" name="username"><br>'
                                 + 'Password: <input type="password" name="password"><br/>'
-                                + '<input type="submit" value="Login"></form>');
+                                + '<input type="submit" value="Login"></form><br>'
+                                + '<form method="post">'
+                                + '<h2>Write your blogpost</h2>'
+                                + '<h3>Author</h3><input type="text" name="author",rows="2",cols="10">'
+                                + '<h3>Title</h3><input type="text" name="title",rows="2",cols="10">'
+                                + '<h3>Text</h3><textarea name="text" rows="10" cols="90"></textarea>'
+                                + '<input type="submit", value="Save blog">'
+                                + '</form>');
                 }
             }
         }
@@ -282,8 +289,9 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         config: { payload: {output: 'data', parse: true} },
         path: '/',
         handler: function (request, reply) {
-            // code here to handle new post
-            reply('New Post Added');
+        	model.saveBlog(request.payload.title, request.payload.text, request.payload.author);
+            reply('New Post Added. Your blog post is: ' + request.payload.text);
+
         }
     });
 

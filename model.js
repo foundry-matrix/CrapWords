@@ -9,9 +9,21 @@ function blogpost (title, text, date, author, id){
 	this.id = id; 
 }
 
-var blogpost1 = new blogpost("Second", "lorem ispum2", "18 March 2015", "Greg", 2);
+// var blogpost1 = new blogpost("Second", "lorem ispum2", "18 March 2015", "Greg", 2);
 
-db.blogcollection.save(blogpost1, function(err, savedBlog){
-	if(err || !savedBlog) console.log("not saved because of ", err);
-	else console.log(savedBlog.title, " has been saved");
-});
+// db.blogcollection.save(blogpost1, function(err, savedBlog){
+// 	if(err || !savedBlog) console.log("not saved because of ", err);
+// 	else console.log(savedBlog.title, " has been saved");
+// });
+
+function saveBlog(title, text, author){
+	var newBlogObject = new blogpost(title, text, '', author, '');
+	db.blogcollection.save(newBlogObject, function(err, savedBlog){
+		if(err || !savedBlog) console.log("not saved because of ", err);
+		else console.log("Blogpost saved. Title: ", savedBlog.title, ". Blog post: ", savedBlog.text, ". Author: ", savedBlog.author);
+	});
+}
+
+module.exports = {
+	saveBlog:saveBlog,
+}
