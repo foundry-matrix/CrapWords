@@ -34,13 +34,13 @@ db.blogcollection.save(blogpost1, function(err, savedBlog){
 */
 
 
-function blogpost (title, text, date, author, category, id){
+function blogpost (title, text, date, author, category, auth_id){
 	this.title = title;
 	this.text = text;
 	this.date = date;
 	this.author = author;
 	this.category = category;
-	this.id = id; 
+	this.auth_id = auth_id; 
 }
 
 // var blogpost1 = new blogpost("Second", "lorem ispum2", "18 March 2015", "Greg", 2);
@@ -50,13 +50,13 @@ function blogpost (title, text, date, author, category, id){
 // 	else console.log(savedBlog.title, " has been saved");
 // });
 
-function saveBlog(title, text, author, category){
-	var newBlogObject = new blogpost(title, text, '', author, category, '');
+function saveBlog(title, text, author, category, auth_id){
+	var newBlogObject = new blogpost(title, text, '', author, category, auth_id);
 	db.blogcollection.save(newBlogObject, function(err, savedBlog){
 		if(err || !savedBlog) console.log("not saved because of ", err);
 		else console.log("Blogpost saved. Title:", savedBlog.title, "| Blog post:", 
 			 savedBlog.text, "| Author:", savedBlog.author, "| Category:", 
-			 savedBlog.category);
+			 savedBlog.category,"| auth_id:", savedBlog.auth_id);
 	});
 }
 
@@ -65,20 +65,17 @@ function readBlog(renderFunction){
 		if( err || !fetchedBlog) console.log("No such blog found");
 		else { 
 			console.log('model says blog is----',fetchedBlog);
-			dummyFunction(fetchedBlog);
 			renderFunction(fetchedBlog); 
 		}
 	});
 	
 }
 
-function dummyFunction(fetchedBlog){
-	console.log('dummy says --', fetchedBlog);
-}
-
-
 
 module.exports = {
 	saveBlog : saveBlog,
-	readBlog : readBlog
+	readBlog : readBlog,
+	db:db,
+	user:user,
+	blogpost:blogpost
 }
