@@ -1,13 +1,6 @@
 var db = require ('mongojs').connect('mongodb://gregaubs:gregaubs@ds041157.mongolab.com:41157/hapiblog',['blogcollection', 'usercollection']);
 
 
-function blogpost (title, text, date, author, id){
-	this.title 	= title;
-	this.text 	= text;
-	this.date 	= date;
-	this.author = author;
-	this.id 	= id; 
-}
 
 
 function user (name,auth_method,auth_id,password){
@@ -40,8 +33,52 @@ db.blogcollection.save(blogpost1, function(err, savedBlog){
 });
 */
 
+
+function blogpost (title, text, date, author, category, id){
+	this.title = title;
+	this.text = text;
+	this.date = date;
+	this.author = author;
+	this.category = category;
+	this.id = id; 
+}
+
+// var blogpost1 = new blogpost("Second", "lorem ispum2", "18 March 2015", "Greg", 2);
+
+// db.blogcollection.save(blogpost1, function(err, savedBlog){
+// 	if(err || !savedBlog) console.log("not saved because of ", err);
+// 	else console.log(savedBlog.title, " has been saved");
+// });
+
+function saveBlog(title, text, author, category){
+	var newBlogObject = new blogpost(title, text, '', author, category, '');
+	db.blogcollection.save(newBlogObject, function(err, savedBlog){
+		if(err || !savedBlog) console.log("not saved because of ", err);
+		else console.log("Blogpost saved. Title:", savedBlog.title, "| Blog post:", 
+			 savedBlog.text, "| Author:", savedBlog.author, "| Category:", 
+			 savedBlog.category);
+	});
+}
+
+function readBlog(renderFunction){
+	db.blogcollection.find( { title: 'hardcoded' }, function(err, fetchedBlog){
+		if( err || !fetchedBlog) console.log("No such blog found");
+		else { 
+			console.log('model says blog is----',fetchedBlog);
+			dummyFunction(fetchedBlog);
+			renderFunction(fetchedBlog); 
+		}
+	});
+	
+}
+
+function dummyFunction(fetchedBlog){
+	console.log('dummy says --', fetchedBlog);
+}
+
+
+
 module.exports = {
-	db:db,
-	user:user,
-	blogpost:blogpost
+	saveBlog : saveBlog,
+	readBlog : readBlog
 }
