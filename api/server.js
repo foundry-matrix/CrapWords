@@ -14,15 +14,60 @@ server.connection({
 /* $lab:coverage:on$ */
 
 
-var nav = '<nav><a href="/">Home</a> <a href="/profile">Profile</a> <a href="/login">Login</a>  <a href="/signup">Sign up</a> <a href="/twitter"> Twitter </a>  <a href="/facebook"> Facebook </a> <a href="/logout"> Log out </a> </nav>';
-
+var nav = '<nav><a href="/"> Home </a> <a href="/profile">Profile</a> <a href="/create"> Create </a>  <a href="/login">Login</a>  <a href="/signup"> Sign up </a> <a href="/twitter"> Twitter </a>  <a href="/facebook"> Facebook </a> <a href="/logout"> Log out </a> </nav>';
 
 var categoryArray = ['tech','apps','marketing'];
 
+var twitter = function(request,reply){
+    console.log('request handler for "/twitter"');
+    var t = request.auth.credentials;
+    console.log('REQUEST :');
+    console.log(request);
+    var profile = {
+        //token           : t.token,
+        username        : t.profile.username,
+        auth_method     : 'twitter',
+        auth_id         : t.profile.id
+    };
+    
+    console.log('profile: ', profile);
+    request.auth.session.set(profile);
+    return reply.redirect('/');             
+}
 
-var login = function( request, reply){
+
+var facebook = function (request, reply) {
+    console.log('request handler for "/facebook"');
+    var t = request.auth.credentials;
+    console.log('REQUEST :');
+    console.log(request);
+    var profile = {
+        //token       : t.token,
+        username    : t.profile.displayName,
+        auth_method: 'facebook',
+        auth_id     : t.profile.raw.id,
+        email       : t.profile.email
+    }
+    console.log('raw ',t.profile.raw);
+    request.auth.session.set(profile);
+    return reply.redirect('/');     
+}
+
+
+//** AUTHENTICATION **//
+
+var logout = function(request,reply) {
+    request.auth.session.clear();
+    return reply.redirect('/');
+}
+
+var login = function(request,reply){
         console.log('request handler for "/login", here is the reply object:');
         console.log(request);
+        if (request.auth.isAuthenticated) {
+            return reply.redirect('/');
+        }
+
         if (request.method === 'get' || message) {
             return reply('<html><head><title>Login page</title></head><body>'
             + (message ? '<h3>' + message + '</h3><br/>' : '')
@@ -30,18 +75,6 @@ var login = function( request, reply){
             + 'Username: <input type="text" name="username"><br>'
             + 'Password: <input type="password" name="password"><br/>'
             + '<input type="submit" value="Login"></form></body></html>');
-        }
-
-//** HARDCODED VARIABLES **//
-var nav = '<nav><a href="/">Home</a> <a href="/profile">Profile</a> <a href="/twitter">Twitter </a>  <a href="/facebook">Facebook login </a><a href="/logout">Log out </a> </nav>';
-var categoryArray = ['tech','apps','marketing'];
-
-
-//** AUTHENTICATION **//
-var login = function(request,reply){
-        console.log('request handler for "/login"');
-        if (request.auth.isAuthenticated) {
-            return reply.redirect('/');
         }
         var message = '';
         var account = null;
@@ -67,7 +100,6 @@ var login = function(request,reply){
                     message = 'Invalid password';
                     console.log('invalid passwod');
                     return reply.redirect('/');
-
                 }
                 
                 else if (user.password === request.payload.password){
@@ -84,14 +116,21 @@ var login = function(request,reply){
 
 var signup = function(request,reply){
     if (request.method === 'get'){
-        reply(nav + '<form method="post" action="/signup">'
+
+       if (request.auth.isAuthenticated) {
+            return reply.redirect('/');
+        }
+        else{
+            reply(nav + '<form method="post" action="/signup">'
             + 'Username: <input type="text" name="username"><br>'
             + 'Password: <input type="password" name="password"><br/>'
             + '<input type="submit" value="Sign up"></form></body></html>');
+
+        }
+
+        
     }
-    if (request.auth.isAuthenticated) {
-        return reply.redirect('/');
-    }
+ 
     if (request.method === 'post'){
         model.db.usercollection.findOne({username: request.payload.username}, function(err,user){
             if (err){
@@ -111,15 +150,112 @@ var signup = function(request,reply){
             }
         });
     }
+}
+
+
+var home = function(request, reply){
+    console.log('request handler for "/"');
+    console.log('REQUEST.AUTH: ', request.auth);
+    console.log('isAuthenticated: ', request.auth.isAuthenticated);
+    
+    if (request.auth.isAuthenticated){
+        console.log('IS AUTHENTICATED: R.A.C:',request.auth.credentials)
+        var t = request.auth.credentials;   
+        console.log(t.username);
+
+        model.db.usercollection.findOne(
+            { query: 
+                {$and: 
+                    [ {auth_id:t.auth_id},{auth_method: t.auth_method} ] } }, 
+            function(err,user){
+                if (user){
+                    reply(nav + user.username);
+                }
+                else {
+                    var new_user = new model.user(t.username,t.auth_method,t.auth_id);
+                    model.db.usercollection.save(new_user,function(err,user){
+                        reply('hello ' +  user.username);
+                    });
+                }
+
+        });
+    }
+    else {
+        reply(nav);
+    }
+}
+
+
+
+var profile = function(request,reply){
+
+    console.log('request handler for "/profile"');
+    console.log('REQUEST.AUTH: ', request.auth);
+
+    if (request.auth.isAuthenticated){
+        var t = request.auth.credentials;
+        console.log('t.auth_id: ', t.auth_id);
+        model.db.blogcollection.find({auth_id: t.auth_id}, function(err,blogposts){
+            console.log('db query finished. Here is blogposts: ', blogposts);
+            if (blogposts.length >0){
+                var content = "";
+                blogposts.forEach(function(post){
+                    content +=  '<br><h3>' + post.title +  '</h3><br>' + post.text
+                });
+            reply.file('views/index.html');
+            //reply(nav + content);
+            } else{
+                reply(nav + 'You have not written any posts yet :( ')
+            }
+        });
+    } else{
+    reply.redirect('/login');
+
+    }
+
 
 }
 
 
-server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
+var create = function(request, reply){
+    
+    console.log('request handler for "/create"');
+    console.log('isAuthenticated: ', request.auth.isAuthenticated);
+    console.log('REQUEST AT POST:');
+    console.log(request);
+
+    if (request.method === 'get'){
+        if (request.auth.isAuthenticated){
+            var t = request.auth.credentials;
+                reply(nav   + '<form method="post" action="/create">'
+                            + '<h2>Write your blogpost</h2>'
+                            + '<h3>Category</h3><input type="text" name="category",rows="2",cols="10">'
+                            + '<h3>Title</h3><input type="text" name="title",rows="2",cols="10">'
+                            + '<h3>Text</h3><textarea name="text" rows="10" cols="90"></textarea>'
+                            + '<input type="submit", value="Save blog">'
+                            + '</form>');
+        }
+        else {
+            reply.redirect('/login');
+        }
+    }
+    else if (request.method === 'post'){
+        console.log('REQUEST.AUTH.CREDENTIALS AT POST :');
+        console.log(request.auth.credentials);
+        model.saveBlog(request.payload.title, request.payload.text, request.state.sid.username, request.payload.category, request.state.sid.auth_id);
+        reply.redirect('/profile');
+    }
+}
+
+
+    
+    server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
 
     if (err){
         throw err;
     }
+
+
 
     server.auth.strategy('facebook', 'bell', {
         provider    : 'facebook',
@@ -143,8 +279,6 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         reddirectTo     : '/',
         isSecure        : false
     });
-
-
 
 //** AUTHENTICATION ROUTES **//
 
@@ -191,42 +325,10 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
                 strategy: 'session',
                 mode: 'try'
             },
-            handler: function(request, reply){
-                console.log('request handler for "/"');
-                console.log('REQUEST.AUTH: ', request.auth);
-                console.log('isAuthenticated: ', request.auth.isAuthenticated);
-                
-                if (request.auth.isAuthenticated){
-                    console.log('IS AUTHENTICATED: R.A.C:',request.auth.credentials)
-                    var t = request.auth.credentials;   
-                    console.log(t.username);
-
-                    model.db.usercollection.findOne(
-                        { query: 
-                            {$and: 
-                                [ {auth_id:t.auth_id},{auth_method: t.auth_method} ] } }, 
-                        function(err,user){
-                            if (user){
-                                reply(nav + user.username);
-                            }
-                            else {
-                                var new_user = new model.user(t.username,t.auth_method,t.auth_id);
-                                model.db.usercollection.save(new_user,function(err,user){
-                                    reply('hello ' +  user.username);
-                                });
-                            }
-
-                    });
-                }
-                else {
-                    reply(nav);
-                }
-            }
+            handler: home,
         }
     });
 
-
-    
 
 
     server.route({
@@ -237,12 +339,7 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
                 strategy: 'session',
                 mode: 'try'
             },
-            handler: function(request,reply){
-                console.log('request handler for "/profile"');
-                console.log('REQUEST.AUTH: ', request.auth);
-                var t = request.auth.credentials;
-                reply('Hi ' + request.auth.credentials.username);
-            }
+            handler: profile,
         }
     });
 
@@ -252,34 +349,17 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         path: '/logout',
         config: {
             auth: 'session',
-            handler: function(request,reply) {
-                request.auth.session.clear();
-                return reply.redirect('/');
-            }
+            handler: logout,
         }
     });
+
 
     server.route({
         method  : ['GET', 'POST'],
         path    : '/facebook',
         config  : {
             auth: 'facebook',
-            handler: function (request, reply) {
-                console.log('request handler for "/facebook"');
-                var t = request.auth.credentials;
-                console.log('REQUEST :');
-                console.log(request);
-                var profile = {
-                    //token       : t.token,
-                    username    : t.profile.displayName,
-                    auth_method: 'facebook',
-                    auth_id     : t.profile.raw.id,
-                    email       : t.profile.email
-                }
-                console.log('raw ',t.profile.raw);
-                request.auth.session.set(profile);
-                return reply.redirect('/');     
-            }
+            handler: facebook,
         }
     });
 
@@ -288,22 +368,7 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         path: '/twitter',
         config: {
             auth: 'twitter',
-            handler: function(request,reply){
-                console.log('request handler for "/twitter"');
-                var t = request.auth.credentials;
-                console.log('REQUEST :');
-                console.log(request);
-                var profile = {
-                    //token           : t.token,
-                    username        : t.profile.username,
-                    auth_method     : 'twitter',
-                    auth_id         : t.profile.id
-                };
-                
-                console.log('profile: ', profile);
-                request.auth.session.set(profile);
-                return reply.redirect('/');             
-            }
+            handler: twitter,
         }
     });
 
@@ -313,39 +378,9 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
 //** ROUTES **//
 
 
-    server.route({					//HOMEPAGE
-        method: 'GET',
-        path: '/',
-        config: {
-            auth: {
-                strategy: 'session',
-                mode: 'try'
-            },
-            handler: function(request, reply){
-                console.log('request handler for "/"');
-                console.log('isAuthenticated: ', request.auth.isAuthenticated);
-                if (request.auth.isAuthenticated){
-                      var t = request.auth.credentials;
-                    reply(nav + '<h1>Hello, ' + t.fullName + '</h1><p>Here\'s a nice picture of you I found:</p><img src="' + t.avatar + '"/>');
-                }
-                else {
-                    reply(nav   + '<h1>Hello</h1><p>You should <a href="/login">log in</a>.</p>' 
-                                + '<form method="post" action="/login">'
-                                + 'Username: <input type="text" name="username"><br>'
-                                + 'Password: <input type="password" name="password"><br/>'
-                                + '<input type="submit" value="Login"></form><br>'
-                                + '<form method="post">'
-                                + '<h2>Write your blogpost</h2>'
-                                + '<h3>Author</h3><input type="text" name="author",rows="2",cols="10">'
-                                + '<h3>Category</h3><input type="text" name="category",rows="2",cols="10">'
-                                + '<h3>Title</h3><input type="text" name="title",rows="2",cols="10">'
-                                + '<h3>Text</h3><textarea name="text" rows="10" cols="90"></textarea>'
-                                + '<input type="submit", value="Save blog">'
-                                + '</form>');
-                }
-            }
-        }
-    });
+
+
+
 
     server.route({					//CATEGORY
         method: 'GET',
@@ -392,12 +427,22 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
     server.route({					//POSTING A BLOGPOST
         method: 'POST',
         config: { payload: {output: 'data', parse: true} },
-        path: '/',
-        handler: function (request, reply) {
-        	model.saveBlog(request.payload.title, request.payload.text, request.payload.author, request.payload.category);
-            reply('New Post Added. Your blog post is: ' + request.payload.text);
+        path: '/create',
+        handler: create
+    });
+
+    server.route({                   
+        method: 'GET',
+        path: '/create',
+        config: {
+            auth: {
+                strategy: 'session',
+                mode: 'try'
+            },
+            handler: create,
         }
     });
+
 });
 
 
