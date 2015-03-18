@@ -14,6 +14,8 @@ Users can:
 As you navigate the application, you may encounter some errors - particularly if you are doing perculiar/nefarious things.  These errors have been left looking ugly but you should still be able to decipher what's going on. 
 For example if you try and navigate yourself to '/cheeeeese' - then you will get an error scolding you for believing 'cheeeeese' to be a real category. 
 
+{"statusCode":400,"error":"Bad Request","message":"child \"category\" fails because [\"category\" must be one of [tech, apps, marketing]]","validation":{"source":"params","keys":["category"]}}
+
 
 ## Getting Started:
 1. Clone the repo
