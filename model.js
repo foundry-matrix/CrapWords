@@ -1,14 +1,11 @@
 var db = require ('mongojs').connect('mongodb://gregaubs:gregaubs@ds041157.mongolab.com:41157/hapiblog',['blogcollection', 'usercollection']);
 
 
-
-
 function user (name,auth_method,auth_id,password){
 	this.username 	 = name;
 	this.auth_method = auth_method;
 	this.auth_id     = auth_id;
 	this.password 	 = password;
-
 }
 
 //var blogpost1 = new blogpost("Second", "lorem ispum2", "18 March 2015", "Greg", 2);

@@ -5,7 +5,8 @@ var Bell = require('bell');
 var Cookie = require('hapi-auth-cookie');
 var server = new Hapi.Server();
 var model = require('../model.js');
-
+var shortid = require('shortid');
+var bcrypt = require('bcrypt');
 /* $lab:coverage:off$ */
 server.connection({
 	host: "localhost",
@@ -14,7 +15,9 @@ server.connection({
 /* $lab:coverage:on$ */
 
 
-var nav = '<nav><a href="/"> Home </a> <a href="/profile">Profile</a> <a href="/create"> Create </a>  <a href="/login">Login</a>  <a href="/signup"> Sign up </a> <a href="/twitter"> Twitter </a>  <a href="/facebook"> Facebook </a> <a href="/logout"> Log out </a> </nav>';
+var nav_auth = '<nav><a href="/"> Home </a> <a href="/profile">Profile</a> <a href="/create"> Create </a> <a href="/logout"> Log out </a> </nav>';
+
+var nav_unauth = ' <a href="/login">Login</a>  <a href="/signup"> Sign up </a> <a href="/twitter"> Twitter </a>  <a href="/facebook"> Facebook </a> ';
 
 var categoryArray = ['tech','apps','marketing'];
 
@@ -57,13 +60,21 @@ var facebook = function (request, reply) {
 //** AUTHENTICATION **//
 
 var logout = function(request,reply) {
-    request.auth.session.clear();
-    return reply.redirect('/');
+    if (request.auth.isAuthenticated){
+        console.log('is authenticated, so logging out!') 
+        request.auth.session.clear();
+        return reply.redirect('/');
+    } else {
+        console.log('is not authenticated, so just redirecting!') 
+        return reply.redirect('/');
+    }
+
 }
 
 var login = function(request,reply){
-        console.log('request handler for "/login", here is the reply object:');
-        console.log(request);
+        
+        console.log('request handler for "/login"');
+        //console.log(request);
         if (request.auth.isAuthenticated) {
             return reply.redirect('/');
         }
@@ -85,30 +96,38 @@ var login = function(request,reply){
                 message = 'Missing username or password';
             }
             else {
-                model.db.usercollection.findOne({username: request.payload.username}, function(err,user){
-                console.log('user: ', user);
-                account = user;
-                console.log('request.payload.password: ', request.payload.password);
 
-                if (!user){
-                    message ='user doesnt exit';
-                    console.log('user doesnt exit');
-                    return reply.redirect('/');
-                }
-                
-                else if (user.password !== request.payload.password){
-                    message = 'Invalid password';
-                    console.log('invalid passwod');
-                    return reply.redirect('/');
-                }
-                
-                else if (user.password === request.payload.password){
-                    message = 'username and password MATCH!';
-                    console.log('username and password MATCH!');
-                    request.auth.session.set(account);
-                    //request.response.header('test-header', 'test value')
-                    return reply.redirect('/');
-                }
+                model.db.usercollection.findOne({username: request.payload.username}, function(err,user){
+                    
+                    bcrypt.compare(request.payload.password, user.password, function(err, res){
+
+                        console.log('user: ', user);
+                        account = user;
+
+                        if (!user){
+                            message ='user doesnt exit';
+                            console.log('user doesnt exit');
+                            return reply.redirect('/');
+                        }
+                        
+
+
+                        else if (res == false){
+                            message = 'Invalid password';
+                            console.log('user.password: ', user.password);
+                            console.log('invalid passwod');
+                            return reply.redirect('/');
+                        }
+                        
+                        else if (res == true){
+                            message = 'username and password MATCH!';
+                            console.log('username and password MATCH!');
+                            request.auth.session.set(account);
+                            //request.response.header('test-header', 'test value')
+                            return reply.redirect('/');
+                        }
+            });
+
             });                
         }
     }   
@@ -121,7 +140,7 @@ var signup = function(request,reply){
             return reply.redirect('/');
         }
         else{
-            reply(nav + '<form method="post" action="/signup">'
+            reply(nav_auth + '<form method="post" action="/signup">'
             + 'Username: <input type="text" name="username"><br>'
             + 'Password: <input type="password" name="password"><br/>'
             + '<input type="submit" value="Sign up"></form></body></html>');
@@ -132,26 +151,34 @@ var signup = function(request,reply){
     }
  
     if (request.method === 'post'){
-        model.db.usercollection.findOne({username: request.payload.username}, function(err,user){
-            if (err){
-                throw err;
-            }
-            if (user){
-                console.log('This user already exists');
-            }
-            else {
-                console.log('Creating new userr:');
-                var id = Math.floor(Math.random() * 10000);
-                var new_user = new model.user(request.payload.username,'local',id,request.payload.password);
-                model.db.usercollection.save(new_user,function(err,user){
-                    console.log('new user is ', user);
-                    reply.redirect('/');
+
+
+         bcrypt.genSalt(10, function(err,salt){
+            console.log('Generating salt: ', salt);
+            bcrypt.hash(request.payload.password,salt, function(err,hash){
+                console.log('Generating hash: ', hash);
+                model.db.usercollection.findOne({username: request.payload.username}, function(err,user){
+                    if (err){
+                        throw err;
+                    }
+                    if (user){
+                        console.log('This user already exists');
+                    }
+                    else {
+                        console.log('Creating new userr:');
+                        var id = shortid.generate();
+                        var new_user = new model.user(request.payload.username,'local',id,hash);
+                        model.db.usercollection.save(new_user,function(err,user){
+                            console.log('new user is ', user);
+                            request.auth.session.set(user);
+                            reply.redirect('/');
+                        });
+                    }
                 });
-            }
+            });
         });
     }
 }
-
 
 var home = function(request, reply){
     console.log('request handler for "/"');
@@ -169,7 +196,7 @@ var home = function(request, reply){
                     [ {auth_id:t.auth_id},{auth_method: t.auth_method} ] } }, 
             function(err,user){
                 if (user){
-                    reply(nav + user.username);
+                    reply(nav_auth + user.username);
                 }
                 else {
                     var new_user = new model.user(t.username,t.auth_method,t.auth_id);
@@ -181,7 +208,7 @@ var home = function(request, reply){
         });
     }
     else {
-        reply(nav);
+        reply(nav_unauth);
     }
 }
 
@@ -201,10 +228,10 @@ var profile = function(request,reply){
                 blogposts.forEach(function(post){
                     content +=  '<br><h3>' + post.title +  '</h3><br>' + post.text
                 });
-            reply.file('views/index.html');
+            reply(nav_auth + content);
             //reply(nav + content);
             } else{
-                reply(nav + 'You have not written any posts yet :( ')
+                reply(nav_auth + 'You have not written any posts yet :( ')
             }
         });
     } else{
@@ -226,7 +253,7 @@ var create = function(request, reply){
     if (request.method === 'get'){
         if (request.auth.isAuthenticated){
             var t = request.auth.credentials;
-                reply(nav   + '<form method="post" action="/create">'
+                reply(nav_auth   + '<form method="post" action="/create">'
                             + '<h2>Write your blogpost</h2>'
                             + '<h3>Category</h3><input type="text" name="category",rows="2",cols="10">'
                             + '<h3>Title</h3><input type="text" name="title",rows="2",cols="10">'
@@ -248,13 +275,11 @@ var create = function(request, reply){
 
 
     
-    server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
+server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
 
     if (err){
         throw err;
     }
-
-
 
     server.auth.strategy('facebook', 'bell', {
         provider    : 'facebook',
@@ -278,6 +303,7 @@ var create = function(request, reply){
         reddirectTo     : '/',
         isSecure        : false
     });
+
 
 //** AUTHENTICATION ROUTES **//
 
@@ -315,7 +341,6 @@ var create = function(request, reply){
         }
     });
 
-
     server.route({
         method: 'GET',
         path: '/',
@@ -327,8 +352,6 @@ var create = function(request, reply){
             handler: home,
         }
     });
-
-
 
     server.route({
         method: 'GET',
@@ -347,7 +370,10 @@ var create = function(request, reply){
         method: 'GET',
         path: '/logout',
         config: {
-            auth: 'session',
+            auth: {
+                strategy: 'session',
+                mode: 'try'
+            },
             handler: logout,
         }
     });
@@ -375,12 +401,6 @@ var create = function(request, reply){
 
 
 //** ROUTES **//
-
-
-
-
-
-
     server.route({					//CATEGORY
         method: 'GET',
         path: '/{category}',
@@ -401,7 +421,6 @@ var create = function(request, reply){
             }
         }
     });
-
 
     server.route({					//VIEWING A BLOGPOST
         method: 'GET',
@@ -425,7 +444,6 @@ var create = function(request, reply){
             }
         }
     });
-
 
 
     server.route({					//POSTING A BLOGPOST
