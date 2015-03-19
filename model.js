@@ -31,13 +31,14 @@ db.blogcollection.save(blogpost1, function(err, savedBlog){
 */
 
 
-function blogpost (title, text, date, author, category, auth_id){
+function blogpost (title, text, date, author, category, auth_id, blog_id){
 	this.title = title;
 	this.text = text;
 	this.date = date;
 	this.author = author;
 	this.category = category;
-	this.auth_id = auth_id; 
+	this.auth_id = auth_id;
+	this.blog_id = blog_id;
 }
 
 // var blogpost1 = new blogpost("Second", "lorem ispum2", "18 March 2015", "Greg", 2);
@@ -48,24 +49,35 @@ function blogpost (title, text, date, author, category, auth_id){
 // });
 
 function saveBlog(title, text, author, category, auth_id){
-	var newBlogObject = new blogpost(title, text, '', author, category, auth_id);
-	db.blogcollection.save(newBlogObject, function(err, savedBlog){
-		if(err || !savedBlog) console.log("not saved because of ", err);
-		else console.log("Blogpost saved. Title:", savedBlog.title, "| Blog post:", 
-			 savedBlog.text, "| Author:", savedBlog.author, "| Category:", 
-			 savedBlog.category,"| auth_id:", savedBlog.auth_id);
+	var blog_id;
+	var options = {"sort": [["blog_id",-1]], "limit": 1}
+	db.blogcollection.find({}, options, function(err,blog){
+		blog_id = blog[0].blog_id + 1;
+		var newBlogObject = new blogpost(title, text, '', author, category, auth_id, blog_id);
+		db.blogcollection.save(newBlogObject, function(err, savedBlog){
+			if(err || !savedBlog) console.log("not saved because of ", err);
+		});
+
 	});
+
 }
 
 function readBlog(renderFunction){
 	db.blogcollection.find( { title: 'hardcoded' }, function(err, fetchedBlog){
 		if( err || !fetchedBlog) console.log("No such blog found");
-		else { 
-			console.log('model says blog is----',fetchedBlog);
+		else {
 			renderFunction(fetchedBlog); 
 		}
 	});
-	
+}
+
+function viewBlogs(category, reply){
+	db.blogcollection.find( { category: category }, function(err, fetchedBlog){
+		if( err || !fetchedBlog) console.log("No such blog found");
+		else { 
+			reply(fetchedBlog); 
+		}
+	});
 }
 
 
@@ -74,5 +86,6 @@ module.exports = {
 	readBlog : readBlog,
 	db:db,
 	user:user,
-	blogpost:blogpost
+	blogpost:blogpost,
+	viewBlogs:viewBlogs
 }

@@ -223,7 +223,6 @@ var profile = function(request,reply){
         var t = request.auth.credentials;
         console.log('t.auth_id: ', t.auth_id);
         model.db.blogcollection.find({auth_id: t.auth_id}, function(err,blogposts){
-            console.log('db query finished. Here is blogposts: ', blogposts);
             if (blogposts.length >0){
                 var content = "";
                 blogposts.forEach(function(post){
@@ -406,7 +405,13 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         method: 'GET',
         path: '/{category}',
         handler: function (request, reply) {
-            reply('Category section. The category is: ' + request.params.category);
+            model.viewBlogs(request.params.category, function(blogposts){
+                var list = "";
+                blogposts.forEach(function(blogpost){
+                    list = list + "<li><a href=" + request.params.category + "/" + blogpost.blog_id + ">" + blogpost.title + " - <i>" + blogpost.author + "</a></i></li>";
+                })
+                reply(list);
+            });
         },
         config: {
             validate: {
@@ -422,7 +427,6 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         path: '/{category}/{id}',
         handler: function (request, reply) {
         	model.readBlog(function(fetchedBlog){
-        		console.log('server says ----', fetchedBlog);
         		reply('Blog Post here, category: ' + request.params.category +  
             	', id: '+request.params.id + '<br>' 
             	+ 'Title:' +fetchedBlog[0].title + '<br>' 
