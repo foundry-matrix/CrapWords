@@ -1,10 +1,26 @@
 if authenticated
-	a(href="/") Home 
-	a(href="/profile") Profile 
-	a(href="/create") Create 
-	a(href="/logout") Log out
-else 
-	a(href="/login") Log in 
-	a(href="/signup") Sign up 
-	a(href="/twitter") Twitter
-	a(href="/facebook") Facebook
+	nav(class="navbar navbar-default")
+		div(class="container-fluid")
+			div(class="navbar-header")
+				button(type="button", class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1")
+					span(class="sr-only">Toggle navigation)
+					span(class="icon-bar")
+					span(class="icon-bar")
+					span(class="icon-bar")
+				a(class="navbar-brand", href="/") Home 
+				a(class="navbar-brand", href="/profile") Profile 
+				a(class="navbar-brand", href="/create") Create 
+				a(class="navbar-brand", href="/logout") Log out
+else
+	nav(class="navbar navbar-default")
+		div(class="container-fluid")
+			div(class="navbar-header")
+				button(type="button", class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1")
+					span(class="sr-only">Toggle navigation)
+					span(class="icon-bar")
+					span(class="icon-bar")
+					span(class="icon-bar")
+				a(class="navbar-brand", href="/login") Log in 
+				a(class="navbar-brand", href="/signup") Sign up 
+				a(class="navbar-brand", href="/twitter") Twitter
+				a(class="navbar-brand", href="/facebook") Facebook

@@ -1,3 +1,10 @@
 each blogpost in blogposts
-	h3 #{blogpost.title}
-	p #{blogpost.text}
+	div(class="indivpost")
+		a(href="/edit")
+			button(type="button" class="edit glyphicon glyphicon-pencil")
+		a(href="/delete")
+			button(type="button" class="delete glyphicon glyphicon-remove")
+		div(class="blogtext")
+			a(href=blogpost.category + "/" + blogpost.blog_id)
+				h2 #{blogpost.title}
+			p #{blogpost.text}
