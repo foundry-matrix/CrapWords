@@ -4,7 +4,7 @@
   "description": "a basic setup for hapi/lab/gulp",
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/lab/bin/lab -c -v"
+    "test": "./node_modules/lab/bin/lab -c -v -m 5"
   },
   "author": "",
   "license": "ISC",
@@ -21,10 +21,22 @@
     "hapi": "^8.4.0",
     "hapi-auth-cookie": "^2.0.0",
     "hoek": "^2.11.1",
+    "jade": "^1.9.2",
     "joi": "^6.0.8",
     "moment": "^2.9.0",
     "mongojs": "^0.18.2",
     "password-hash": "^1.2.2",
     "shortid": "^2.2.1"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foundry-matrix/hapi_blog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/foundry-matrix/hapi_blog/issues"
+  },
+  "homepage": "https://github.com/foundry-matrix/hapi_blog"
 }

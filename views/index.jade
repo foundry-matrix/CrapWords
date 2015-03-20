@@ -1,0 +1,19 @@
+html
+	head
+		title Blog
+		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css")
+	body
+		div(class="header col-md-12")
+			include ./navbar
+		if authenticated
+			h1 authenticated
+		else
+			h1 not authenticated
+		if login_page
+			include ./login
+		if signup_page
+			include ./signup
+		if profile_page 
+			include ./profile
+		if create_page
+			include ./create
