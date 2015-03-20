@@ -1,7 +1,11 @@
 var lab 	= exports.lab = require("lab").script();
 var assert 	= require("chai").assert;
 var server 	= require("../api/server.js");
+var handler = require('../handler.js');
 
+
+
+/*
 lab.experiment("This trivial test: ", function() {
 
 	lab.test("should hopefully pass", function(done) {
@@ -9,25 +13,142 @@ lab.experiment("This trivial test: ", function() {
 		done();
 	});
 });
+*/
 
 
-// lab.experiment("A basic server test: ", function() {
+// TEST 1
+lab.experiment("A basic server test: ", function() {
 
-// 	var options = {
-// 		url: "/",
-// 		method: "GET"
-// 	};
+ 	var options = {
+ 		url: "/",
+ 		method: "GET"
+ 	};
+ 	lab.test("The home page ", function(done) {
 
-// 	lab.test("The home page ", function(done) {
+ 		server.inject(options, function(response) {
+ 			//console.log(response);
+ 			assert.equal(response.statusCode, 200, "should return a 200 status code");
+ 			assert.equal(typeof response.result, "string", "should reply with a string");
+ 			done();
+ 		});
+ 	});
+ });
 
-// 		server.inject(options, function(response) {
 
-// 			assert.equal(response.statusCode, 200, "should return a 200 status code");
-// 			assert.equal(typeof response.result, "string", "should reply with a string");
-// 			done();
-// 		});
-// 	});
-// });
+// TEST 2
+lab.experiment("Login test:", function(){
+	
+	var options = {
+		url: "/login",
+		method: "POST",
+		payload:{
+			username: 'asim',
+			password: '123'
+		}
+	}
+
+	lab.test('When entered right password to /login,', function(done){
+		server.inject(options, function(response){
+ 			assert.equal(response.statusCode, 302, " it should return a 302 status code because its redirecting");
+ 			done();
+		});
+	});
+});
+
+
+// TEST 3
+lab.experiment("Login test:", function(){
+	
+	var options = {
+		url: "/login",
+		method: "POST",
+		payload:{
+			username: 'asim',
+			password: '123_wrong_pass'
+		}
+	}
+
+	lab.test('When entered wrong password to /login,', function(done){
+		server.inject(options, function(response){
+ 			assert.equal(response.statusCode, 200, " it should return a 200 status code, as its not redirecting.");
+ 			done();
+		});
+	});
+});
+
+
+// TEST 4
+lab.experiment("Login test:", function(){
+	
+	var options = {
+		url: "/login",
+		method: "POST",
+		payload:{
+			username: '',
+			password: ''
+		}
+	}
+
+	lab.test('When entered nothing to /login,', function(done){
+		server.inject(options, function(response){
+ 			assert.equal(response.statusCode, 200, " it should return a 200 status code, as its not redirecting.");
+ 			done();
+		});
+	});
+});
+
+
+// TEST 5
+lab.experiment("Signup test:", function(){
+	
+	var options = {
+		url: "/signup",
+		method: "POST",
+		payload:{
+			username: 'per',
+			password: '11232132342434'
+		}
+	}
+
+	lab.test('When entered a user which already exists,', function(done){
+		server.inject(options, function(response){
+ 			assert.equal(response.statusCode, 200, " it should return a 200 status code, as its not redirecting.");
+ 			done();
+		});
+	});
+});
+
+
+// TEST 6
+lab.experiment("Profile test:", function(){
+
+	var options = {
+		url: "/profile",
+		method: "GET",
+		credentials: {
+			_id: '550aee73837cafce1c08d9c8',
+		    username: 'per9',
+		    auth_method: 'local',
+		    auth_id: 'EJ4c6R7',
+		    password: '$2a$10$YnxmoKC7bMcVt6uECUbJt.DG4ow3zrjfi3i94APIHDkq4lOuven/u'}
+		}
+
+	lab.test('When entering the profile page as a logged in user,', function(done){
+		server.inject(options, function(response){
+			console.log('RESPONSE OBJECT: ', response);
+			console.log('YO response.raw: ', response.raw.res);
+ 			assert.equal(response.statusCode, 200, " it should return 200.");
+			done();
+		});
+	});
+
+});
+
+
+
+
+
+
 
 
 // lab.experiment("Checking the posts", function() {

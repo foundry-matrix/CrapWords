@@ -1,0 +1,10 @@
+if message
+	p #{message}
+form( action="/login",method="post")
+	label Username
+	input(type="text" name='username',rows="2",cols="10")
+	br
+	label Password
+	input(name="password",rows="10",cols="60")
+	br
+	input(type="submit",value="Log in")
