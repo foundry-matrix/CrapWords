@@ -1,5 +1,5 @@
-var db = require ('mongojs').connect('mongodb://gregaubs:gregaubs@ds041157.mongolab.com:41157/hapiblog',['blogcollection', 'usercollection']);
-
+//var db = require ('mongojs').connect('mongodb://gregaubs:gregaubs@ds041157.mongolab.com:41157/hapiblog',['blogcollection', 'usercollection']);
+var db = require ('mongojs').connect('mongodb://foundry:foundry@ds037581.mongolab.com:37581/hapiblog', ['blogcollection', 'usercollection']);
 
 function user (name,auth_method,auth_id,password){
 	this.username 	 = name;
