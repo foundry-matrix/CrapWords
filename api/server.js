@@ -154,16 +154,8 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
     server.route({					//CATEGORY
         method: 'GET',
         path: '/{category}',
-        handler: function (request, reply) {
-            model.viewBlogs(request.params.category, function(blogposts){
-                var list = "";
-                blogposts.forEach(function(blogpost){
-                    list = list + "<li><a href=" + request.params.category + "/" + blogpost.blog_id + ">" + blogpost.title + " - <i>" + blogpost.author + "</a></i></li>";
-                })
-                reply(list);
-            });
-        },
         config: {
+            handler: handler.viewcategoryblogs,
             validate: {
                 params: {
                     category: Joi.string().valid(categoryArray)
@@ -175,16 +167,8 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
     server.route({					//VIEWING A BLOGPOST
         method: 'GET',
         path: '/{category}/{id}',
-        handler: function (request, reply) {
-        	model.readBlog(function(fetchedBlog){
-        		reply('Blog Post here, category: ' + request.params.category +  
-            	', id: '+request.params.id + '<br>' 
-            	+ 'Title:' +fetchedBlog[0].title + '<br>' 
-            	+ 'Text:' + fetchedBlog[0].text + '<br><br>' + 'NOTE: 	At the moment the db fetches a hardcoded entry only. Later, it will fetch the right blogpost depending on the URL. See the Viewing a Blogpost function at line 256 of server.js for details'
-            	);
-        	});
-        },
         config: {
+            handler: handler.viewsingleblog,
             validate: {
                 params: {
                     id: Joi.number(),
