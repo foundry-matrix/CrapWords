@@ -16,6 +16,7 @@ server.connection({
 	port: process.env.PORT || 8000
 });
 /* $lab:coverage:on$ */
+
     
 server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
 
@@ -154,7 +155,13 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         method: 'GET',
         path: '/{category}',
         handler: function (request, reply) {
-            reply('Category section. The category is: ' + request.params.category);
+            model.viewBlogs(request.params.category, function(blogposts){
+                var list = "";
+                blogposts.forEach(function(blogpost){
+                    list = list + "<li><a href=" + request.params.category + "/" + blogpost.blog_id + ">" + blogpost.title + " - <i>" + blogpost.author + "</a></i></li>";
+                })
+                reply(list);
+            });
         },
         config: {
             validate: {
@@ -170,7 +177,6 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
         path: '/{category}/{id}',
         handler: function (request, reply) {
         	model.readBlog(function(fetchedBlog){
-        		console.log('server says ----', fetchedBlog);
         		reply('Blog Post here, category: ' + request.params.category +  
             	', id: '+request.params.id + '<br>' 
             	+ 'Title:' +fetchedBlog[0].title + '<br>' 
