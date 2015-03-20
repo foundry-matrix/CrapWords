@@ -237,6 +237,26 @@ var profile = function(request,reply){
     }
 }
 
+var viewsingleblog = function (request, reply) {
+    model.readBlog(request.params.id, function(fetchedBlog){
+        console.log(fetchedBlog);
+        reply('id: '+fetchedBlog[0].blog_id + '<br>' 
+        + 'Title:' +fetchedBlog[0].title + '<br>' 
+        + 'Text:' + fetchedBlog[0].text + '<br><br>'
+        );
+    });
+}
+
+var viewcategoryblogs = function (request, reply) {
+            model.viewBlogs(request.params.category, function(blogposts){
+                var list = "";
+                blogposts.forEach(function(blogpost){
+                    list = list + "<li><a href=" + request.params.category + "/" + blogpost.blog_id + ">" + blogpost.title + " - <i>" + blogpost.author + "</a></i></li>";
+                })
+                reply(list);
+            });
+        }
+
 
 var create = function(request, reply){
     
@@ -272,6 +292,8 @@ module.exports = {
 	home:home,
 	profile:profile,
 	facebook:facebook,
-	twitter:twitter
+	twitter:twitter,
+    viewsingleblog:viewsingleblog,
+    viewcategoryblogs:viewcategoryblogs
 }
 

@@ -62,19 +62,21 @@ function saveBlog(title, text, author, category, auth_id){
 
 }
 
-function readBlog(renderFunction){
-	db.blogcollection.find( { title: 'hardcoded' }, function(err, fetchedBlog){
-		if( err || !fetchedBlog) console.log("No such blog found");
-		else {
-			renderFunction(fetchedBlog); 
+function readBlog(blogid, reply){
+	db.blogcollection.find( { blog_id: blogid }, function(err, fetchedBlog){
+		if( err || !fetchedBlog) {
+			console.log("No such blog found");
+		} else {
+			reply(fetchedBlog); 
 		}
 	});
 }
 
 function viewBlogs(category, reply){
 	db.blogcollection.find( { category: category }, function(err, fetchedBlog){
-		if( err || !fetchedBlog) console.log("No such blog found");
-		else { 
+		if( err || !fetchedBlog){
+			console.log("No such blog found");
+		} else { 
 			reply(fetchedBlog); 
 		}
 	});
