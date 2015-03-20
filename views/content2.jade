@@ -11,7 +11,7 @@ nav.navbar.navbar-default.navbar-custom.navbar-fixed-top
         |                     
         span.icon-bar
       |                 
-      a.navbar-brand(href='/') Start Bootstrap
+      a.navbar-brand(href='/')
     // Collect the nav links, forms, and other content for toggling
     // /.navbar-collapse
   // /.container
@@ -22,11 +22,10 @@ header.intro-header(style="background-image: url('/images/home-bg.jpg')")
     .row
       .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
         .site-heading
-          h1 Clean Blog
+          h1 #{username}
           |                         
           hr.small
-          |                         
-          span.subheading A Clean Blog Theme by Start Bootstrap
+-
 
 .container
       .row  
@@ -34,7 +33,7 @@ header.intro-header(style="background-image: url('/images/home-bg.jpg')")
           if blogposts 
             each blogpost in blogposts
               .post-preview
-                a(href='post.html')
+                a(href=blogpost.category +  '/' + blogpost.blog_id)
                   h2.post-title
                     | #{blogpost.title}
                   |                         
@@ -43,7 +42,7 @@ header.intro-header(style="background-image: url('/images/home-bg.jpg')")
                 |                     
                 p.post-meta
                   | Posted by 
-                  a(href='#') Start Bootstrap
+                  a(href='#') #{username}
                   |  on September 24, 2014
             |                 
             hr

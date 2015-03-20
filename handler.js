@@ -1,7 +1,7 @@
 var model = require('./model.js');
 var bcrypt = require('bcrypt');
 var shortid = require('shortid');
-var categoryArray = ['tech','apps','marketing'];
+var categoryArray = ['tech','apps','marketing','food'];
 var jade = require('jade');
 
 
@@ -24,7 +24,7 @@ var twitter = function(request,reply){
     
     console.log('profile: ', profile);
     request.auth.session.set(profile);
-    return reply.redirect('/');             
+    reply.redirect('/');             
 }
 
 
@@ -42,7 +42,7 @@ var facebook = function (request, reply) {
     }
     console.log('raw ',t.profile.raw);
     request.auth.session.set(profile);
-    return reply.redirect('/');     
+    reply.redirect('/');     
 }
 
 
@@ -52,10 +52,10 @@ var logout = function(request,reply) {
     if (request.auth.isAuthenticated){
         console.log('is authenticated, so logging out!') 
         request.auth.session.clear();
-        return reply.redirect('/');
+        reply.redirect('/');
     } else {
         console.log('is not authenticated, so just redirecting!') 
-        return reply.redirect('/');
+        reply.redirect('/');
     }
 
 }
@@ -75,21 +75,25 @@ var login = function(request,reply){
         var account = null;
 
         if (request.method === 'post'){
-                    var password = request.payload.password;
-        var username = request.payload.username;
-            console.log('request.method is POST at LOGIN');
+            var password = request.payload.password;
+            var username = request.payload.username;
+            console.log('request.method is POST at LOGIN, username is:',username);
 
             if ( !username || !password){
                 message = 'Missing username or password';
                 reply(fn({login_page: true,
-                message: message}));
+                    message: message}));
 
             }
 
             else {
-
+                console.log('about to query db')
                 model.db.usercollection.findOne({username: username}, function(err,user){
-                    console.log('password: ', password);
+                    if (err){
+                        throw err;
+                        console.log(err);
+                    }
+                    console.log('querying db. password: ', password);
 
                         console.log('user: ', user);
                         account = user;
@@ -188,15 +192,18 @@ var home = function(request, reply){
             function(err,user){
                 if (user){
                     model.db.blogcollection.find({auth_id: user.auth_id}, function(err,blogposts){ 
+                        blogposts = blogposts.reverse()
                         reply(fn2({ home_page: true,
                                     authenticated:true,
-                                    blogposts:blogposts}));
+                                    blogposts:blogposts,
+                                    username: user.username}));
 
                     });
                 }
                 else {
                     var new_user = new model.user(t.username,t.auth_method,t.auth_id);
                     model.db.usercollection.save(new_user,function(err,user){
+
                         reply(fn2({home_page:true,
                                    authenticated:request.auth.authenticated}));
                     });
@@ -205,7 +212,8 @@ var home = function(request, reply){
         });
     }
     else {
-        reply(fn2({authenticated:request.auth.authenticated}));
+        reply(fn2({authenticated:false,
+            home_page: true}));
     }
 }
 
@@ -239,11 +247,17 @@ var profile = function(request,reply){
 
 var viewsingleblog = function (request, reply) {
     model.readBlog(request.params.id, function(fetchedBlog){
-        console.log(fetchedBlog);
+        console.log('fetchedBlog: ',fetchedBlog);
+    
+ 
+        reply(fn2({article:fetchedBlog,
+                    article_page:true}))
+       
         reply('id: '+fetchedBlog[0].blog_id + '<br>' 
         + 'Title:' +fetchedBlog[0].title + '<br>' 
         + 'Text:' + fetchedBlog[0].text + '<br><br>'
         );
+    
     });
 }
 
@@ -279,7 +293,7 @@ var create = function(request, reply){
         console.log('REQUEST.AUTH.CREDENTIALS AT POST :');
         console.log(request.auth.credentials);
         model.saveBlog(request.payload.title, request.payload.text, request.state.sid.username, request.payload.category, request.state.sid.auth_id);
-        reply.redirect('/profile');
+        reply.redirect('/');
     }
 }
 

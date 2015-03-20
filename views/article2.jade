@@ -1,0 +1,42 @@
+header
+  .intro-header(style="background-image: url('../images/post-bg.jpg')")
+    .container
+      .row
+        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+          .post-heading
+            h1 
+              | #{article[0].title}
+            |                         
+            h2.subheading
+            |                         
+            span.meta
+              | Posted by 
+              a(href='#') #{article[0].author}
+              |  on August 24, 2014
+// Post Content
+article
+  .container
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+        p
+          | #{article[0].text}                    
+        a(href='#')
+          img.img-responsive(src='../images/post-sample-image.jpg', alt='')
+        |                     
+        span.caption.text-muted
+          | To go places and do things that have never been done before &ndash; that&rsquo;s what living is all about.
+        |                     
+        p
+          | Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.
+        |                     
+        p
+          | As I stand out here in the wonders of the unknown at Hadley, I sort of realize there&rsquo;s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.
+        |                     
+        p
+          | Placeholder text by 
+          a(href='http://spaceipsum.com/') Space Ipsum
+          | . Photographs by 
+          a(href='https://www.flickr.com/photos/nasacommons/') NASA on The Commons
+          | .
+|     
+hr

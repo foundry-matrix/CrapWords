@@ -11,7 +11,7 @@ html( lang="en" )
 		div(class="header col-md-12")
 			include ./navbar
 		if authenticated
-			h1 authenticated
+			h1 #{username}
 		else
 			h1 not authenticated
 		if login_page

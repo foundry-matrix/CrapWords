@@ -11,9 +11,9 @@ head
     |     
     title Hapi Blog
     // Bootstrap Core CSS
-    link(href='/public/css/bootstrap.min.css', rel='stylesheet')
+    link(href='../public/css/bootstrap.min.css', rel='stylesheet')
     // Custom CSS
-    link(href='public/css/clean-blog.min.css', rel='stylesheet')
+    link(href='../public/css/clean-blog.min.css', rel='stylesheet')
     // Custom Fonts
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', rel='stylesheet', type='text/css')
     |     
@@ -40,7 +40,7 @@ head
             |                     
             span.icon-bar
           |                 
-          a.navbar-brand(href='index.html') Start Bootstrap
+          a.navbar-brand(href='/') Hapi Blog
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
@@ -56,12 +56,18 @@ head
             else                    
               li
                 a(href='/login') Log in
+              li
+                a(href='/twitter') Twitter
+              li
+                a(href='/facebook') Facebook
               |                     
               li
                 a(href='/signup') Sign up
     // Main Content
     if home_page
       include ./content2
+    if article_page
+      include ./article2
       // Footer
       footer
         .container
