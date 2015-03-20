@@ -1,0 +1,53 @@
+nav.navbar.navbar-default.navbar-custom.navbar-fixed-top
+  .container-fluid
+    // Brand and toggle get grouped for better mobile display
+    .navbar-header.page-scroll
+      button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+        span.sr-only Toggle navigation
+        |                     
+        span.icon-bar
+        |                     
+        span.icon-bar
+        |                     
+        span.icon-bar
+      |                 
+      a.navbar-brand(href='/') Start Bootstrap
+    // Collect the nav links, forms, and other content for toggling
+    // /.navbar-collapse
+  // /.container
+// Page Header
+// Set your background image for this header on the line below.
+header.intro-header(style="background-image: url('/images/home-bg.jpg')")
+  .container
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+        .site-heading
+          h1 Clean Blog
+          |                         
+          hr.small
+          |                         
+          span.subheading A Clean Blog Theme by Start Bootstrap
+
+.container
+      .row  
+        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+          if blogposts 
+            each blogpost in blogposts
+              .post-preview
+                a(href='post.html')
+                  h2.post-title
+                    | #{blogpost.title}
+                  |                         
+                  h3.post-subtitle
+                    | #{blogpost.text}
+                |                     
+                p.post-meta
+                  | Posted by 
+                  a(href='#') Start Bootstrap
+                  |  on September 24, 2014
+            |                 
+            hr
+            |  
+          
+      |     
+      hr

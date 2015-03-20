@@ -57,6 +57,26 @@ server.register([require('bell'), require('hapi-auth-cookie')] , function(err){
 
 //** AUTHENTICATION ROUTES **//
 
+// Static files
+    server.route({
+        method: 'GET',
+        path: '/public/{param*}',
+        handler: {
+            directory: {
+                path: 'public'
+            }
+        }
+    });
+
+
+    server.route({ 
+        method : 'GET',
+        path : '/images/{path*}',
+        handler: {
+            directory: { path: './images' }
+        }
+    });
+
     server.route({
         method: ['GET','POST'],
         path: '/login',

@@ -8,7 +8,7 @@ var jade = require('jade');
 var path = __dirname + '/views/index.jade';
 var fn = jade.compileFile(path);
 
-
+var fn2 = jade.compileFile(__dirname + '/views/index2.jade');
  
 var twitter = function(request,reply){
     console.log('request handler for "/twitter"');
@@ -187,19 +187,25 @@ var home = function(request, reply){
                     [ {auth_id:t.auth_id},{auth_method: t.auth_method} ] } }, 
             function(err,user){
                 if (user){
-                    reply(fn({authenticated:true}));
+                    model.db.blogcollection.find({auth_id: user.auth_id}, function(err,blogposts){ 
+                        reply(fn2({ home_page: true,
+                                    authenticated:true,
+                                    blogposts:blogposts}));
+
+                    });
                 }
                 else {
                     var new_user = new model.user(t.username,t.auth_method,t.auth_id);
                     model.db.usercollection.save(new_user,function(err,user){
-                        reply(fn({authenticated:request.auth.authenticated}));
+                        reply(fn2({home_page:true,
+                                   authenticated:request.auth.authenticated}));
                     });
                 }
 
         });
     }
     else {
-        reply(fn({authenticated:request.auth.authenticated}));
+        reply(fn2({authenticated:request.auth.authenticated}));
     }
 }
 
