@@ -6,6 +6,10 @@ var mandrill_client = new mandrill.Mandrill('HwSNMGOM1BPbwp5gr0QSuw');   //make 
 
 var home = function(request, reply){
     console.log('request handler for "/"');
+<<<<<<< HEAD
+    reply.file('views/index.html');
+}
+=======
 
 	pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
 		if (err) return console.log(err);
@@ -15,6 +19,7 @@ var home = function(request, reply){
     reply('Crapwords app');
 }
 
+>>>>>>> master
 
 
 var sendEmail = function(request, reply){

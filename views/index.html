@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<head>   
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href='https://fonts.googleapis.com/css?family=Khula:400,700' rel='stylesheet' type='text/css'>
+<link rel="icon" type="image/png"  href="http://iconhandbook.co.uk/favicon.ico">
+</head>
+<body>
+	<div class="container col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6 col-sm-10 col-sm-offset-1 col-xs-12">
+			<div class="modal fade" id="modal-content">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">How to fetch your iTunes keywords</h4>
+			      </div>
+			      
+
+				  <!-- MODAL -->
+			      <div class="modal-body">
+			        <p>1. Log in to <a href="https://itunesconnect.apple.com/">iTunes Connect</a></p>
+			        <img class="modal_img" src="public/img/itunes_connect_signin.png">
+			        <p>2. Click 'My Apps' and choose your selected app</p>
+			        <img class="modal_img" src="public/img/itunes_connect_my_apps.png">
+			        <p>3. Scroll down to the "Keywords" section</p>
+			        <img class="modal_img" src="public/img/keywords.png">
+			        <br/>
+			        <p>4. Copy all your keywords and paste them into our input field</p>
+			        <img class="modal_img" src="public/img/keywords_input_field.png">
+
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+
+		<h1 id="title">CrapWords</h1>
+		<p id="tagline">Identify your iOS app's crappy keywords in one minute</p>
+		<div id="icon_div"></div>
+		<h3 id="title_name"></h3>
+		<p id="title_id"></p>
+		<input id="auto_search" class="form-control" placeholder="Search for your app"> 
+		
+		<p id="why_bother"><a href="http://blog.discofingers.com/blog/2014/10/8/how-to-double-your-downloads-with-keywords-optimization">Why bother doing this?</a></p>
+		
+		<br>
+		
+
+		<div id="step1">
+			<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker1"><p class="help">Get instructions!</p></a>
+			<form action="/fetch" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
+			<input type="text" name="text" id="text" />
+			<input type="submit" value="Add!" />
+			<br/>
+		</form>
+		</div>
+		
+		<div id="step2"><h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
+		<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
+			<input type="text" name="text" id="text" />
+			<input type="submit" value="Add!" />
+			<br/>
+		</form>
+		<input type="submit" value="Get diagnosis!" id="diagnose">
+		</div>
+		
+		
+
+
+
+
+		<div id="argument_div" class="row">
+					<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+						<h3 class="argument_number">1.</h3>Enter your app's name and its keywords	
+					</div>
+					<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">		
+						<h3 class="argument_number">2.</h3>We'll tell you which ones that give you ZERO traffic
+					</div>
+					<div class="col-md-4 col-lg-4 col-sm-3 col-xs-3">		
+						<h3 class="argument_number">3.</h3>Swap them out to get more downloads
+					</div>
+		</div>
+
+
+			<form action="/" method="post" style="margin-top:50px;">
+				<input type="text" placeholder="Enter your email..."/>
+				<input type="submit"/>
+			</form>
+
+		<ul id="keyword_container"></ul>
+		
+		<table id="rank_list"></table>
+		<table id="final"></table>
+		<div id="svg_div" class="col-md-10 col-lg-12 col-sm-10 col-xs-10"></div>
+	  			<!-- LOADING WHEEL FOR WHEN THE REPORT IS GENERATED -->
+		<div class="spinner">
+			  <div class="spinner-container container1">
+			    <div class="circle1"></div>
+			    <div class="circle2"></div>
+			    <div class="circle3"></div>
+			    <div class="circle4"></div>
+			  </div>
+			  <div class="spinner-container container2">
+			    <div class="circle1"></div>
+			    <div class="circle2"></div>
+			    <div class="circle3"></div>
+			    <div class="circle4"></div>
+			  </div>
+			  <div class="spinner-container container3">
+			    <div class="circle1"></div>
+			    <div class="circle2"></div>
+			    <div class="circle3"></div>
+			    <div class="circle4"></div>
+			  </div>
+	  	</div>
+
+
+
+
+	</div>
+
+<link rel="stylesheet" href="public/css/jquery-ui.css" />
+<link href="public/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="public/css/style.css" />
+<script src="public/js/jquery.js" charset="utf-8"></script>
+<script src="public/js/jquery-ui.min.js"></script>
+<script src="public/js/bootstrap.min.js"></script>
+
+<script src="public/js/d3.min.js" charset="utf-8"></script>
+<script src="public/js/custom.js"></script>
+</body>  	
+</html>
