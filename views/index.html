@@ -35,14 +35,13 @@
 			  </div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->
 
-
 		<h1 id="title">CrapWords</h1>
 		<p id="tagline">Identify your iOS app's crappy keywords in one minute</p>
 		<div id="app_icon"></div>
 		<h3 id="app_title"></h3>
 		
 		<div id="step0">
-			<input id="auto_search" class="form-control" placeholder="Search for your app"> 
+			<input id="auto_search" class="form-control" placeholder="Enter app name or app ID (Angry Birds, 527979052) ..."> 
 			<p id="why_bother"><a href="http://blog.discofingers.com/blog/2014/10/8/how-to-double-your-downloads-with-keywords-optimization">Why bother doing this?</a></p>
 			<br>
 			<div id="argument_div" class="row">
@@ -62,7 +61,7 @@
 
 		<div id="step1">
 			<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker1"><p class="help">Get instructions!</p></a>
-			<form action="/fetch" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
+			<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
 			<input type="text" name="text" id="text" />
 			<input type="submit" value="Add!" />
 			<br/>
