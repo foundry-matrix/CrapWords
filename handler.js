@@ -9,7 +9,7 @@ var home = function(request, reply){
 
 	pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
 		if (err) return console.log(err);
-		console.log(res);
+		console.log("PDF Created");
 	});
 
     reply('Crapwords app');
