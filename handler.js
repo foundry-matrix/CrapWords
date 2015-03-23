@@ -8,15 +8,34 @@ var mandrillFunctions = require('./mandrill.js');
 var home = function(request, reply){
     console.log('request handler for "/"');
     reply.file('views/index.html');
+
 	pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
 		if (err) return console.log(err);
 		console.log("PDF Created");
 	});
 
-    reply('Crapwords app');
 }
 
+var diagnosis = function (request, reply) {
+    if (request.method === 'get') {
 
+
+        console.log('request handler for "/diagnosis"');
+        reply.file('views/index.html');
+
+        pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
+            if (err) return console.log(err);
+            console.log("PDF Created");
+        });
+            
+    } 
+
+    if (request.method === 'post') {
+        
+        var data = request.payload;
+        console.log('request.method is POST. data is: ', data);
+    }
+}
 
 var sendEmail = function(request, reply){
     mandrillFunctions.sendEmail();
@@ -26,5 +45,6 @@ var sendEmail = function(request, reply){
 
 module.exports = {
 	home: home,
+    diagnosis: diagnosis,
     sendEmail: sendEmail
 }
