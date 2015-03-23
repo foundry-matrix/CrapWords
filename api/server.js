@@ -40,12 +40,23 @@ server.connection({
         handler: handler.diagnosis,
     });
 
-//Email
-    server.route({          
-        method: 'GET',
-        path: '/email',
-        handler: handler.sendEmail,
-    });
+
+//Post form where user submits email address
+    server.route({                
+    method: 'POST',
+    path: '/',
+    config: { 
+        handler: handler.postEmail,
+        payload: {output: 'data', parse: true},
+        validate: {
+            payload: {
+                email: Joi.string().email()
+            }
+        } 
+    }
+});
+
+
    
 //** RUNNING THE SERVER **//
 

@@ -58,7 +58,7 @@
 		</div>
 		
 		<div id="step2"><h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
-		<form action="/diagnosis" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
+		<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
 			<input type="text" name="text" id="text" />
 			<input type="submit" value="Add!" />
 			<br/>
@@ -66,6 +66,11 @@
 		<input type="submit" value="Get diagnosis!" id="diagnose">
 		</div>
 		
+		
+
+
+
+
 		<div id="argument_div" class="row">
 					<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
 						<h3 class="argument_number">1.</h3>Enter your app's name and its keywords	
@@ -77,6 +82,12 @@
 						<h3 class="argument_number">3.</h3>Swap them out to get more downloads
 					</div>
 		</div>
+
+
+			<form action="/" method="post" style="margin-top:50px;">
+				<input type="text" name="email" placeholder="Enter your email..."/>
+				<input type="submit"/>
+			</form>
 
 		<ul id="keyword_container"></ul>
 		
@@ -105,17 +116,19 @@
 			  </div>
 	  	</div>
 
+
+
+
 	</div>
 
-	<link rel="stylesheet" href="public/css/jquery-ui.css" />
-	<link href="public/css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="public/css/style.css" />
-	<script src="public/js/jquery.js" charset="utf-8"></script>
-	<script src="public/js/jquery-ui.min.js"></script>
-	<script src="public/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="public/css/jquery-ui.css" />
+<link href="public/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="public/css/style.css" />
+<script src="public/js/jquery.js" charset="utf-8"></script>
+<script src="public/js/jquery-ui.min.js"></script>
+<script src="public/js/bootstrap.min.js"></script>
 
-	<script src="public/js/d3.min.js" charset="utf-8"></script>
-	<script src="public/js/custom.js"></script>
-
-	</body>  	
+<script src="public/js/d3.min.js" charset="utf-8"></script>
+<script src="public/js/custom.js"></script>
+</body>  	
 </html>

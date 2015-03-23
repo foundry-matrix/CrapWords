@@ -1,7 +1,7 @@
 var mandrill = require('mandrill-api/mandrill');
 var mandrill_client = new mandrill.Mandrill('HwSNMGOM1BPbwp5gr0QSuw');
 
-function sendEmail () {   
+function sendEmail (emailAddress) {   
     var message = {
         "html": "<p>Crapwords</p>",
         "text": "Example text content",
@@ -9,7 +9,7 @@ function sendEmail () {
         "from_email": "greg.aubert@yahoo.co.uk",
         "from_name": "Greg",
         "to": [{
-                "email": "gaj.aubert@gmail.com",
+                "email": emailAddress,
                 "name": "Greg",
                 "type": "to"
             }],
@@ -74,12 +74,10 @@ function sendEmail () {
     var ip_pool = "Main Pool";
     var send_at = ''
     mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool, "send_at": send_at}, function(result) {
-        console.log('Result is ---- ', result);
+        console.log('Email sent ----', result);
      
     }, function(e) {
-        // Mandrill returns the error as an object with name and message keys
         console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-        // A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
     });
 }
 

@@ -37,14 +37,15 @@ var diagnosis = function (request, reply) {
     }
 }
 
-var sendEmail = function(request, reply){
-    mandrillFunctions.sendEmail();
-    reply('emailing customer');
 
+var postEmail = function(request, reply){
+    model.save(request.payload.email);
+    mandrillFunctions.sendEmail(request.payload.email);
+    reply('email received and emailing customer their report');
 }
 
 module.exports = {
 	home: home,
     diagnosis: diagnosis,
-    sendEmail: sendEmail
+    postEmail: postEmail
 }
