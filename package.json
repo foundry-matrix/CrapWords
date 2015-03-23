@@ -23,6 +23,7 @@
     "hoek": "^2.11.1",
     "jade": "^1.9.2",
     "joi": "^6.0.8",
+    "mandrill-api": "^1.0.41",
     "moment": "^2.9.0",
     "mongojs": "^0.18.2",
     "password-hash": "^1.2.2",
