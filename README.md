@@ -7,7 +7,7 @@
 # Getting Started
 1. Clone this repo.
 2. Run npm install
-3. nodemon app.js
+3. run nodemon app.js in your terminal
 
 
 ## Tests:
