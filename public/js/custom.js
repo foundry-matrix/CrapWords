@@ -7,55 +7,37 @@ $(document).ready(function(){
  	
 	$("#auto_search").autocomplete({
 		source: function(request, response){
-
+			var searchUrl;			
+			
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
-				$.ajax({  
-		          url: 'https://itunes.apple.com/lookup?id=' + request.term + '&country=us&entity=software&limit=10',
-	              dataType: 'jsonp',
-	              success: function( data ) {
-	              	var i=0;	
-	              	console.log(this.url);
-	              	console.log("success");
-	          		results =[];
-	          		length = data.results.length;
-	          		console.log('length is: ', length)
-	          		for (i=0;i<length;i++){
-	          		console.log('looping')
-	          		results.push({"value": data.results[i].trackName, "id": data.results[i].trackId});
-		          		if ( i==( length-1) ){
-		            		console.log(' results: ',results);
-		          			response(results);
-		          		}
-	          		}
-		         
-		         	}
-				});
+				searchUrl = 'https://itunes.apple.com/lookup?id=' + request.term + '&country=us&entity=software&limit=10';
+			
 			// If user is searching for app by keywords
-			}else{
+			} else {
+				searchUrl ='https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=software&limit=10';
+			}
 				
-				$.ajax({  
-		          url: 'https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=software&limit=10',
-	              dataType: 'jsonp',
-	              success: function( data ) {
-	              	var i=0;	
-	              	console.log(this.url);
-	              	console.log("success");
-	          		results =[];
-	          		length = data.results.length;
-	          		console.log('length is: ', length)
-	          		for (i=0;i<length;i++){
+			$.ajax({  
+	          url: searchUrl,
+              dataType: 'jsonp',
+              success: function( data ) {
+              	var i=0;	
+              	console.log(this.url);
+              	console.log("success");
+          		results =[];
+          		length = data.results.length;
+          		console.log('length is: ', length)
+          		for (i=0;i<length;i++){
 	          		console.log('looping')
 	          		results.push({"value": data.results[i].trackName, "id": data.results[i].trackId});
-		          		if (i==( length-1) ){
-		            		console.log(i,' results: ',results);
-		          			response(results);
-		          		}
+	          		if ( i==( length-1) ){
+	            		console.log(' results: ',results);
+	          			response(results);
 	          		}
-		         
-		         	}
-				});
-			}
+          		}
+	          }
+			});
 		},
 
 		select: function( event, ui ) {
@@ -81,7 +63,6 @@ $(document).ready(function(){
 				$("#app_title").append(name);
 				step0.hide();
 				step1.show();
-				auto_search.hide();
 		}
 	});
 	}
