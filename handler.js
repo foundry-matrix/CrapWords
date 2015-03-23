@@ -1,16 +1,17 @@
 var model = require('./model.js');
-var bcrypt = require('bcrypt');
-var shortid = require('shortid');
-var jade = require('jade');
-var path = __dirname + '/views/index.jade';
-var fn = jade.compileFile(path);
+var html = '<html><head><style>h1{color: red}</style></head><body><h1>Hello World</h1><p>my paragraph</p></body></html>';
+var pdf = require('html-pdf');
 var mandrill = require('mandrill-api/mandrill');
 var mandrill_client = new mandrill.Mandrill('HwSNMGOM1BPbwp5gr0QSuw');   //make this secret 
 
-
-
 var home = function(request, reply){
     console.log('request handler for "/"');
+
+	pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
+		if (err) return console.log(err);
+		console.log(res);
+	});
+
     reply('Crapwords app');
 }
 
@@ -98,11 +99,9 @@ var sendEmail = function(request, reply){
     });
     reply('emailing customer');
 
-} 
-
+}
 
 module.exports = {
 	home: home,
     sendEmail: sendEmail
 }
-
