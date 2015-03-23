@@ -28,6 +28,12 @@ server.connection({
         handler: handler.home,
     });
 
+//Email
+    server.route({          
+        method: 'GET',
+        path: '/email',
+        handler: handler.sendEmail,
+    });
    
 //** RUNNING THE SERVER **//
 

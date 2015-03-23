@@ -21,6 +21,8 @@
     "html-pdf": "^1.1.0",
     "jade": "^1.9.2",
     "joi": "^6.0.8",
+    "mongojs": "^0.18.2",
+    "mandrill-api": "^1.0.41",
     "mongojs": "^0.18.2"
   },
   "directories": {
