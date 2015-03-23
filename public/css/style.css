@@ -1,0 +1,29 @@
+/* THIS IS STYLE.CSS */
+
+
+/* Hiding Step 1 description and form */
+#step1 {
+	display: none;
+}
+
+/* Hiding Step 2 description and form */
+#step2 {
+	display: none;
+}
+
+
+#title{
+	text-align: center;
+}
+
+#tagline{
+	text-align: center;
+}
+
+#why_bother{
+	text-align: center;
+}
+
+.argument_number{
+	text-align: center;
+}

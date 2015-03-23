@@ -10,10 +10,8 @@ var fn = jade.compileFile(path);
 
 var home = function(request, reply){
     console.log('request handler for "/"');
-    reply('Crapwords app');
+    reply.file('views/index.html');
 }
- 
-
 
 module.exports = {
 	home: home

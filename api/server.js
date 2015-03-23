@@ -15,8 +15,6 @@ server.connection({
 });
 /* $lab:coverage:on$ */
 
-    
-
 
 
 // Static files
