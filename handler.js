@@ -9,6 +9,11 @@ var home = function(request, reply){
     console.log('request handler for "/"');
     reply.file('views/index.html');
 
+	pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
+		if (err) return console.log(err);
+		console.log("PDF Created");
+	});
+}
 
 	// pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
 	// 	if (err) return console.log(err);

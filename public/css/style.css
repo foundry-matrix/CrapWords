@@ -27,3 +27,13 @@
 .argument_number{
 	text-align: center;
 }
+
+.rendered_keyword {
+	display: inline-block;
+	margin: 3px;
+	border: 1px solid rgb(148, 210, 142);
+	border-radius: 3px;
+	padding: 4px;
+	background-color: rgb(148, 210, 142);
+	color: white;
+}
