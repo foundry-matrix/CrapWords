@@ -1,7 +1,6 @@
 var Hapi = require('hapi');
 var Joi = require('joi');
 var server = new Hapi.Server();
-var model = require('../model.js');
 var handler = require('../handler.js');
 
 server.connection({
@@ -26,6 +25,19 @@ server.connection({
         method: 'GET',
         path: '/',
         handler: handler.home,
+    });
+
+//diagnosis
+    server.route({          
+        method: 'GET',
+        path: '/diagnosis',
+        handler: handler.diagnosis,
+    });
+//diagnosis
+    server.route({          
+        method: 'POST',
+        path: '/diagnosis',
+        handler: handler.diagnosis,
     });
 
 //Email

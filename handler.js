@@ -6,21 +6,29 @@ var mandrill_client = new mandrill.Mandrill('HwSNMGOM1BPbwp5gr0QSuw');   //make 
 
 var home = function(request, reply){
     console.log('request handler for "/"');
-<<<<<<< HEAD
     reply.file('views/index.html');
 }
-=======
 
-	pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
-		if (err) return console.log(err);
-		console.log("PDF Created");
-	});
+var diagnosis = function (request, reply) {
+    if (request.method === 'get') {
 
-    reply('Crapwords app');
+        console.log('request handler for "/diagnosis"');
+        reply.file('views/index.html');
+
+        pdf.create(html, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
+            if (err) return console.log(err);
+            console.log("PDF Created");
+        });
+            
+    } 
+
+    if (request.method === 'post') {
+        
+        var data = request.payload;
+        console.log('request.method is POST. data is: ', data);
+
+    }
 }
-
->>>>>>> master
-
 
 var sendEmail = function(request, reply){
     var message = {
@@ -108,5 +116,6 @@ var sendEmail = function(request, reply){
 
 module.exports = {
 	home: home,
+    diagnosis: diagnosis,
     sendEmail: sendEmail
 }
