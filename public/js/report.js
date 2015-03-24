@@ -1,11 +1,6 @@
 function fetch(){
-    $.getJSON('http://localhost:8000/fetchdata', function(err, data){
-      console.log("client test");
-      console.log(data);
-      if (err){
-        console.log(err);
-      } else {
-        console.log("client test 2");
+    $.getJSON('http://localhost:8000/fetchdata', function(data){
+      if (data){
         create(data);
       }
     });

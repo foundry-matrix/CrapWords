@@ -71,14 +71,11 @@ var fetchdata = function(request, reply){
     console.log('request handler for "/fetchdata"');
     if (request.headers['x-requested-with'] === "XMLHttpRequest"){
         model.fetchData("asim.javed@mfyp.co.uk",function(data){
-            var newdata = JSON.stringify(data[0].search)
-            console.log("fetch data call back");
-            reply(newdata);//.redirect("/report");    
+            reply(data[0].search.keywords);   
         });
     } else {
         reply("normal http request");
     }
-
 }
 
 var postEmail = function(request, reply){
