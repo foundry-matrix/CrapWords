@@ -27,19 +27,6 @@ server.route({
     handler: handler.home,
 });
 
-//diagnosis
-server.route({          
-    method: 'GET',
-    path: '/diagnosis',
-    handler: handler.diagnosis,
-});
-//diagnosis
-server.route({          
-    method: 'POST',
-    path: '/diagnosis',
-    handler: handler.diagnosis,
-});
-
 
 //Post form where user submits email address
 server.route({                
@@ -57,14 +44,19 @@ server.route({
 });
 
 // // Dynamic url depending on user's email - for their report
-// server.route({
-//     method: 'GET',
-//     path: dynamicUrl,
-//     handler: handler.dynamicReport,    
-// })
+server.route({
+    method: 'GET',
+    path: '/{mongoId}',
+    config: {
+        handler: handler.dynamicReport,
+        validate: {
+            params: {
+                mongoId : Joi.string().regex(/[0-9a-fA-F]{24}$/).length(24)
+            }
+        }
+    }
 
-
-
+});
 
     
 
