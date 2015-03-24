@@ -3,7 +3,8 @@ var fs = require("fs");
 var mandrillFunctions = require("./mandrill.js");
 var index = fs.readFileSync("views/index.html").toString();
 //var pdf = require('html-pdf');
-var pdf = require('phantomjs-pdf');
+//var pdf = require('phantomjs-pdf');
+var webshot = require('webshot');
 
 var home = function(request, reply){
     console.log('request handler for "/"');
@@ -17,21 +18,36 @@ var diagnosis = function (request, reply) {
 
 
         var options = {
-            "html" : index,
-            "css" : "public/css/style.css",
-            "js" : "public/js/custom.js",
-            "deleteOnAction" : true
+            screenSize : {  width: 1024,
+                            height: 768 },
+            renderDelay: 5000,
+            quality : 100
         }
 
-
-        pdf.convert(options, function(result) {
-            result.toFile("report2.pdf", function() {
-                console.log("pdf created");
-            });
+        webshot('http://mbostock.github.io/d3/talk/20111116/bar-hierarchy.html','report.pdf', options, function(err) {
+            console.log("pdf created");
         });
+
+
+
+
+
+        // var options = {
+        //     "html" : index,
+        //     "css" : "public/css/style.css",
+        //     "js" : "public/js/custom.js",
+        //     "deleteOnAction" : true
+        // }
+
+
+        // pdf.convert(options, function(result) {
+        //     result.toFile("report.pdf", function() {
+        //         console.log("pdf created");
+        //     });
+        // });
         
        
-        // pdf.create(index, { filename: './report.pdf', format: 'A4' }).toFile(function(err, res) {
+        // pdf.create(index, { filename: 'report.pdf', format: 'A4' }).toFile(function(err, res) {
         //     if (err) return console.log(err);
         //     console.log("PDF Created");
      
