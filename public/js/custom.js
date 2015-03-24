@@ -1,9 +1,11 @@
 $(document).ready(function(){
+	
 	var step0 = $("#step0");
 	var step1 = $("#step1");
 	var step2 = $("#step2");
  	var argument_div = $("#argument_div");
  	var auto_search = $("#auto_search");
+ 	var keyword_container = $("#keyword_container");
  	
 	$("#auto_search").autocomplete({
 		source: function(request, response){
@@ -24,15 +26,11 @@ $(document).ready(function(){
               success: function( data ) {
               	var i=0;	
               	console.log(this.url);
-              	console.log("success");
           		results =[];
           		length = data.results.length;
-          		console.log('length is: ', length)
           		for (i=0;i<length;i++){
-	          		console.log('looping')
 	          		results.push({"value": data.results[i].trackName, "id": data.results[i].trackId});
 	          		if ( i==( length-1) ){
-	            		console.log(' results: ',results);
 	          			response(results);
 	          		}
           		}
@@ -41,11 +39,8 @@ $(document).ready(function(){
 		},
 
 		select: function( event, ui ) {
-			 console.log('ui: ', ui);
-			 console.log('ui.item: ', ui.item);
 		     fetchAppByName(ui.item.id);
 		     console.log("select clicked, fetching app with ID: ",ui.item.id);
-
 		}
 
 	});
@@ -67,7 +62,37 @@ $(document).ready(function(){
 	});
 	}
 
+	$("#single_keyword_form").submit(function(e){
+	    e.preventDefault();
 
+		console.log("#keyword_form submitted");
+
+	    var str = $("#text").val();
+	     if ( !$("#text").val()) {
+	    	str = "fun,race,free,bored,online,games,racing,playing,multiplayer,racing game,free games,fun games,fun racing";
+	    }
+	    cleanUpKeywords(str);
+	});
+
+	function cleanUpKeywords(str){
+		var singleKeywords = [];
+	    var keywords = str.replace(/[^a-zA-Z, ]/g, "").split(/[, ]/g);
+
+	    for (var i=0, len=keywords.length; i < len; i++){
+	    	if (keywords[i].length>0) {
+	    		singleKeywords.push(keywords[i]);
+	    	}
+	    }
+	    renderSingleKeywords(singleKeywords);
+	}
+
+	function renderSingleKeywords(keywords){
+		var singleKeywordsHTML = [];
+		for (var i=0,len=keywords.length;i<len;i++){
+			singleKeywordsHTML.push('<li class="rendered_keyword">' + keywords[i] + '</li>');
+		}
+		keyword_container.append(singleKeywordsHTML);
+	}
 
 
 // End of jQuery
