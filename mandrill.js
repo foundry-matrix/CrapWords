@@ -1,16 +1,19 @@
 var mandrill = require('mandrill-api/mandrill');
 var mandrill_client = new mandrill.Mandrill('HwSNMGOM1BPbwp5gr0QSuw');
+var fs = require("fs");
+var report = fs.readFileSync("report.pdf");
+var base64str = Buffer(report).toString('base64');
 
 function sendEmail (emailAddress) {   
     var message = {
-        "html": "<p>Crapwords</p>",
-        "text": "Example text content",
-        "subject": "crapwords subject",
+        "html": "<h1>This is your App report from CrapWords</h1>",
+        "text": "This is your App report from CrapWords",
+        "subject": "App Report from CrapWords",
         "from_email": "greg.aubert@yahoo.co.uk",
-        "from_name": "Greg",
+        "from_name": "CrapWords",
         "to": [{
                 "email": emailAddress,
-                "name": "Greg",
+                "name": "CrapWords",
                 "type": "to"
             }],
         "headers": {
@@ -59,11 +62,11 @@ function sendEmail (emailAddress) {
                     "user_id": 123456
                 }
             }],
-        // "attachments": [{
-        //         "type": "text/plain",
-        //         "name": "myfile.txt",
-        //         "content": "ZXhhbXBsZSBmaWxl"
-        //     }],
+         "attachments": [{
+                 "type": "application/pdf",
+                 "name": "report.pdf",
+                 "content": base64str
+             }],
         // "images": [{
         //         "type": "image/png",
         //         "name": "IMAGECID",
