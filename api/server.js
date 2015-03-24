@@ -10,39 +10,39 @@ server.connection({
 
 
 // Static files
-    server.route({
-        method: 'GET',
-        path: '/public/{param*}',
-        handler: {
-            directory: {
-                path: 'public'
-            }
+server.route({
+    method: 'GET',
+    path: '/public/{param*}',
+    handler: {
+        directory: {
+            path: 'public'
         }
-    });
+    }
+});
 
 //Homepage
-    server.route({          
-        method: 'GET',
-        path: '/',
-        handler: handler.home,
-    });
+server.route({          
+    method: 'GET',
+    path: '/',
+    handler: handler.home,
+});
 
 //diagnosis
-    server.route({          
-        method: 'GET',
-        path: '/diagnosis',
-        handler: handler.diagnosis,
-    });
+server.route({          
+    method: 'GET',
+    path: '/diagnosis',
+    handler: handler.diagnosis,
+});
 //diagnosis
-    server.route({          
-        method: 'POST',
-        path: '/diagnosis',
-        handler: handler.diagnosis,
-    });
+server.route({          
+    method: 'POST',
+    path: '/diagnosis',
+    handler: handler.diagnosis,
+});
 
 
 //Post form where user submits email address
-    server.route({                
+server.route({                
     method: 'POST',
     path: '/',
     config: { 
@@ -55,6 +55,18 @@ server.connection({
         } 
     }
 });
+
+// // Dynamic url depending on user's email - for their report
+// server.route({
+//     method: 'GET',
+//     path: dynamicUrl,
+//     handler: handler.dynamicReport,    
+// })
+
+
+
+
+    
 
 
    

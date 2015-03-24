@@ -64,13 +64,27 @@ var diagnosis = function (request, reply) {
 
 
 var postEmail = function(request, reply){
-    model.save(request.payload.email);
+    model.save(request.payload.email, request);
     mandrillFunctions.sendEmail(request.payload.email);
+
+    // (function(emailAddress){
+    //     var dynamicUrl = "/" + emailAddress;
+    //     console.log("url is ----", dynamicUrl);
+    // })(request.payload.email);
+
     reply('email received and emailing customer their report');
 }
+
+
+// var dynamicReport = function(request, reply){
+//     reply('dynamic working');
+// }
+
+
 
 module.exports = {
 	home: home,
     diagnosis: diagnosis,
-    postEmail: postEmail
+    postEmail: postEmail,
+    // dynamicReport: dynamicReport
 }
