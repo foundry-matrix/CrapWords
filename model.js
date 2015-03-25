@@ -12,11 +12,25 @@ function save(object, request){
 	
 	var newUser = new user(object.email, object.report);
 
-	db.userdata.save(newUser, function(err, savedUser){
-		if(err || !savedUser){
-			console.log("ERROR not saved because of ", err);
+	db.userdata.find({email: object.email}, function(err){
+		if(err){
+			console.log("email not in database. Creating new document");
+			db.userdata.save(newUser, function(err, savedUser){
+				if(err || !savedUser){
+					console.log("ERROR not saved because of ", err);
+				}
+				fetchId(object.email, request);
+			});
+		} else {
+			console.log("email exists in database. Adding to document");
+			db.userdata.update({email: object.email},
+			    {
+			      $set: {
+			        search: object.report
+					}
+				}
+			);
 		}
-		fetchId(object.email, request);
 	});
 }
 
