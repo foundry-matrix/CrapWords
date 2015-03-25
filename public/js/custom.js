@@ -1,10 +1,12 @@
 	$(document).ready(function(){
-	console.log('jquery is ready!!!')
+	console.log('jquery is ready!!!');
 	var appName, isValid;
 	var allKeywords = [];
 	var step0 = $("#step0");
 	var step1 = $("#step1");
 	var step2 = $("#step2");
+	var step3 = $("#step3");
+
 	var diagnose_button = $("#diagnose_button");
  	var argument_div = $("#argument_div");
  	var auto_search = $("#auto_search");
@@ -224,14 +226,17 @@
 	diagnose_button.click(function(){
 		console.log('diagnose_button clicked');
 		getKeywordResults(allKeywords);
+		step2.hide();
+		step3.show();
+		diagnose_button.hide();
+
 	});
 
-	var promises;
 
 	function getKeywordResults(allKeywords){
 		console.log('diagnose_button clicked');
-		promises = allKeywords.map(function(keywordObject, index){
-			return runAjaxCall(keywordObject.keyword,index);
+		allKeywords.map(function(keywordObject, index){
+			runAjaxCall(keywordObject.keyword,index);
 		});
 
 	/*
@@ -250,10 +255,6 @@
 	});
 
 
-	$.when.apply($, promises).done(function(){
-		console.log('when apply triggered');
-
-	});	
 
 	function runAjaxCall(keywordObject, atIndex){
 		console.log('runAjaxCall triggered. keywordObject is:', keywordObject);
@@ -266,9 +267,6 @@
 				console.log('ajax success');
 				list = response.results;
 				for (var j=0,len=list.length;j<len;j++) {
-
-					
-
 					if (list[j].trackId === appId) {
 						allKeywords[atIndex]["rank"] = j;
 						ranked = true;
@@ -293,7 +291,8 @@
 					if (doubleKeywordObject.single_keyword === false){
 						if (doubleKeywordObject.keyword.indexOf(singleKeywordObject.keyword) > -1){
 							console.log(singleKeywordObject.keyword, ' is a part of ', doubleKeywordObject.keyword);
-							allKeywords[index]["combinations"] = doubleKeywordObject;
+							allKeywords[index]["combinations"] = [];
+							allKeywords[index].combinations.push(doubleKeywordObject);
 						}
 					}
 				});
@@ -303,6 +302,20 @@
 		}
 		});
 	}
+
+
+	$("#email_form").submit(function(e){
+		console.log('email_form submitted');
+		e.preventDefault();
+		$.ajax({
+			url: "/keywordreport",
+			method: "POST",
+			data: JSON.stringify(allKeywords),
+			success: function(){
+				console.log('ALLKEYWORDS SENT TO SERVER');
+			}
+		})
+	});
 
 			
 
