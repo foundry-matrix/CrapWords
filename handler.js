@@ -9,6 +9,13 @@ var home = function(request, reply){
 };
 
 
+/*var keywordreport = function(request,reply){
+    console.log('request handler for "/keywordreport"');
+    console.log('request.payload.report: ', request.payload.report);
+    console.log('request.payload.email: ', request.payload.email);
+    model.save(request.payload.email, request);
+}*/
+
 var fetchdata = function(request, reply){
     console.log('request handler for "/fetchdata"');
     var mongoId = request.params.mongoId;
@@ -22,7 +29,8 @@ var fetchdata = function(request, reply){
 };
 
 var postEmail = function(request, reply){
-    model.save(request.payload.email, request);
+    console.log('postEmail request handler triggered');
+    model.save(request.payload, request);
     reply('email received and emailing customer their report');
 };
 

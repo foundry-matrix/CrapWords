@@ -8,19 +8,15 @@ function user(email, search){
 }
 
 
-function save(email, request){
-	var search = {
-		app: "fun run",
-		keywords: [{keyword: "fun", rank:"5"},{keyword: "games", rank:"11"},{keyword: "racing", rank:"8"}],
-		date: Date.now()
-		};
-	var newUser = new user(email, search);
+function save(object, request){
+	
+	var newUser = new user(object.email, object.report);
 
 	db.userdata.save(newUser, function(err, savedUser){
 		if(err || !savedUser){
 			console.log("ERROR not saved because of ", err);
 		}
-		fetchId(email, request);
+		fetchId(object.email, request);
 	});
 }
 
@@ -29,6 +25,7 @@ function fetchData(id, reply){
 		if(err || !allData){
 			console.log("No data found");
 		} else {
+			console.log("successfully found document in db");
 			reply(allData); 
 		}
 	});

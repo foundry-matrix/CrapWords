@@ -36,6 +36,7 @@ server.route({
     });
 
 //Post form where user submits email address
+/*
 server.route({                
     method: 'POST',
     path: '/',
@@ -49,6 +50,21 @@ server.route({
         } 
     }
 });
+
+*/
+
+
+// Ajax post for keyword report
+
+server.route({                
+    method: 'POST',
+    path: '/postemail',
+    config: { 
+        handler: handler.postEmail,
+        payload: {output: 'data', parse: true}
+    }
+});
+
 
 // // Dynamic url depending on user's email - for their report
 server.route({
