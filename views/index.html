@@ -62,31 +62,31 @@
 		<div id="step1">
 			<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker1"><p class="help">Get instructions!</p></a>
 			<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
-			<input type="text" name="text" id="text" />
+			<input type="text" id="single_keywords_input" />
 			<input type="submit" value="Add!" />
 			<br/>
 		</form>
 		</div>
 		
 		<div id="step2"><h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
-		<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
-			<input type="text" name="text" id="text" />
-			<input type="submit" value="Add!" />
-			<br/>
-		</form>
-		<input type="submit" value="Get diagnosis!" id="diagnose">
+			<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
+				<input type="text" name="double_keywords_input" id="double_keywords_input" />
+				<input type="submit" value="Add!" />
+				<br/>
+			</form>
 		</div>
 		
 		
 
-
+<!-- GREGS EMAIL FORM
 			<form action="/" method="post" style="margin-top:50px;">
 				<input type="text" name="email" placeholder="Enter your email..."/>
 				<input type="submit"/>
 			</form>
-
+-->
 		<ul id="keyword_container"></ul>
-		
+		<input type="submit" value="Get diagnosis!" id="diagnose_button">
+
 		<table id="rank_list"></table>
 		<table id="final"></table>
 		<div id="svg_div" class="col-md-10 col-lg-12 col-sm-10 col-xs-10"></div>
