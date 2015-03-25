@@ -1,15 +1,28 @@
+// $("#emailsubmit").submit(function(){
+//   var email = document.getElementById("email").value;
+//   console.log(email);
+// });
+
 function fetch(){
-    $.getJSON('http://localhost:8000/fetchdata', function(data){
-      if (data){
-        create(data);
-      }
-    });
+  $.getJSON('http://localhost:8000/fetchdata', function(data){
+    if (data){
+      create(data);
+    }
+  });
 }
 
 fetch();
 
 function create(dataset){
   console.log(dataset);
+
+  var ranks = [];
+      
+  dataset.forEach(function(d){
+    ranks.push(d.rank);
+  });
+
+  console.log(ranks);
 
   var margin = {top: 40, right: 20, bottom: 30, left: 40},
       width = 960 - margin.left - margin.right,
@@ -78,3 +91,5 @@ function create(dataset){
   }
 
 }
+
+
