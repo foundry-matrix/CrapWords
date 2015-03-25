@@ -28,6 +28,14 @@ server.route({
 });
 
 
+
+//fetchdata
+    server.route({          
+        method: 'GET',
+        path: '/fetchdata',
+        handler: handler.fetchdata,
+    });
+
 //Post form where user submits email address
 server.route({                
     method: 'POST',

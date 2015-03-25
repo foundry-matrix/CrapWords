@@ -7,7 +7,7 @@ function takeScreenShot(url, request){
                         height: 768 },
         renderDelay: 5000,
         quality : 100
-    }
+    };
 
     console.log('screenshot.js says dynamic URL is ----', url);
     
@@ -22,4 +22,4 @@ function takeScreenShot(url, request){
 
 module.exports = {
 	takeScreenShot : takeScreenShot
-}
+};

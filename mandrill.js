@@ -75,7 +75,7 @@ function sendEmail (emailAddress) {
         };
     var async = false;
     var ip_pool = "Main Pool";
-    var send_at = ''
+    var send_at = '';
     mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool, "send_at": send_at}, function(result) {
         console.log('Email sent ----', result);
      
@@ -89,4 +89,4 @@ function sendEmail (emailAddress) {
 
 module.exports = {
     sendEmail: sendEmail
-}
+};
