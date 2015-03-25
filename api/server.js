@@ -51,6 +51,16 @@ server.route({
     }
 });
 
+// Ajax post for keyword report
+server.route({                
+    method: 'POST',
+    path: '/keywordreport',
+    config: { 
+        handler: handler.keywordreport,
+        payload: {output: 'data', parse: true}
+    }
+});
+
 // // Dynamic url depending on user's email - for their report
 server.route({
     method: 'GET',

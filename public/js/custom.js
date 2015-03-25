@@ -304,15 +304,18 @@
 	}
 
 
-	$("#email_form").submit(function(e){
-		console.log('email_form submitted');
-		e.preventDefault();
+	$("#email_input_button").click(function(){
+		var email_adress = $("#email_input_field").val();
+		console.log('send_ajax clicked');
 		$.ajax({
 			url: "/keywordreport",
 			method: "POST",
-			data: JSON.stringify(allKeywords),
-			success: function(){
-				console.log('ALLKEYWORDS SENT TO SERVER');
+			data: {
+				email: email_adress,
+				report: JSON.stringify(allKeywords)
+			},
+			success: function(response){
+				console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);	
 			}
 		})
 	});

@@ -8,6 +8,12 @@ var home = function(request, reply){
     reply.file('views/index.html');
 };
 
+var keywordreport = function(request,reply){
+    console.log('request handler for "/keywordreport"');
+    console.log('request.payload.report: ', request.payload.report);
+    console.log('request.payload.email: ', request.payload.email);
+    model.save(request.payload.email, request);
+}
 
 
 var fetchdata = function(request, reply){
@@ -22,6 +28,7 @@ var fetchdata = function(request, reply){
 };
 
 var postEmail = function(request, reply){
+    console.log('postEmail request handler triggered');
     model.save(request.payload.email, request);
     reply('email received and emailing customer their report');
 };
@@ -37,5 +44,6 @@ module.exports = {
 	home: home,
     postEmail: postEmail,
     dynamicReport: dynamicReport,
-    fetchdata: fetchdata
+    fetchdata: fetchdata,
+    keywordreport:keywordreport
 };
