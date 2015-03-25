@@ -1,10 +1,15 @@
 /* THIS IS STYLE.CSS */
 
 
+#step0_device {
+	display:none;
+}
+
 /* Hiding Step 1 description and form */
 #step1 {
 	display: none;
 }
+
 
 /* Hiding Step 2 description and form */
 #step2 {
