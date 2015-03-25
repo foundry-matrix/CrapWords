@@ -20,11 +20,11 @@ var diagnosis = function (request, reply) {
         var options = {
             screenSize : {  width: 1024,
                             height: 768 },
-            renderDelay: 5000,
+            renderDelay: 50,
             quality : 100
         }
 
-        webshot('http://mbostock.github.io/d3/talk/20111116/bar-hierarchy.html','report.pdf', options, function(err) {
+        webshot('google.co.uk','report.pdf', options, function(err) {
             console.log("pdf created");
         });
 
@@ -62,6 +62,21 @@ var diagnosis = function (request, reply) {
     }
 }
 
+var report = function(request, reply){
+    console.log('request handler for "/report"');
+    reply.file('views/report.html');
+}
+
+var fetchdata = function(request, reply){
+    console.log('request handler for "/fetchdata"');
+    if (request.headers['x-requested-with'] === "XMLHttpRequest"){
+        model.fetchData("asim.javed@mfyp.co.uk",function(data){
+            reply(data[0].search.keywords);   
+        });
+    } else {
+        reply("normal http request");
+    }
+}
 
 var postEmail = function(request, reply){
     model.save(request.payload.email);
@@ -72,5 +87,7 @@ var postEmail = function(request, reply){
 module.exports = {
 	home: home,
     diagnosis: diagnosis,
-    postEmail: postEmail
+    postEmail: postEmail,
+    report: report,
+    fetchdata: fetchdata
 }
