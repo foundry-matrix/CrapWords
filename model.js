@@ -16,7 +16,7 @@ function save(object, request){
 		if(err || !savedUser){
 			console.log("ERROR not saved because of ", err);
 		}
-		fetchId(email, request);
+		fetchId(object.email, request);
 	});
 }
 
@@ -25,6 +25,7 @@ function fetchData(id, reply){
 		if(err || !allData){
 			console.log("No data found");
 		} else {
+			console.log("successfully found document in db");
 			reply(allData); 
 		}
 	});

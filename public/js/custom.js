@@ -308,7 +308,7 @@
 		var email_adress = $("#email_input_field").val();
 		console.log('send_ajax clicked');
 		$.ajax({
-			url: "/keywordreport",
+			url: "/postemail",
 			method: "POST",
 			data: {
 				email: email_adress,
