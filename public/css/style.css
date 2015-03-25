@@ -11,6 +11,11 @@
 	display: none;
 }
 
+/* Hiding diagnose_button */
+#diagnose_button{
+	display:none;
+}
+
 
 #title{
 	text-align: center;
