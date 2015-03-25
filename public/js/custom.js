@@ -12,17 +12,23 @@
  	var auto_search = $("#auto_search");
  	var keyword_container = $("#keyword_container");
  	
+
+
+
+
+
 	$("#auto_search").autocomplete({
 		source: function(request, response){
-			var searchUrl;			
-			
+			var searchUrl;
+			var deviceUrl = $('input:radio[name=device]:checked').val();
+	
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
-				searchUrl = 'https://itunes.apple.com/lookup?id=' + request.term + '&country=us&entity=software&limit=10';
+				searchUrl = 'https://itunes.apple.com/lookup?id=' + request.term + '&country=us&entity=' + deviceUrl +'&limit=10';
 			
 			// If user is searching for app by keywords
 			} else {
-				searchUrl ='https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=software&limit=10';
+				searchUrl ='https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=' + deviceUrl + '&limit=10';
 			}
 				
 			$.ajax({  
@@ -54,7 +60,8 @@
 		 $.ajax({
             url: 'https://itunes.apple.com/lookup?id=' + id,
             dataType: 'jsonp',
-            success: function(response){				
+            success: function(response){
+            	console.log(response);				
 				name = response.results[0].trackName;
 				img_url = response.results[0].artworkUrl60	
 				$("#app_icon").append("<img id='icon_img' src=" + img_url +">");
@@ -136,6 +143,8 @@
 		keyword_container.append(singleKeywordsHTML);
 		console.log('allKeywords: ', allKeywords);
 	}
+
+
 
 
 	function renderStep2(){
