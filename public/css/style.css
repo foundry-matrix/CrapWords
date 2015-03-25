@@ -11,6 +11,10 @@
 	display: none;
 }
 
+#step3{
+	display:none;
+}
+
 /* Hiding diagnose_button */
 #diagnose_button{
 	display:none;
