@@ -3,10 +3,10 @@ var Joi = require('joi');
 var server = new Hapi.Server(+process.env.PORT, '0.0.0.0');
 var handler = require('../handler.js');
 
-server.connection({
-	host: "localhost",
-	port: process.env.PORT || 8000
-});
+// server.connection({
+// 	host: "localhost",
+// 	port: process.env.PORT || 8000
+// });
 
 
 // Static files
