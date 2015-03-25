@@ -4,7 +4,7 @@ $(document).ready(function(){
   fetch(id[3]);
 
   function fetch(id){
-    $.getJSON('http://localhost:8000/fetchdata/'+id, function(data){
+    $.getJSON('https://keywordking.herokuapp.com/'+id, function(data){
       if (data){
         create(data);
       }
@@ -87,7 +87,6 @@ $(document).ready(function(){
       d.rank = +d.rank;
       return d;
     }
-
   }
 
 
