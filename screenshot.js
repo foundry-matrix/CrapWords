@@ -5,7 +5,7 @@ function takeScreenShot(url, request){
     var options = {
         screenSize : {  width: 1024,
                         height: 768 },
-        renderDelay: 5000,
+        renderDelay: 10000,
         quality : 100
     };
 
