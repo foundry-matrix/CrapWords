@@ -1,4 +1,4 @@
-$(document).ready(function(){
+	$(document).ready(function(){
 	console.log('jquery is ready!!!')
 	var appName, isValid;
 	var allKeywords = [];
@@ -101,14 +101,18 @@ $(document).ready(function(){
 				allKeywords.push({
 						"keyword"         : keyword, 
 						"title_keyword"   : fromTitle, 
-						"single_keyword"  : singleKeyword });
+						"single_keyword"  : singleKeyword,
+						"combinations"    : []
+					});
 				});
 		} else {
 				console.log('it a string');
 				allKeywords.push({
 						"keyword"         : keywords, 
 						"title_keyword"   : fromTitle, 
-						"single_keyword"  : singleKeyword });
+						"single_keyword"  : singleKeyword,
+						"combinations"    : [] 
+					});
 		}
 		renderKeywords(allKeywords);
 	}
@@ -222,13 +226,34 @@ $(document).ready(function(){
 		getKeywordResults(allKeywords);
 	});
 
+	var promises;
 
 	function getKeywordResults(allKeywords){
 		console.log('diagnose_button clicked');
+		promises = allKeywords.map(function(keywordObject, index){
+			return runAjaxCall(keywordObject.keyword,index);
+		});
+
+	/*
 		for (var i=0,len = allKeywords.length;i<len;i++) {
 			runAjaxCall(allKeywords[i],i);
 		}
+	*/
+
 	}
+
+	$(document).ajaxStop(function() {
+		console.log('ajax stop triggered');
+		checkImportantCombos(allKeywords);
+
+	  // place code to be executed on completion of last outstanding ajax call here
+	});
+
+
+	$.when.apply($, promises).done(function(){
+		console.log('when apply triggered');
+
+	});	
 
 	function runAjaxCall(keywordObject, atIndex){
 		console.log('runAjaxCall triggered. keywordObject is:', keywordObject);
@@ -242,8 +267,7 @@ $(document).ready(function(){
 				list = response.results;
 				for (var j=0,len=list.length;j<len;j++) {
 
-					// HUGELY INEFFICIENT
-					checkImportantCombos(allKeywords);
+					
 
 					if (list[j].trackId === appId) {
 						allKeywords[atIndex]["rank"] = j;
@@ -263,16 +287,20 @@ $(document).ready(function(){
 	}
 
 	function checkImportantCombos(allKeywords){
-		allKeywords.forEach(function (singleKeywordObject){
+		allKeywords.forEach(function (singleKeywordObject,index){
 			if (singleKeywordObject.single_keyword === true){
 				allKeywords.forEach(function (doubleKeywordObject){
 					if (doubleKeywordObject.single_keyword === false){
 						if (doubleKeywordObject.keyword.indexOf(singleKeywordObject.keyword) > -1){
 							console.log(singleKeywordObject.keyword, ' is a part of ', doubleKeywordObject.keyword);
+							allKeywords[index]["combinations"] = doubleKeywordObject;
 						}
 					}
 				});
 			}
+		if (index === (allKeywords.length -1)){
+			console.log(allKeywords);
+		}
 		});
 	}
 
