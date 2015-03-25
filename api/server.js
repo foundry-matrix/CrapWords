@@ -1,11 +1,12 @@
 var Hapi = require('hapi');
 var Joi = require('joi');
-var server = new Hapi.Server(+process.env.PORT, '0.0.0.0');
+// var server = new Hapi.Server(~~process.env.PORT || 3000, '0.0.0.0');
+var server = new Hapi.Server();
 var handler = require('../handler.js');
 
 server.connection({
-	host: '0.0.0.0',
-	port: process.env.PORT || 8000
+    port: ~~process.env.PORT || 8000,
+	host: '0.0.0.0'
 });
 
 
@@ -87,8 +88,8 @@ server.route({
    
 //** RUNNING THE SERVER **//
 
-server.start(function () {
-    console.log('Server running at:', server.info.uri);
-});
+// server.start(function () {
+//     console.log('Server running at:', server.info.uri);
+// });
 
 module.exports = server;
