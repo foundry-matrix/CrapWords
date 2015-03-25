@@ -1,5 +1,6 @@
 var db = require ('mongojs').connect('mongodb://crapwords:crapwords@ds039281.mongolab.com:39281/crapwords', ['userdata']);
 var screenshot = require('./screenshot'); 
+var oid = require("mongodb").ObjectID;
 
 function user(email, search){
 	this.email = email;
@@ -24,10 +25,10 @@ function save(email, request){
 }
 
 function fetchData(id, reply){
-	db.userdata.find({email: id}, function(err, allData){
+	db.userdata.find({_id: oid(id)}, function(err, allData){
 		if(err || !allData){
 			console.log("No data found");
-		} else { 
+		} else {
 			reply(allData); 
 		}
 	});
@@ -46,7 +47,6 @@ function fetchId(emailAddress, request){
 		}
 	});
 
-	
 }
 
 

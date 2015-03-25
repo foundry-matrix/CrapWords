@@ -11,7 +11,6 @@ function takeScreenShot(url, request){
 
     console.log('screenshot.js says dynamic URL is ----', url);
     
-
     webshot('http://localhost:8000' + url,'report.pdf', options, function(err) {
         console.log("pdf created");
     	mandrillFunctions.sendEmail(request.payload.email);
