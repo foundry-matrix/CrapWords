@@ -27,7 +27,7 @@ $(document).ready(function(){
         height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .1)
+        .rangeRoundBands([0, width], 0.1)
         .domain(dataset.map(function(d) { return d.keyword; }));
 
     var y = d3.scale.linear()
@@ -47,7 +47,7 @@ $(document).ready(function(){
       .offset([-10, 0])
       .html(function(d) {
         return "<strong>Rank:</strong> <span style='color:red'>" + d.rank + "</span>";
-      })
+      });
 
     var svg = d3.select("body").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -81,7 +81,7 @@ $(document).ready(function(){
         .attr("y", function(d) { return y(d.rank); })
         .attr("height", function(d) { return height - y(d.rank); })
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide)
+        .on('mouseout', tip.hide);
 
     function type(d) {
       d.rank = +d.rank;
