@@ -1,6 +1,6 @@
 var Hapi = require('hapi');
 var Joi = require('joi');
-var server = new Hapi.Server();
+var server = new Hapi.Server(+process.env.PORT, '0.0.0.0');
 var handler = require('../handler.js');
 
 server.connection({
