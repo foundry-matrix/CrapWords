@@ -15,12 +15,12 @@ var keywordreport = function(request,reply){
     model.save(request.payload.email, request);
 }
 
-
 var fetchdata = function(request, reply){
     console.log('request handler for "/fetchdata"');
+    var mongoId = request.params.mongoId;
     if (request.headers['x-requested-with'] === "XMLHttpRequest"){
-        model.fetchData("asim.javed@mfyp.co.uk",function(data){
-            reply(data[0].search.keywords);   
+        model.fetchData(mongoId,function(data){
+            reply(data[0].search.keywords);
         });
     } else {
         reply("normal http request");
@@ -35,7 +35,7 @@ var postEmail = function(request, reply){
 
 
 var dynamicReport = function(request, reply){
-    reply('dynamic working');   
+    reply.file('views/report.html'); 
 };
 
 

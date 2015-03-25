@@ -28,11 +28,10 @@ server.route({
 });
 
 
-
 //fetchdata
     server.route({          
         method: 'GET',
-        path: '/fetchdata',
+        path: '/fetchdata/{mongoId}',
         handler: handler.fetchdata,
     });
 
