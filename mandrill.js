@@ -1,10 +1,10 @@
 var mandrill = require('mandrill-api/mandrill');
 var mandrill_client = new mandrill.Mandrill('HwSNMGOM1BPbwp5gr0QSuw');
 var fs = require("fs");
-var report = fs.readFileSync("report.pdf");
-var base64str = Buffer(report).toString('base64');
 
-function sendEmail (emailAddress) {   
+function sendEmail (emailAddress) {  
+    var report = fs.readFileSync("report.pdf");
+    var base64str = Buffer(report).toString('base64'); 
     var message = {
         "html": "<h1>This is your App report from CrapWords</h1>",
         "text": "This is your App report from CrapWords",
