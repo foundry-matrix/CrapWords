@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	console.log('jquery is ready!!!')
 	var appName, isValid;
 	var allKeywords = [];
 	var step0 = $("#step0");
@@ -46,6 +47,7 @@ $(document).ready(function(){
 		}
 	});
 
+	// go to itunes and fetch info about the chosen app and appen it to the site
 	function fetchAppById(id){ 
 		 $.ajax({
             url: 'https://itunes.apple.com/lookup?id=' + id,
@@ -56,6 +58,7 @@ $(document).ready(function(){
 				$("#app_icon").append("<img id='icon_img' src=" + img_url +">");
 				$("#app_title").append(name);
 				appName = name;
+				appId = response.results[0].trackId;
 				step0.hide();
 				step1.show();
 		}
@@ -64,10 +67,11 @@ $(document).ready(function(){
 
 	$("#single_keyword_form").submit(function(e){
 	    e.preventDefault();
-		console.log("#keyword_form submitted");
+		console.log("#single_keyword_form submitted");
 	    var str = $("#single_keywords_input").val();
+	    console.log('single_keywords_input ', str);
 	    if ( !$("#single_keywords_input").val()) {
-	    	str = "fun,race,free,bored,online,games,racing,playing,multiplayer,racing game,free games,fun games,fun racing";
+	    	str = "free,bored,online,games,racing,playing,game";
 	    }
 	    cleanUpSingleKeywords(str, false);
 	    fetchKeywordsFromTitle();
@@ -77,6 +81,7 @@ $(document).ready(function(){
 
 	// Cleaning up the string of keywords (separating by commas and spaces plu removing non alphabetic characters and lowercasing all characters)
 	function cleanUpSingleKeywords(str, fromTitle){
+		console.log('cleanUpSingleKeywords triggered');
 		var cleanSingleKeywords = [];
 	    var keywords = str.replace(/[^a-zA-Z, ]/g, "").split(/[, ]/g);
 	    for (var i=0, len=keywords.length; i < len; i++){
@@ -84,14 +89,13 @@ $(document).ready(function(){
 	    		cleanSingleKeywords.push(keywords[i].toLowerCase());
 	    	}
 	    }
-	    renderSingleKeywords(cleanSingleKeywords);
 	    addToAllKeywords(cleanSingleKeywords, fromTitle, true);
 	}
 
 	// Add the single keywords to the allKeywords array
 	function addToAllKeywords(keywords, fromTitle, singleKeyword){
-		console.log('addToAllKeywords triggered');
-		if (typeof(keywords) == Array){
+		console.log('addToAllKeywords triggered. keywords is: ', keywords);
+		if (keywords instanceof Array ){
 			console.log('it an array');
 			keywords.forEach(function (keyword){
 				allKeywords.push({
@@ -99,10 +103,10 @@ $(document).ready(function(){
 						"title_keyword"   : fromTitle, 
 						"single_keyword"  : singleKeyword });
 				});
-		} else if (typeof(keywords) == String){
+		} else {
 				console.log('it a string');
 				allKeywords.push({
-						"keyword"         : keyword, 
+						"keyword"         : keywords, 
 						"title_keyword"   : fromTitle, 
 						"single_keyword"  : singleKeyword });
 		}
@@ -111,13 +115,14 @@ $(document).ready(function(){
 
 	// fetch keywords form app title
 	function fetchKeywordsFromTitle(){
+		console.log('fetchKeywordsFromTitle triggered');
 		cleanUpSingleKeywords(appName,true);
 	}
 
 	// render keywords
 	function renderKeywords(keywords){
 		console.log('renderKeywords triggered');
-		keyword_container.innerHTML = "";
+		keyword_container.html("");
 		var singleKeywordsHTML = [];
 		for (var i=0,len=keywords.length;i<len;i++){
 			singleKeywordsHTML.push('<li class="rendered_keyword">' + keywords[i].keyword + '</li>');
@@ -125,6 +130,7 @@ $(document).ready(function(){
 		keyword_container.append(singleKeywordsHTML);
 		console.log('allKeywords: ', allKeywords);
 	}
+
 
 	function renderStep2(){
 		step1.hide();
@@ -135,7 +141,10 @@ $(document).ready(function(){
 	$("#double_keyword_form").submit(function(e){
 		e.preventDefault();
 		var double_keywords_input = $("#double_keywords_input").val();
-		console.log('double_keywords_input: ', double_keywords_input);
+		if ( !$("#double_keywords_input").val()) {
+	    	double_keywords_input = "free bored,online games,racing game,fun run";
+	    }
+		console.log('double_keyword_form triggered: ', double_keywords_input);
 		var double_keywords = double_keywords_input.split(',');
 		for (var i=0,len=double_keywords.length; i<len; i++){
 			double_keywords[i].toLowerCase();
@@ -146,6 +155,7 @@ $(document).ready(function(){
 				isValidDoubleKeyword(double_keyword);
 			} else {
 				console.log(double_keyword,' is not a double keyword');
+				// add message to user: this keyword isnt a double keyword combination
 			}
 		});
 	});
@@ -157,6 +167,7 @@ $(document).ready(function(){
 			return true;
 		} else {
 			return false;
+
 		}
 	}
 
@@ -164,26 +175,108 @@ $(document).ready(function(){
 	//checking if the double keyword actually is a combination of your single keywords
 	function isValidDoubleKeyword(double_keyword){
 		console.log('double_keyword is :', double_keyword);
-		var arr = keyword.split(" ");
-		arr.forEach(function(single_keyword,index,array){
+		var arr = double_keyword.split(" ");
+		
+		for (var i =0,len=arr.length; i<len;i++){ 
 			isValid = false;
-			allKeywords.forEach(function(keywordObject){
-				if (keywordObject.keyword === single_keyword){
-					console.log('Match: ', keywordObject.keyword, '=', single_keyword);
-					isValid = true;	
+			for (var j=0,length=allKeywords.length; j<length;j++){
+				if (allKeywords[j].keyword === arr[i]){
+					console.log('Match: ', arr[i], '=', arr[i]);
+					isValid = true;
+					break;
 				}
-			});
-			if (index == (arr.length-1) ){
-				if (isValid) {
-					console.log(array.join(" "), 'does match properly, so its valid');
-					addToAllKeywords(double_keyword,false,false);
-				} else {
-					console.log(array.join(" "), ' does not match properly, so it is not valid');
+			}
+			if (!isValid){
+				console.log('the keyword doesnt match: ', arr[i]);
+				break;
+			}
+		}
+		if (isValid){
+			isUniqueDoubleKeyword(double_keyword);
+		} else {
+			// add a message to user "This keyword combo isnt valid!"
+		}
+	}
+
+	// check if the double keyword exists already of if its unique
+	function isUniqueDoubleKeyword(double_keyword){
+		var isUnique = true;
+		for (var i=0,length=allKeywords.length; i<length;i++){
+				if (allKeywords[i].single_keyword == false) {
+					if (allKeywords[i].keyword === double_keyword) {
+						console.log('This double keyword already exists: ', allKeywords[i].keyword, '=', double_keyword);
+						isUnique = false;
+						break;
+					}
+				}
+			}
+		if (isUnique){
+			addToAllKeywords(double_keyword,false,false);
+		}	else {
+			// add message to user: "You have already added this keyword combination"
+		}
+	}
+
+	diagnose_button.click(function(){
+		console.log('diagnose_button clicked');
+		getKeywordResults(allKeywords);
+	});
+
+
+	function getKeywordResults(allKeywords){
+		console.log('diagnose_button clicked');
+		for (var i=0,len = allKeywords.length;i<len;i++) {
+			runAjaxCall(allKeywords[i],i);
+		}
+	}
+
+	function runAjaxCall(keywordObject, atIndex){
+		console.log('runAjaxCall triggered. keywordObject is:', keywordObject);
+		$.ajax({ 
+			url: 'https://itunes.apple.com/search?term=' + keywordObject.keyword + '&country=us&entity=software',
+			dataType: 'jsonp',
+			async: false,
+			success: function (response){
+				var ranked = false;
+				console.log('ajax success');
+				list = response.results;
+				for (var j=0,len=list.length;j<len;j++) {
+
+					// HUGELY INEFFICIENT
+					checkImportantCombos(allKeywords);
+
+					if (list[j].trackId === appId) {
+						allKeywords[atIndex]["rank"] = j;
+						ranked = true;
+						console.log("FOUND MATCH!, j=",j);
+						break;
+					}
+					// if looped through all results without a match
+					if (j === (len-1)){
+						if (ranked === false){
+							allKeywords[atIndex]["rank"] = 50;
+						}
+					}
 				}
 			}
 		});
-		
 	}
+
+	function checkImportantCombos(allKeywords){
+		allKeywords.forEach(function (singleKeywordObject){
+			if (singleKeywordObject.single_keyword === true){
+				allKeywords.forEach(function (doubleKeywordObject){
+					if (doubleKeywordObject.single_keyword === false){
+						if (doubleKeywordObject.keyword.indexOf(singleKeywordObject.keyword) > -1){
+							console.log(singleKeywordObject.keyword, ' is a part of ', doubleKeywordObject.keyword);
+						}
+					}
+				});
+			}
+		});
+	}
+
+			
 
 
 
