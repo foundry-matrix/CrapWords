@@ -341,13 +341,14 @@
 
 
 	$("#email_input_button").click(function(){
-		var email_adress = $("#email_input_field").val();
+		var email_address = $("#email_input_field").val();
 		console.log('send_ajax clicked');
 		$.ajax({
 			url: "/postemail",
 			method: "POST",
 			data: {
-				email: email_adress,
+				appName: appName, 
+				email: email_address,
 				report: JSON.stringify(allKeywords)
 			},
 			success: function(response){
@@ -357,6 +358,7 @@
 	});
 
 	function renderResult(allKeywords){
+		$("#email_div").show();
 		console.log('renderResult called');
 		var HTML = [];
 		allKeywords.forEach(function(keywordObject){
@@ -367,7 +369,8 @@
 
 	}
 
-			
+
+	
 
 
 
