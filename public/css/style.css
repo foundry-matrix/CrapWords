@@ -109,6 +109,17 @@ body {
 	display:none;
 }
 
+#step4{
+	display:none;
+}
+
+
+#step5{
+	display:none;
+}
+
+
+
 /* Hiding diagnose_button */
 #diagnose_button{
 	display:none;

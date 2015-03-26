@@ -6,6 +6,9 @@
 	var step1 = $("#step1");
 	var step2 = $("#step2");
 	var step3 = $("#step3");
+	var step4 = $("#step4");
+	var step5 = $("#step5");
+
 	var HTML = [];
 	var joinedHTML = "";
 	var diagnose_button = $("#diagnose_button");
@@ -18,8 +21,9 @@
 		source: function(request, response){
 			//var searchUrl = 'https://itunes.apple.com/search?term=yelp&country=us&entity=software';
 			var searchUrl;
+			
 			var device = $('input:radio[name=device]:checked').val();
-	
+			device = 'iPadSoftware';	
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
 
@@ -70,15 +74,29 @@
 				appName = name;
 				appId = response.results[0].trackId;
 			
-				renderStep1()
+				renderStep3()
 		}
 	});
 	}
 
-	function renderStep1(){
+	$("#step0_button").click(function(){
 		step0.hide();
 		step1.show();
+		$("#help_text").hide();
+	});
+
+
+
+	function renderStep3(){
+		step2.hide();
+		step3.show();
 	}
+
+	$(".step1_button").click(function(){
+	
+		step1.hide();
+		step2.show();
+	});
 
 	$("#single_keyword_form").submit(function(e){
 	    e.preventDefault();
@@ -91,7 +109,7 @@
 	    cleanUpSingleKeywords(str, false);
 	    fetchKeywordsFromTitle();
 	   	
-	   	renderStep2();
+	   	renderStep4();
 	
 	});
 
@@ -156,9 +174,9 @@
 	}
 
 
-	function renderStep2(){
-		step1.hide();
-		step2.show();
+	function renderStep4(){
+		step3.hide();
+		step4.show();
 		diagnose_button.show();
 	}
 
