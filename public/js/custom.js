@@ -279,8 +279,9 @@
 	function runAjaxCall(keyword, atIndex, device, length){
 		console.log('runAjaxCall triggered. keywordObject is:', keyword);
 		console.log('device is:', device);
-		
-		var ajaxUrl ='http://local.host:8000/search/' + device + '/' + keyword;
+		var url = $(location).attr('href');
+  		var urlsplit = url.split('/');
+		var ajaxUrl ='http://'+urlsplit[2]+'/search/' + device + '/' + keyword;
 		
 		console.log('ajaxUrl: ', ajaxUrl);
 		$.ajax({ 
@@ -366,8 +367,11 @@
 		console.log('HTML: ',HTML);
 		var email_address = $("#email_input_field").val();
 		console.log('send_ajax clicked');
+		var url = $(location).attr('href');
+  		var urlsplit = url.split('/');
+		var ajaxUrl ='http://'+urlsplit[2]+'/postemail';
 		$.ajax({
-			url: "/postemail",
+			url: ajaxUrl,
 			method: "POST",
 			data: {
 				appName: appName, 
