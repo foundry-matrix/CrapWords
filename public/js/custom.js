@@ -1,3 +1,4 @@
+window.oncontextmenu = null;
 	$(document).ready(function(){
 	console.log('jquery is ready!!!');
 	var appName, isValid, device;
@@ -12,6 +13,7 @@
 	var HTML = [];
 	var joinedHTML = "";
 	var diagnose_button = $("#diagnose_button");
+	diagnose_button.hide();
  	var argument_div = $("#argument_div");
  	var auto_search = $("#auto_search");
  	var keyword_container = $("#keyword_container");

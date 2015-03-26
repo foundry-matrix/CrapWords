@@ -49,9 +49,22 @@ body {
 	padding-top:14px;
 }
 
-.step5{
+.step{
 	margin: 0 auto;
 	text-align: center;
+}
+
+
+.app_info{
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+/* Positioning the table of keywords*/
+#rank_table{
+  margin: 25px auto
+
 }
 
 .title-king {
@@ -180,9 +193,26 @@ body {
 
 
 
+.button {
+	background-color: #EEBF3F;
+}
+
+
+.form-control{
+	display: inline-block;
+  width: 75%;
+  margin: 10px auto;
+}
+
+#auto_search{
+	display: block;
+}
+
+
 /* Hiding diagnose_button */
 #diagnose_button{
-	display:none;
+	display: block;
+  	margin: 20px auto;
 }
 
 
