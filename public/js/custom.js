@@ -1,6 +1,6 @@
 	$(document).ready(function(){
 	console.log('jquery is ready!!!');
-	var appName, isValid;
+	var appName, isValid, device;
 	var allKeywords = [];
 	var step0 = $("#step0");
 	var step1 = $("#step1");
@@ -22,8 +22,8 @@
 			//var searchUrl = 'https://itunes.apple.com/search?term=yelp&country=us&entity=software';
 			var searchUrl;
 			
-			var device = $('input:radio[name=device]:checked').val();
-			device = 'iPadSoftware';	
+			console.log('device: ', device);
+		
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
 
@@ -83,7 +83,18 @@
 		step0.hide();
 		step1.show();
 		$("#help_text").hide();
+		$("#tagline").hide();
 	});
+
+
+	$("#modal-clicker1").on('click', function(){
+	    $('#modal-content1').modal('show');
+	});
+
+	$("#modal-clicker2").on('click', function(){
+	    $('#modal-content2').modal('show');
+	});
+
 
 
 
@@ -93,7 +104,8 @@
 	}
 
 	$(".step1_button").click(function(){
-	
+		device = this.name;
+		console.log('device: ',device);
 		step1.hide();
 		step2.show();
 	});
@@ -262,23 +274,23 @@
 		}
 	}
 
-	diagnose_button.click(function(){
+	$("#diagnose_button").click(function(){
 		console.log('diagnose_button clicked');
-		getKeywordResults(allKeywords);
-		step2.hide();
-		step3.show();
+		$(".spinner").show();
+		step4.hide();
 		diagnose_button.hide();
 		keyword_container.hide();
-
+		setTimeout(function(){
+			getKeywordResults(allKeywords);
+		}, 500);
 	});
 
 
 	function getKeywordResults(allKeywords){
-		console.log('diagnose_button clicked');
-		var device = $('input:radio[name=device]:checked').val();
+
 		allKeywords.map(function(keywordObject, index, array){
 			var length = array.length;
-			runAjaxCall(keywordObject.keyword,index, device, length);
+			runAjaxCall(keywordObject.keyword,index, length);
 		});
 
 	/*
@@ -295,11 +307,13 @@
 
 	var ajaxCalls = 0;
 
-	function runAjaxCall(keyword, atIndex, device, length){
+	function runAjaxCall(keyword, atIndex, length){
+
 		console.log('runAjaxCall triggered. keywordObject is:', keyword);
 		console.log('device is:', device);
 		var url = $(location).attr('href');
   		var urlsplit = url.split('/');
+  		var urlDevice = device;
 		var ajaxUrl ='http://'+urlsplit[2]+'/search/' + device + '/' + keyword;
 		
 		console.log('ajaxUrl: ', ajaxUrl);
@@ -426,7 +440,8 @@
 
 
 	function renderTable(keywordsArray){
-		$("#email_div").show();
+		$(".spinner").hide();
+		step5.show();
 		console.log('renderTable called');
 		HTML = [];
 		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Verdict</th></tr>');
