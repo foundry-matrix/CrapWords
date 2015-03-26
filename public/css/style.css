@@ -1,6 +1,7 @@
 /* THIS IS STYLE.CSS */
 
 
+
 /*GLOBAL STYLES*/
 body {
 	background-color: #17baef;
@@ -99,4 +100,13 @@ body {
 	padding: 4px;
 	background-color: rgb(148, 210, 142);
 	color: white;
+}
+
+
+.good{
+	color: green;
+}
+
+.bad{
+	color: red;
 }
