@@ -17,6 +17,7 @@ body {
 	font-size: 70px;
 	text-align: center;
 	margin-bottom: 14px;
+	margin-top:4px;
 }
 
 .title-keyword {
@@ -25,8 +26,8 @@ body {
 
 .title-logo {
 	text-align: center;
-	width:38%;
-	margin: 0 28%;
+	width:26%;
+	margin: 0 35%;
 	padding-top:14px;
 }
 
@@ -40,8 +41,33 @@ body {
 
 .subtitle-rule {
 	color:#eebf3f;
-	font-weight: 700;
+	font-weight: 900;
 }
+
+.reason-header {
+	text-align: center;
+	font-weight: 900;
+}
+
+.reason-text {
+	text-align: center;
+	margin-bottom: 16px;
+}
+
+.reason-img {
+	text-align: center;
+	color:#eebf3f;
+	font-size: 90px;
+}
+
+.reason-span {
+	text-align: center;
+}
+
+
+
+
+
 
 
 
