@@ -22,7 +22,7 @@ var fetchdata = function(request, reply){
     var mongoId = request.params.mongoId;
     if (request.headers['x-requested-with'] === "XMLHttpRequest"){
         model.fetchData(mongoId,function(data){
-            reply(data);
+            reply(JSON.stringify(data));
         });
     } else {
         reply("normal http request");

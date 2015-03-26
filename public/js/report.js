@@ -2,14 +2,14 @@ $(document).ready(function(){
   var testdata = [{"keyword":"game", "rank":6},{"keyword":"fun", "rank":10},{"keyword":"child", "rank":2},{"keyword":"racing", "rank":15},{"keyword":"fast", "rank":12},{"keyword":"wow", "rank":13}];
   var url = $(location).attr('href');
   var id = url.split('/');
-  fetch(id[3]);
+  fetch(id);
   
   // table(testdata);
   // pieChart(testdata);
   // barChart(testdata);
 
   function fetch(id){
-    $.getJSON('http://localhost:8000/fetchdata/'+id, function(data){
+    $.getJSON('http://'+id[2]+'/fetchdata/'+id[3], function(data){
       if (data){
         table(data);
         pieChart(data);
