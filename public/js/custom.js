@@ -6,6 +6,9 @@
 	var step1 = $("#step1");
 	var step2 = $("#step2");
 	var step3 = $("#step3");
+	var step4 = $("#step4");
+	var step5 = $("#step5");
+
 	var HTML = [];
 	var joinedHTML = "";
 	var diagnose_button = $("#diagnose_button");
@@ -18,8 +21,9 @@
 		source: function(request, response){
 			//var searchUrl = 'https://itunes.apple.com/search?term=yelp&country=us&entity=software';
 			var searchUrl;
+			
 			var device = $('input:radio[name=device]:checked').val();
-	
+			device = 'iPadSoftware';	
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
 
@@ -70,15 +74,29 @@
 				appName = name;
 				appId = response.results[0].trackId;
 			
-				renderStep1()
+				renderStep3()
 		}
 	});
 	}
 
-	function renderStep1(){
+	$("#step0_button").click(function(){
 		step0.hide();
 		step1.show();
+		$("#help_text").hide();
+	});
+
+
+
+	function renderStep3(){
+		step2.hide();
+		step3.show();
 	}
+
+	$(".step1_button").click(function(){
+	
+		step1.hide();
+		step2.show();
+	});
 
 	$("#single_keyword_form").submit(function(e){
 	    e.preventDefault();
@@ -91,7 +109,7 @@
 	    cleanUpSingleKeywords(str, false);
 	    fetchKeywordsFromTitle();
 	   	
-	   	renderStep2();
+	   	renderStep4();
 	
 	});
 
@@ -156,9 +174,9 @@
 	}
 
 
-	function renderStep2(){
-		step1.hide();
-		step2.show();
+	function renderStep4(){
+		step3.hide();
+		step4.show();
 		diagnose_button.show();
 	}
 
@@ -250,6 +268,7 @@
 		step2.hide();
 		step3.show();
 		diagnose_button.hide();
+		keyword_container.hide();
 
 	});
 
@@ -293,7 +312,6 @@
 				console.log('ajax success');
 				console.log('response: ', response);
 				for (var j=0,len=response.length;j<len;j++) {
-					console.log('j=',j);
 					if (response[j].trackId === appId) {
 						allKeywords[atIndex]["rank"] = j+1;
 						ranked = true;
@@ -325,7 +343,6 @@
 				allKeywords.forEach(function (doubleKeywordObject){
 					if (doubleKeywordObject.single_keyword === false){
 						if (doubleKeywordObject.keyword.indexOf(singleKeywordObject.keyword) > -1){
-							console.log(singleKeywordObject.keyword, ' is a part of ', doubleKeywordObject.keyword);
 							allKeywords[index]["combinations"] = [];
 							allKeywords[index].combinations.push(doubleKeywordObject);
 						}
@@ -335,7 +352,6 @@
 		if (index === (allKeywords.length - 1)){
 			console.log(allKeywords);
 			addGoodCombosStamp(allKeywords);
-			createKeywordArray(allKeywords);
 		}
 		});
 	}
@@ -386,25 +402,6 @@
 	});
 
 
-	function createPieArray(allKeywords){
-		var approved_keywords = [];
-		var disapproved_keywords = [];
-		allKeywords.forEach(function(keywordObject){
-			if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === false){
-				disapproved_keywords.push(keywordObject.keyword);
-			}
-			else if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === true){
-				approved_keywords.push(keywordObject.keyword);
-			}
-			else if (keywordObject.rank >= 15 && keywordObject.single_keyword === true){
-				approved_keywords.push(keywordObject.keyword);
-			}
-		});
-		var pieData = [approved_keywords.length,disapproved_keywords.length]
-		renderPie(pieData);
-	}
-
-
 	function createKeywordArray(allKeywords){
 		var keywordsArray = [];
 
@@ -450,27 +447,67 @@
 			}
 		});
 
-		console.log(HTML);
 		joinedHTML = HTML.join("");
-		console.log(joinedHTML);
 
 		$("#rank_table").append(HTML);
 
-
 	}
 
+
+
+	function createPieArray(allKeywords){
+		var approved_keywords = [];
+		var disapproved_keywords = [];
+		allKeywords.forEach(function(keywordObject){
+			if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === false){
+				disapproved_keywords.push(keywordObject.keyword);
+			}
+			else if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === true){
+				approved_keywords.push(keywordObject.keyword);
+			}
+			else if (keywordObject.rank < 15 && keywordObject.single_keyword === true){
+				approved_keywords.push(keywordObject.keyword);
+			}
+		});
+		console.log('approved_keywords:', approved_keywords);
+		console.log('disapproved_keywords:', disapproved_keywords);
+
+		
+		createPieText(approved_keywords,disapproved_keywords);
+	}
+
+
+
+
+	function createPieText(approved_keywords,disapproved_keywords){
+
+		var data = [approved_keywords.length, disapproved_keywords.length];
+		var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
+
+		$("#svg_div").append('<h3 class="pie_title">Approved keywords</h3>');
+		$("#svg_div").append("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
+		approved_keywords.forEach(function(approved_word){
+		$("#svg_div").append('<li class="item">'+ approved_word +'</li>');
+		});
+
+		$("#svg_div").append('<h3 class="pie_title">Crappy keywords</h3>');
+		$("#svg_div").append("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
+		disapproved_keywords.forEach(function(crapword){
+		$("#svg_div").append('<li class="item red">'+ crapword+'</li>');
+		});
+
+		$("#svg_div").append('<h3 class="pie_title">Keyword quality ratio</h3>');
+		$("#svg_div").append("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
+		var pieData = [approved_keywords.length,disapproved_keywords.length]
+		renderPie(pieData);
+	}
 
 
 
 
 // PASTED IN FROM PREVIOUS PROJECT
 
-	function renderPie(pieData){
-
-		allKeywords.forEach(function(keywordObject){
-			
-		});
-	
+	function renderPie(data){
 		console.log("render pie called!");
 		var r =100;
 		var color = d3.scale.ordinal()
