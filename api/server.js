@@ -50,12 +50,10 @@ server.route({
         } 
     }
 });
-
 */
 
 
 // Ajax post for keyword report
-
 server.route({                
     method: 'POST',
     path: '/postemail',
@@ -65,6 +63,13 @@ server.route({
     }
 });
 
+
+//
+   server.route({          
+        method: 'GET',
+        path: '/search/{device}/{keywords}',
+        handler: handler.keywordResults,
+    });
 
 // // Dynamic url depending on user's email - for their report
 server.route({
