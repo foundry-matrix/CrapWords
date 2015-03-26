@@ -11,6 +11,7 @@ $(document).ready(function(){
   function fetch(id){
     $.getJSON('http://'+id[2]+'/fetchdata/'+id[3], function(data){
       if (data){
+        console.log(data);
         table(data);
         pieChart(data);
         barChart(data);
@@ -19,16 +20,20 @@ $(document).ready(function(){
   }
 
   function table(allData){
-    var data = allData.keywords;
-    for (var i=0; i<data.length; i++){
-      var ranklevel;
-      if(data[i].rank <= 10){
-        ranklevel = "Keyword is well ranked!";
-      } else {
-        ranklevel = "This keyword is crap. Swap it out!";
-      }
-      $("#tablebody").append("<tr><td>" + data[i].keyword + "</td><td>" + data[i].rank + "</td><td>" + ranklevel + "</td></tr");
-    }
+    var data = allData.html;
+    // for (var i=0; i<data.length; i++){
+    //   var ranklevel;
+    //   if(data[i].rank <= 10){
+    //     ranklevel = "Keyword is well ranked!";
+    //   } else {
+    //     ranklevel = "This keyword is crap. Swap it out!";
+    //   }
+    //   $("#tablebody").append("<tr><td>" + data[i].keyword + "</td><td>" + data[i].rank + "</td><td>" + ranklevel + "</td></tr");
+    // }
+    console.log(data);
+    data.forEach(function(d){
+      $("#rank_list").append(d);
+    });
   }
 
   function pieChart(allData){
@@ -36,7 +41,6 @@ $(document).ready(function(){
     var goodwords = [];
     var badwords = [];
 
-    goodwords.push("test","test","test","test","test");
     for (var i=0; i<data.length; i++){
       if(data[i].rank < 10){
         goodwords.push(data[i].keyword);
@@ -63,29 +67,17 @@ $(document).ready(function(){
             .attr("transform", "translate(100,100)");
 
     var pie = d3.layout.pie()
-          .value(function(d){console.log(d); return d.rank;})
+          .value(function(d){console.log(d); return d;})
 
     var arcs = group.selectAll(".arc")
-            .data(pie(data))
+            .data(pie(piedata))
             .enter()
             .append("g")
             .attr("class","arc")
             
           arcs.append("path")
             .attr("d", arc)
-            .attr("fill", function(d){ console.log(d); return color(d.data.rank);})
-            .on("mouseenter", function(d) {
-                text = arcs.append("text")
-                  .attr("dy", ".5em")
-                  .style("text-anchor", "middle")
-                  .style("fill", "black")
-                  .attr("class", "on")
-                  .text(d.data.keyword + " - " + d.data.rank);
-            })
-            .on("mouseout", function(d) {
-                text.remove();
-            });
-
+            .attr("fill", function(d){ console.log(d); return color(d.data);})
   }
 
   function barChart(allData){
