@@ -21,19 +21,7 @@ $(document).ready(function(){
 
   function table(allData){
     var data = allData.html;
-    // for (var i=0; i<data.length; i++){
-    //   var ranklevel;
-    //   if(data[i].rank <= 10){
-    //     ranklevel = "Keyword is well ranked!";
-    //   } else {
-    //     ranklevel = "This keyword is crap. Swap it out!";
-    //   }
-    //   $("#tablebody").append("<tr><td>" + data[i].keyword + "</td><td>" + data[i].rank + "</td><td>" + ranklevel + "</td></tr");
-    // }
-    console.log(data);
-    data.forEach(function(d){
-      $("#rank_list").append(d);
-    });
+    $("#reporttable").append(data);
   }
 
   function pieChart(allData){
