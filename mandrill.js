@@ -2,18 +2,20 @@ var mandrill = require('mandrill-api/mandrill');
 var mandrill_client = new mandrill.Mandrill('HwSNMGOM1BPbwp5gr0QSuw');
 var fs = require("fs");
 
-function sendEmail (emailAddress) {  
-    var report = fs.readFileSync("report.pdf");
+function sendEmail (emailAddress, mongoid) {
+    var email = fs.readFileSync('views/email.html').toString();
+    var report = fs.readFileSync(mongoid+".pdf");
     var base64str = Buffer(report).toString('base64'); 
+
     var message = {
-        "html": "<h1>This is your App report from CrapWords</h1>",
-        "text": "This is your App report from CrapWords",
-        "subject": "App Report from CrapWords",
+        "html": email,
+        "text": "This is your App report from Keyword King",
+        "subject": "App Report from Keyword King",
         "from_email": "greg.aubert@yahoo.co.uk",
-        "from_name": "CrapWords",
+        "from_name": "Keyword King",
         "to": [{
                 "email": emailAddress,
-                "name": "CrapWords",
+                "name": "Keyword King",
                 "type": "to"
             }],
         "headers": {
@@ -64,12 +66,12 @@ function sendEmail (emailAddress) {
             }],
          "attachments": [{
                  "type": "application/pdf",
-                 "name": "report.pdf",
+                 "name": "Keyword King App Report.pdf",
                  "content": base64str
              }],
         // "images": [{
-        //         "type": "image/png",
-        //         "name": "IMAGECID",
+        //         "type": "image/gif",
+        //         "name": "fb.gif",
         //         "content": "ZXhhbXBsZSBmaWxl"
         //     }]
         };
@@ -78,13 +80,14 @@ function sendEmail (emailAddress) {
     var send_at = '';
     mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool, "send_at": send_at}, function(result) {
         console.log('Email sent ----', result);
-     
+        fs.unlink(mongoid+".pdf", function (err) {
+          if (err) throw err;
+          console.log('successfully deleted report');
+        });
     }, function(e) {
         console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
     });
 }
-
-
 
 
 module.exports = {
