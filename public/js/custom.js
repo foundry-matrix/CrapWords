@@ -22,6 +22,7 @@
 			//var searchUrl = 'https://itunes.apple.com/search?term=yelp&country=us&entity=software';
 			var searchUrl;
 			
+			console.log('device: ', device);
 		
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
@@ -82,6 +83,7 @@
 		step0.hide();
 		step1.show();
 		$("#help_text").hide();
+		$("#tagline").hide();
 	});
 
 
