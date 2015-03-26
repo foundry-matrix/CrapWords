@@ -1,7 +1,7 @@
 var webshot = require('webshot');
 var mandrillFunctions = require('./mandrill.js');
 
-function takeScreenShot(url, request){
+function takeScreenShot(mongoid, request){
     var options = {
         screenSize : {  width: 1024,
                         height: 768 },
@@ -9,14 +9,13 @@ function takeScreenShot(url, request){
         quality : 100
     };
 
-    console.log('screenshot.js says dynamic URL is ----', url);
+    console.log('screenshot.js says dynamic URL is ---- /', mongoid);
     
-    webshot('https://keywordking.herokuapp.com' + url,'report.pdf', options, function(err) {
+    webshot('https://keywordking.herokuapp.com/' + mongoid, mongoid+'.pdf', options, function(err) {
         console.log("pdf created");
-    	mandrillFunctions.sendEmail(request.payload.email);
+    	mandrillFunctions.sendEmail(request.payload.email, mongoid);
     });
 }
-
 
 
 module.exports = {
