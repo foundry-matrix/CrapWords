@@ -87,6 +87,10 @@ body {
 	text-align: center;
 }
 
+#email_form_div{
+	display:none;
+}
+
 .rendered_keyword {
 	display: inline-block;
 	margin: 3px;

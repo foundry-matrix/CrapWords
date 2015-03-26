@@ -22,15 +22,18 @@ var fetchdata = function(request, reply){
     var mongoId = request.params.mongoId;
     if (request.headers['x-requested-with'] === "XMLHttpRequest"){
         model.fetchData(mongoId,function(data){
-            reply(data);
+            reply(JSON.stringify(data));
         });
     } else {
-        reply("normal http request");
+        model.fetchData(mongoId,function(data){
+            reply(JSON.stringify(data));
+        });
     }
 };
 
 var postEmail = function(request, reply){
     console.log('postEmail request handler triggered');
+    console.log('PAYLOAD: ',request.payload);
     model.save(request.payload, request);
     reply('email received and emailing customer their report');
 };

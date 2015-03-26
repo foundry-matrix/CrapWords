@@ -1,5 +1,6 @@
 
-var db = require ('mongojs').connect('mongodb://crapwords:crapwords@ds039281.mongolab.com:39281/crapwords', ['userdata']);
+var db = require ('mongojs').connect('mongodb://crapwords:crapwords@ds039281.mongolab.com:39281/crapwords', ['userdata','keywordresults']);
+
 var screenshot = require('./screenshot');
 var oid = require("mongodb").ObjectID;
 
@@ -102,6 +103,7 @@ function fetchData(id, reply){
 	});
 }
 
+
 function fetchKeywordResultsFromDB(keyword,device,callback){
 	console.log('fetchKeywordResultsFromDB triggered');
 	
@@ -150,6 +152,7 @@ function fetchKeywordResultsFromDB(keyword,device,callback){
 		}
 	});
 }
+
 
 function fetchId(emailAddress, request){
 	db.userdata.find( {email: emailAddress}, function(err, data){
