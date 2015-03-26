@@ -6,6 +6,7 @@
 	var step1 = $("#step1");
 	var step2 = $("#step2");
 	var step3 = $("#step3");
+	var HTML = [];
 
 	var diagnose_button = $("#diagnose_button");
  	var argument_div = $("#argument_div");
@@ -282,7 +283,9 @@
 	function runAjaxCall(keyword, atIndex, device, length){
 		console.log('runAjaxCall triggered. keywordObject is:', keyword);
 		console.log('device is:', device);
+		
 		var ajaxUrl ='http://local.host:8000/search/' + device + '/' + keyword;
+		
 		console.log('ajaxUrl: ', ajaxUrl);
 		$.ajax({ 
 			url: ajaxUrl,
@@ -341,6 +344,7 @@
 
 
 	$("#email_input_button").click(function(){
+		console.log('HTML: ',HTML);
 		var email_address = $("#email_input_field").val();
 		console.log('send_ajax clicked');
 		$.ajax({
@@ -349,7 +353,8 @@
 			data: {
 				appName: appName, 
 				email: email_address,
-				report: JSON.stringify(allKeywords)
+				report: JSON.stringify(allKeywords),
+				html: HTML
 			},
 			success: function(response){
 				console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);	
@@ -378,15 +383,15 @@
 
 
 		console.log(keywordsArray);
-		renderResult(keywordsArray)
+		renderResult(keywordsArray);
+		//renderPie(allKeywords);
 	}
-
 
 
 	function renderResult(keywordsArray){
 		$("#email_div").show();
 		console.log('renderResult called');
-		var HTML = [];
+		HTML = [];
 		keywordsArray.forEach(function(keywordObject){
 			console.log('keywordObject: ', keywordObject);
 			HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td>');
@@ -427,7 +432,57 @@
 	}
 
 
+
+
+
+// PASTED IN FROM PREVIOUS PROJECT
+
+	function renderPie(allKeywords){
+
+		allKeywords.forEach(function(keywordObject){
+			
+		});
 	
+		console.log("render pie called!");
+		var r =100;
+		var color = d3.scale.ordinal()
+					.range(["rgb(148, 210, 142)", "#D84343"]);
+
+		var canvas = d3.select("#svg_div").append("svg")
+								.attr("width", 200)
+								.attr("height", 200)
+								.attr("class", "svg");
+		var arc = d3.svg.arc()
+					.innerRadius(r-40)
+					.outerRadius(r);
+
+		var group = canvas.append("g")
+						.attr("transform", "translate(100,100)");
+
+		var pie = d3.layout.pie()
+					.value(function(d){ return d;})
+
+//		var populated_pie = pie(data);
+
+		var arcs = group.selectAll(".arc")
+						.data(pie(data))
+						.enter()
+						.append("g")
+						.attr("class","arc")
+						
+
+					arcs.append("path")
+						.attr("d", arc)
+						.attr("fill", function(d){ return color(d.data);})
+
+		$("#svg_div").append('<h3 class="pie_title">Ok... Now what?</h3>');
+		$("#svg_div").append("<ol id='instructions'><li id='pie_text'>Find new keywords you can replace the crappy ones with.</li><li id='pie_text'>Update the app with the new keywords.</li><li id='pie_text'>Run this test again to check if the new keywords are approved.</li><li id='pie_text'>Repeat until all keywords are approved, and you'll see a significant increase in downloads.</li></ol>");	
+
+}
+
+	
+
+
 
 
 
