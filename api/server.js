@@ -4,7 +4,7 @@ var server = new Hapi.Server();
 var handler = require('../handler.js');
 
 server.connection({
-    port: ~~process.env.PORT || 8000,
+    port: process.env.PORT || 8000,
 	host: '0.0.0.0'
 });
 
