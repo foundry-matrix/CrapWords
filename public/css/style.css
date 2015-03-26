@@ -1,6 +1,51 @@
 /* THIS IS STYLE.CSS */
 
 
+/*GLOBAL STYLES*/
+body {
+	background-color: #17baef;
+	color: #fff;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+}
+
+
+
+
+/*Homepage*/
+.title {
+	font-size: 70px;
+	text-align: center;
+	margin-bottom: 14px;
+}
+
+.title-keyword {
+	font-weight: 400;
+}
+
+.title-logo {
+	text-align: center;
+	width:38%;
+	margin: 0 28%;
+	padding-top:14px;
+}
+
+
+.title-king {
+	font-weight: 900;
+	text-transform: uppercase;
+	color:#eebf3f;
+
+}
+
+.subtitle-rule {
+	color:#eebf3f;
+	font-weight: 700;
+}
+
+
+
+
 #step0_device {
 	
 }
