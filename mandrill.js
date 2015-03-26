@@ -6,6 +6,8 @@ function sendEmail (emailAddress, mongoid) {
     var email = fs.readFileSync('views/email.html').toString();
     var report = fs.readFileSync(mongoid+".pdf");
     var base64str = Buffer(report).toString('base64'); 
+    var img = fs.readFileSync("public/img/article1.png");
+    var img64 = Buffer(img).toString('base64'); 
 
     var message = {
         "html": email,
@@ -69,11 +71,11 @@ function sendEmail (emailAddress, mongoid) {
                  "name": "Keyword King App Report.pdf",
                  "content": base64str
              }],
-        // "images": [{
-        //         "type": "image/gif",
-        //         "name": "fb.gif",
-        //         "content": "ZXhhbXBsZSBmaWxl"
-        //     }]
+        "images": [{
+                "type": "image/png",
+                "name": "article1.png",
+                "content": img64
+            }]
         };
     var async = false;
     var ip_pool = "Main Pool";
