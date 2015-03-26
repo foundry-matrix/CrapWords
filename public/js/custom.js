@@ -85,7 +85,7 @@
 	    var str = $("#single_keywords_input").val();
 	    console.log('single_keywords_input ', str);
 	    if ( !$("#single_keywords_input").val()) {
-	    	str = "free,bored,online,games,racing,playing,game";
+	    	str = "free,bored,online,games,racing,playing,game,hello,test";
 	    }
 	    cleanUpSingleKeywords(str, false);
 	    fetchKeywordsFromTitle();
@@ -163,7 +163,7 @@
 
 		var double_keywords_input = $("#double_keywords_input").val();
 		if ( !$("#double_keywords_input").val()) {
-	    	double_keywords_input = "free bored,online games,racing game,fun run";
+	    	double_keywords_input = "racing fun,online games,multiplayer games,racing game,fun run";
 	    }
 
 
@@ -334,7 +334,7 @@
 			}
 		if (index === (allKeywords.length - 1)){
 			console.log(allKeywords);
-			renderResult(allKeywords);
+			createKeywordArray(allKeywords);
 		}
 		});
 	}
@@ -357,16 +357,73 @@
 		})
 	});
 
-	function renderResult(allKeywords){
+
+	function createKeywordArray(allKeywords){
+		var keywordsArray = [];
+
+		//create the array
+		for (key in allKeywords){
+			keywordsArray.push([allKeywords[key]['rank'],allKeywords[key]]);
+		}
+
+		//sort the array
+		keywordsArray.sort(function(a, b) {
+		    if (a[0] === b[0]) {
+		        return 0;
+		    }
+		    else {
+		        return (a[0] < b[0]) ? -1 : 1;
+		    }
+		});
+
+
+		console.log(keywordsArray);
+		renderResult(keywordsArray)
+	}
+
+
+
+	function renderResult(keywordsArray){
 		$("#email_div").show();
 		console.log('renderResult called');
 		var HTML = [];
-		allKeywords.forEach(function(keywordObject){
-			HTML.push('<tr><td>' + keywordObject.keyword + '</td><td>' + keywordObject.rank + '</td></tr>');
+		keywordsArray.forEach(function(keywordObject){
+			console.log('keywordObject: ', keywordObject);
+			HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td>');
+
+			if (keywordObject[1].rank >= 15){
+				if (keywordObject[1].combinations.length>0){
+					console.log('has combos');
+					var highRankingComboKeywords = [];
+					var hasHighRankingCombo = false;
+					keywordObject[1].combinations.forEach(function(comboObject){
+						if (comboObject.rank <=15){
+							hasHighRankingCombo = true;
+							highRankingComboKeywords.push(comboObject.keyword);
+
+						}
+					});
+						if (hasHighRankingCombo === true){
+							HTML.push('<td >Bad keyword. But is important for "' + highRankingComboKeywords + '"</td></tr>');
+
+						} else if (hasHighRankingCombo === false){
+							HTML.push('<td class="bad">Bad keyword. Swap it out!</td></tr>');
+						}
+				}
+				else{
+					console.log('no combos');
+					HTML.push('<td class="bad">Bad keyword. Swap it out!</td></tr>');
+
+				}
+			}
+			else if (keywordObject[1].rank < 15){
+				HTML.push('<td class="good">Good keyword. Keep it!</td></tr>');
+			}
+
 		});
 		console.log(HTML);
-		$("#rank_table").append(HTML);
-
+		table_header = '<tr><th>Keyword</th><th>Your ranking</th><th>Verdict</th></tr>';
+		$("#rank_table").append(table_header.concat(HTML));
 	}
 
 

@@ -1,6 +1,8 @@
 /* THIS IS STYLE.CSS */
 
 
+
+
 #step0_device {
 	
 }
@@ -54,4 +56,13 @@
 	padding: 4px;
 	background-color: rgb(148, 210, 142);
 	color: white;
+}
+
+
+.good{
+	color: green;
+}
+
+.bad{
+	color: red;
 }
