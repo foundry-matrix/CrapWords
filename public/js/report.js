@@ -4,9 +4,13 @@ $(document).ready(function(){
   fetch(id[3]);
 
   function fetch(id){
-    $.getJSON('https://keywordking.herokuapp.com/'+id, function(data){
-      if (data){
-        create(data);
+    $.ajax({ 
+      url: 'https://keywordking.herokuapp.com/'+id, 
+      dataType: 'jsonp',
+      success: function(data){
+        if (data){
+          create(data);
+        }
       }
     });
   }
