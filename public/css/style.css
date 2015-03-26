@@ -1,6 +1,7 @@
 /* THIS IS STYLE.CSS */
 
 
+
 /*GLOBAL STYLES*/
 body {
 	background-color: #17baef;
@@ -9,6 +10,23 @@ body {
 	font-size: 20px;
 }
 
+
+
+.item {
+  display: inline-block;
+  margin: 3px;
+  border: 1px solid rgb(148, 210, 142);
+  border-radius: 3px;
+  padding: 4px;
+  background-color: rgb(148, 210, 142);
+  color: white;
+  }
+
+  .red{
+  border: 1px solid rgb(224, 89, 89);
+
+  background-color: rgb(224, 89, 89);
+}
 
 
 
@@ -125,4 +143,13 @@ body {
 	padding: 4px;
 	background-color: rgb(148, 210, 142);
 	color: white;
+}
+
+
+.good{
+	color: green;
+}
+
+.bad{
+	color: red;
 }

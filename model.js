@@ -61,8 +61,10 @@ function saveKeywordResults(keyword,device,results){
 function save(object, request){
 	var searches = [];
 	var search = {};
+	search["appName"] = object.appName;
 	search["keywords"] = object.report;
 	search["date"] = Date.now();
+	search["html"] = object.html;
 
 	searches.push(search);
 	
@@ -98,7 +100,7 @@ function fetchData(id, reply){
 			console.log("No data found");
 		} else {
 			console.log("successfully found document in db");
-			reply(allData[0].searches[recentsearch].keywords); 
+			reply(allData[0].searches[recentsearch]); 
 		}
 	});
 }
@@ -160,9 +162,8 @@ function fetchId(emailAddress, request){
 			console.log("No document found");
 		} else {
 			var mongoId = data[0]._id.toString();
-			var mongoIdUrl = '/' + mongoId; 
-			console.log('fetchID in model.js says mongourl is ----', mongoIdUrl);
-			screenshot.takeScreenShot(mongoIdUrl, request);
+			console.log('fetchID in model.js says mongourl is ---- /', mongoId);
+			screenshot.takeScreenShot(mongoId, request);
 		}
 	});
 

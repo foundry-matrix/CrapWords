@@ -1,37 +1,81 @@
 $(document).ready(function(){
+  var testdata = [{"keyword":"game", "rank":6},{"keyword":"fun", "rank":10},{"keyword":"child", "rank":2},{"keyword":"racing", "rank":15},{"keyword":"fast", "rank":12},{"keyword":"wow", "rank":13}];
   var url = $(location).attr('href');
   var id = url.split('/');
-  fetch(id[3]);
+  fetch(id);
+  
+  // table(testdata);
+  // pieChart(testdata);
+  // barChart(testdata);
 
   function fetch(id){
-    $.ajax({ 
-      url: 'https://keywordking.herokuapp.com/'+id, 
-      dataType: 'jsonp',
-      success: function(data){
-        if (data){
-          create(data);
-        }
+    $.getJSON('http://'+id[2]+'/fetchdata/'+id[3], function(data){
+      if (data){
+        console.log(data);
+        table(data);
+        pieChart(data);
+        barChart(data);
       }
     });
   }
 
-  function create(dataset){
-    console.log(dataset);
+  function table(allData){
+    var data = allData.html;
+    $("#reporttable").append(data);
+  }
 
-    var ranks = [];
-        
-    dataset.forEach(function(d){
-      ranks.push(d.rank);
-    });
+  function pieChart(allData){
+    var data = allData.keywords;
+    var goodwords = [];
+    var badwords = [];
 
-    console.log(ranks);
+    for (var i=0; i<data.length; i++){
+      if(data[i].rank < 10){
+        goodwords.push(data[i].keyword);
+      } else {
+        badwords.push(data[i].keyword);
+      }
+    }
 
+    var piedata = [goodwords.length, badwords.length];
+
+    var r =100;
+    var color = d3.scale.ordinal()
+          .range(["rgb(148, 210, 142)", "#D84343"]);
+
+    var canvas = d3.select("#piechart").append("svg")
+                .attr("width", 200)
+                .attr("height", 200)
+                .attr("class", "svg");
+    var arc = d3.svg.arc()
+          .innerRadius(r-40)
+          .outerRadius(r);
+
+    var group = canvas.append("g")
+            .attr("transform", "translate(100,100)");
+
+    var pie = d3.layout.pie()
+          .value(function(d){console.log(d); return d;})
+
+    var arcs = group.selectAll(".arc")
+            .data(pie(piedata))
+            .enter()
+            .append("g")
+            .attr("class","arc")
+            
+          arcs.append("path")
+            .attr("d", arc)
+            .attr("fill", function(d){ console.log(d); return color(d.data);})
+  }
+
+  function barChart(allData){
+    var dataset = allData.keywords;
     var margin = {top: 40, right: 20, bottom: 30, left: 40},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], 0.1)
+        .rangeRoundBands([0, width], .1)
         .domain(dataset.map(function(d) { return d.keyword; }));
 
     var y = d3.scale.linear()
@@ -51,9 +95,9 @@ $(document).ready(function(){
       .offset([-10, 0])
       .html(function(d) {
         return "<strong>Rank:</strong> <span style='color:red'>" + d.rank + "</span>";
-      });
+      })
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#barchart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
@@ -85,15 +129,14 @@ $(document).ready(function(){
         .attr("y", function(d) { return y(d.rank); })
         .attr("height", function(d) { return height - y(d.rank); })
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+        .on('mouseout', tip.hide)
 
     function type(d) {
       d.rank = +d.rank;
       return d;
     }
+
   }
 
 
 });
-
-
