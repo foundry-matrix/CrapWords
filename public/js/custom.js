@@ -7,7 +7,7 @@
 	var step2 = $("#step2");
 	var step3 = $("#step3");
 	var HTML = [];
-
+	var joinedHTML = "";
 	var diagnose_button = $("#diagnose_button");
  	var argument_div = $("#argument_div");
  	var auto_search = $("#auto_search");
@@ -432,28 +432,28 @@
 		$("#email_div").show();
 		console.log('renderTable called');
 		HTML = [];
+		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Verdict</th></tr>');
 		keywordsArray.forEach(function(keywordObject){
 			//console.log('keywordObject: ', keywordObject);
-			HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td>');
 
 			if (keywordObject[1].rank >= 15){
 				
 				if (keywordObject[1].good_combinations === true){
-					HTML.push('<td>Bad keyword. But it has important combos"</td></tr>');
+					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos"</td></tr>');
 				
 				} else {
-					HTML.push('<td class="bad">Bad keyword. Swap it out!</td></tr>');
+					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
 				}
 			}
 			else if (keywordObject[1].rank < 15) {
-				HTML.push('<td class="good">Good keyword. Keep it!</td></tr>');
+				HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="good">Good keyword. Keep it!</td></tr>');
 			}
 		});
 
 		console.log(HTML);
-		table_header = '<tr><th>Keyword</th><th>Your ranking</th><th>Verdict</th></tr>';
-		HTML = table_header + HTML;
 		joinedHTML = HTML.join("");
+		console.log(joinedHTML);
+
 		$("#rank_table").append(HTML);
 
 
