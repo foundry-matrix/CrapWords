@@ -11,24 +11,24 @@
  	var argument_div = $("#argument_div");
  	var auto_search = $("#auto_search");
  	var keyword_container = $("#keyword_container");
+
  	
-
-
-
-
-
 	$("#auto_search").autocomplete({
 		source: function(request, response){
+			//var searchUrl = 'https://itunes.apple.com/search?term=yelp&country=us&entity=software';
 			var searchUrl;
-			var deviceUrl = $('input:radio[name=device]:checked').val();
+			var device = $('input:radio[name=device]:checked').val();
 	
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
-				searchUrl = 'https://itunes.apple.com/lookup?id=' + request.term + '&country=us&entity=' + deviceUrl +'&limit=10';
+
+				searchUrl = 'https://itunes.apple.com/lookup?id=' + request.term + '&country=us&entity=' + device + '&limit=10';
 			
 			// If user is searching for app by keywords
 			} else {
-				searchUrl ='https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=' + deviceUrl + '&limit=10';
+				searchUrl = 'https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=' + device + '&limit=10';
+
+				//searchUrl ='https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=' + device + '&limit=10';
 			}
 				
 			$.ajax({  
@@ -68,10 +68,15 @@
 				$("#app_title").append(name);
 				appName = name;
 				appId = response.results[0].trackId;
-				step0.hide();
-				step1.show();
+			
+				renderStep1()
 		}
 	});
+	}
+
+	function renderStep1(){
+		step0.hide();
+		step1.show();
 	}
 
 	$("#single_keyword_form").submit(function(e){
@@ -84,7 +89,9 @@
 	    }
 	    cleanUpSingleKeywords(str, false);
 	    fetchKeywordsFromTitle();
+	   	
 	   	renderStep2();
+	
 	});
 
 
@@ -105,7 +112,7 @@
 	function addToAllKeywords(keywords, fromTitle, singleKeyword){
 		console.log('addToAllKeywords triggered. keywords is: ', keywords);
 		if (keywords instanceof Array ){
-			console.log('it an array');
+			console.log('its an array');
 			keywords.forEach(function (keyword){
 				allKeywords.push({
 						"keyword"         : keyword, 
@@ -115,7 +122,7 @@
 					});
 				});
 		} else {
-				console.log('it a string');
+				console.log('its a string');
 				allKeywords.push({
 						"keyword"         : keywords, 
 						"title_keyword"   : fromTitle, 
@@ -145,8 +152,6 @@
 	}
 
 
-
-
 	function renderStep2(){
 		step1.hide();
 		step2.show();
@@ -155,10 +160,13 @@
 
 	$("#double_keyword_form").submit(function(e){
 		e.preventDefault();
+
 		var double_keywords_input = $("#double_keywords_input").val();
 		if ( !$("#double_keywords_input").val()) {
 	    	double_keywords_input = "free bored,online games,racing game,fun run";
 	    }
+
+
 		console.log('double_keyword_form triggered: ', double_keywords_input);
 		var double_keywords = double_keywords_input.split(',');
 		for (var i=0,len=double_keywords.length; i<len; i++){
@@ -244,8 +252,10 @@
 
 	function getKeywordResults(allKeywords){
 		console.log('diagnose_button clicked');
-		allKeywords.map(function(keywordObject, index){
-			runAjaxCall(keywordObject.keyword,index);
+		var device = $('input:radio[name=device]:checked').val();
+		allKeywords.map(function(keywordObject, index, array){
+			var length = array.length;
+			runAjaxCall(keywordObject.keyword,index, device, length);
 		});
 
 	/*
@@ -256,31 +266,39 @@
 
 	}
 
-	$(document).ajaxStop(function() {
-		console.log('ajax stop triggered');
-		checkImportantCombos(allKeywords);
 
+/*	$(document).ajaxStop(function() {
+		console.log('ajax stop triggered');
+		// very unefficient! FIND A BETTER WAY!!
+		checkImportantCombos(allKeywords);
 	  // place code to be executed on completion of last outstanding ajax call here
 	});
+*/
 
 
 
-	function runAjaxCall(keywordObject, atIndex){
-		console.log('runAjaxCall triggered. keywordObject is:', keywordObject);
+	var ajaxCalls = 0;
+
+	function runAjaxCall(keyword, atIndex, device, length){
+		console.log('runAjaxCall triggered. keywordObject is:', keyword);
+		console.log('device is:', device);
+		var ajaxUrl ='http://local.host:8000/search/' + device + '/' + keyword;
+		console.log('ajaxUrl: ', ajaxUrl);
 		$.ajax({ 
-			url: 'https://itunes.apple.com/search?term=' + keywordObject.keyword + '&country=us&entity=software',
-			dataType: 'jsonp',
-			async: false,
+			url: ajaxUrl,
+			dataType: 'json',
+			async:false,
 			success: function (response){
 				var ranked = false;
 				console.log('ajax success');
-				list = response.results;
-				for (var j=0,len=list.length;j<len;j++) {
-					if (list[j].trackId === appId) {
-						allKeywords[atIndex]["rank"] = j;
+				console.log('response: ', response);
+				for (var j=0,len=response.length;j<len;j++) {
+					console.log('j=',j);
+					if (response[j].trackId === appId) {
+						allKeywords[atIndex]["rank"] = j+1;
 						ranked = true;
-						console.log("FOUND MATCH!, j=",j);
-						break;
+						console.log("FOUND MATCH!, j+1 =", j+1, 'j=', j);
+
 					}
 					// if looped through all results without a match
 					if (j === (len-1)){
@@ -289,6 +307,14 @@
 						}
 					}
 				}
+				ajaxCalls += 1;
+				if (ajaxCalls === length){		
+					console.log('ALL AJAX CALLS FINISHED!');
+					checkImportantCombos(allKeywords);
+
+				}
+
+
 			}
 		});
 	}
@@ -306,8 +332,9 @@
 					}
 				});
 			}
-		if (index === (allKeywords.length -1)){
+		if (index === (allKeywords.length - 1)){
 			console.log(allKeywords);
+			renderResult(allKeywords);
 		}
 		});
 	}
@@ -328,6 +355,17 @@
 			}
 		})
 	});
+
+	function renderResult(allKeywords){
+		console.log('renderResult called');
+		var HTML = [];
+		allKeywords.forEach(function(keywordObject){
+			HTML.push('<tr><td>' + keywordObject.keyword + '</td><td>' + keywordObject.rank + '</td></tr>');
+		});
+		console.log(HTML);
+		$("#rank_table").append(HTML);
+
+	}
 
 			
 
