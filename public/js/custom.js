@@ -7,7 +7,7 @@
 	var step2 = $("#step2");
 	var step3 = $("#step3");
 	var HTML = [];
-
+	var joinedHTML = "";
 	var diagnose_button = $("#diagnose_button");
  	var argument_div = $("#argument_div");
  	var auto_search = $("#auto_search");
@@ -116,19 +116,22 @@
 			console.log('its an array');
 			keywords.forEach(function (keyword){
 				allKeywords.push({
-						"keyword"         : keyword, 
-						"title_keyword"   : fromTitle, 
-						"single_keyword"  : singleKeyword,
-						"combinations"    : []
+						"keyword"           : keyword, 
+						"title_keyword"     : fromTitle, 
+						"single_keyword"    : singleKeyword,
+						"combinations"      : [],
+						"good_combinations" : false
+
 					});
 				});
 		} else {
 				console.log('its a string');
 				allKeywords.push({
-						"keyword"         : keywords, 
-						"title_keyword"   : fromTitle, 
-						"single_keyword"  : singleKeyword,
-						"combinations"    : [] 
+						"keyword"           : keywords, 
+						"title_keyword"     : fromTitle, 
+						"single_keyword"    : singleKeyword,
+						"combinations"      : [],
+						"good_combinations" : false
 					});
 		}
 		renderKeywords(allKeywords);
@@ -268,13 +271,6 @@
 	}
 
 
-/*	$(document).ajaxStop(function() {
-		console.log('ajax stop triggered');
-		// very unefficient! FIND A BETTER WAY!!
-		checkImportantCombos(allKeywords);
-	  // place code to be executed on completion of last outstanding ajax call here
-	});
-*/
 
 
 
@@ -314,7 +310,7 @@
 				ajaxCalls += 1;
 				if (ajaxCalls === length){		
 					console.log('ALL AJAX CALLS FINISHED!');
-					checkImportantCombos(allKeywords);
+					insertKeywordCombinations(allKeywords);
 
 				}
 
@@ -323,7 +319,7 @@
 		});
 	}
 
-	function checkImportantCombos(allKeywords){
+	function insertKeywordCombinations(allKeywords){
 		allKeywords.forEach(function (singleKeywordObject,index){
 			if (singleKeywordObject.single_keyword === true){
 				allKeywords.forEach(function (doubleKeywordObject){
@@ -338,10 +334,33 @@
 			}
 		if (index === (allKeywords.length - 1)){
 			console.log(allKeywords);
+			addGoodCombosStamp(allKeywords);
 			createKeywordArray(allKeywords);
 		}
 		});
 	}
+
+
+	function addGoodCombosStamp(allKeywords){
+		allKeywords.forEach(function(keywordObject){ 
+			var hasGoodCombo = false;
+			if (keywordObject.combinations.length > 0){
+				keywordObject.combinations.forEach(function(combosObject){
+					if (combosObject.rank <= 15){
+						hasGoodCombo = true;
+					}
+				});
+				if (hasGoodCombo === true){
+					keywordObject["good_combinations"] = true;
+				} 
+			}
+		});
+		console.log('allkeywords after addGoodCombosStamp: ', allKeywords);
+		createKeywordArray(allKeywords);
+		createPieArray(allKeywords);
+	}
+
+
 
 
 	$("#email_input_button").click(function(){
@@ -358,13 +377,32 @@
 				appName: appName, 
 				email: email_address,
 				report: JSON.stringify(allKeywords),
-				html: HTML
+				html: joinedHTML
 			},
 			success: function(response){
 				console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);	
 			}
 		})
 	});
+
+
+	function createPieArray(allKeywords){
+		var approved_keywords = [];
+		var disapproved_keywords = [];
+		allKeywords.forEach(function(keywordObject){
+			if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === false){
+				disapproved_keywords.push(keywordObject.keyword);
+			}
+			else if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === true){
+				approved_keywords.push(keywordObject.keyword);
+			}
+			else if (keywordObject.rank >= 15 && keywordObject.single_keyword === true){
+				approved_keywords.push(keywordObject.keyword);
+			}
+		});
+		var pieData = [approved_keywords.length,disapproved_keywords.length]
+		renderPie(pieData);
+	}
 
 
 	function createKeywordArray(allKeywords){
@@ -385,54 +423,40 @@
 		    }
 		});
 
-
 		console.log(keywordsArray);
-		renderResult(keywordsArray);
-		//renderPie(allKeywords);
+		renderTable(keywordsArray);
 	}
 
 
-	function renderResult(keywordsArray){
+	function renderTable(keywordsArray){
 		$("#email_div").show();
-		console.log('renderResult called');
+		console.log('renderTable called');
 		HTML = [];
+		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Verdict</th></tr>');
 		keywordsArray.forEach(function(keywordObject){
-			console.log('keywordObject: ', keywordObject);
-			HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td>');
+			//console.log('keywordObject: ', keywordObject);
 
 			if (keywordObject[1].rank >= 15){
-				if (keywordObject[1].combinations.length>0){
-					console.log('has combos');
-					var highRankingComboKeywords = [];
-					var hasHighRankingCombo = false;
-					keywordObject[1].combinations.forEach(function(comboObject){
-						if (comboObject.rank <=15){
-							hasHighRankingCombo = true;
-							highRankingComboKeywords.push(comboObject.keyword);
-
-						}
-					});
-						if (hasHighRankingCombo === true){
-							HTML.push('<td >Bad keyword. But is important for "' + highRankingComboKeywords + '"</td></tr>');
-
-						} else if (hasHighRankingCombo === false){
-							HTML.push('<td class="bad">Bad keyword. Swap it out!</td></tr>');
-						}
-				}
-				else{
-					console.log('no combos');
-					HTML.push('<td class="bad">Bad keyword. Swap it out!</td></tr>');
-
+				
+				if (keywordObject[1].good_combinations === true){
+					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos"</td></tr>');
+				
+				} else {
+					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
 				}
 			}
-			else if (keywordObject[1].rank < 15){
-				HTML.push('<td class="good">Good keyword. Keep it!</td></tr>');
+			else if (keywordObject[1].rank < 15) {
+				HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="good">Good keyword. Keep it!</td></tr>');
 			}
-
 		});
+
 		console.log(HTML);
-		table_header = '<tr><th>Keyword</th><th>Your ranking</th><th>Verdict</th></tr>';
-		$("#rank_table").append(table_header.concat(HTML));
+		joinedHTML = HTML.join("");
+		console.log(joinedHTML);
+
+		$("#rank_table").append(HTML);
+
+
 	}
 
 
@@ -441,7 +465,7 @@
 
 // PASTED IN FROM PREVIOUS PROJECT
 
-	function renderPie(allKeywords){
+	function renderPie(pieData){
 
 		allKeywords.forEach(function(keywordObject){
 			
