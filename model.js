@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 var db = require ('mongojs').connect('mongodb://crapwords:crapwords@ds039281.mongolab.com:39281/crapwords', ['userdata','keywordresults']);
 var screenshot = require('./screenshot'); 
 var oid = require("mongodb").ObjectID;
 
 function user(email, search) {
+=======
+var db = require ('mongojs').connect('mongodb://crapwords:crapwords@ds039281.mongolab.com:39281/crapwords', ['userdata']);
+var screenshot = require('./screenshot');
+var oid = require("mongodb").ObjectID;
+
+function user(email, searches){
+>>>>>>> master
 	this.email = email;
-	this.search = search;
+	this.searches = searches;
 }
 
 function keywordDocument(keyword,device,results){
@@ -57,28 +65,55 @@ function saveKeywordResults(keyword,device,results){
 
 }	
 function save(object, request){
-	
-	var newUser = new user(object.email, object.report);
+	var searches = [];
+	var search = {};
+	search["keywords"] = object.report;
+	search["date"] = Date.now();
 
-	db.userdata.save(newUser, function(err, savedUser){
-		if(err || !savedUser){
-			console.log("ERROR not saved because of ", err);
+	searches.push(search);
+	
+	var newUser = new user(object.email, searches);
+
+	db.userdata.find({email: object.email}, function(err, data){
+		if(data.length == 0){
+			console.log("user does not exist. Creating new document");
+			db.userdata.save(newUser, function(err, savedUser){
+				if(err || !savedUser){
+					console.log("ERROR not saved because of ", err);
+				}
+				fetchId(object.email, request);
+			});
+		} else {
+			console.log("user exists. updating document");
+			db.userdata.update({"email": object.email},
+				{
+					$push: {
+					"searches": search
+					}
+				}
+			);
+			fetchId(object.email, request);
 		}
-		fetchId(object.email, request);
 	});
 }
 
 function fetchData(id, reply){
+<<<<<<< HEAD
 	db.userdata.find({ _id: oid(id)}, function(err, allData){
+=======
+	db.userdata.find({_id: oid(id)}, function(err, allData){
+		var recentsearch = allData[0].searches.length - 1;
+>>>>>>> master
 		if(err || !allData){
 			console.log("No data found");
 		} else {
 			console.log("successfully found document in db");
-			reply(allData); 
+			reply(allData[0].searches[recentsearch].keywords); 
 		}
 	});
 }
 
+<<<<<<< HEAD
 function fetchKeywordResultsFromDB(keyword,device,callback){
 	console.log('fetchKeywordResultsFromDB triggered');
 	
@@ -128,6 +163,8 @@ function fetchKeywordResultsFromDB(keyword,device,callback){
 	});
 }
 
+=======
+>>>>>>> master
 function fetchId(emailAddress, request){
 	db.userdata.find( {email: emailAddress}, function(err, data){
 		if(err || !data){

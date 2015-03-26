@@ -4,8 +4,8 @@ var server = new Hapi.Server();
 var handler = require('../handler.js');
 
 server.connection({
-	host: "localhost",
-	port: process.env.PORT || 8000
+    port: process.env.PORT || 8000,
+	host: '0.0.0.0'
 });
 
 
@@ -92,8 +92,8 @@ server.route({
    
 //** RUNNING THE SERVER **//
 
-server.start(function () {
-    console.log('Server running at:', server.info.uri);
-});
+// server.start(function () {
+//     console.log('Server running at:', server.info.uri);
+// });
 
 module.exports = server;
