@@ -484,14 +484,14 @@ window.oncontextmenu = null;
 		step5.show();
 		console.log('renderTable called');
 		HTML = [];
-		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Verdict</th></tr>');
+		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Feeddback</th></tr>');
 		keywordsArray.forEach(function(keywordObject){
 			//console.log('keywordObject: ', keywordObject);
 
 			if (keywordObject[1].rank >= 15){
 				
 				if (keywordObject[1].good_combinations === true){
-					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos"</td></tr>');
+					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos</td></tr>');
 				
 				} else {
 					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
@@ -539,20 +539,20 @@ window.oncontextmenu = null;
 		var data = [approved_keywords.length, disapproved_keywords.length];
 		var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
 		var keyword_advices = [];
-		keyword_advices.push('<h3 class="pie_title">Approved keywords</h3>');
-		keyword_advices.push("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
+		keyword_advices.push('<h3 class="pie_title">Good Keywords</h3>');
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well, however, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
 		approved_keywords.forEach(function(approved_word){
 		keyword_advices.push('<li class="item">'+ approved_word +'</li>');
 		});
 
-		keyword_advices.push('<h3 class="pie_title">Crappy keywords</h3>');
-		keyword_advices.push("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
+		keyword_advices.push('<h3 class="pie_title">Bad Keywords</h3>');
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are badly ranked and should be swapped out.</p>");
 		disapproved_keywords.forEach(function(crapword){
 		keyword_advices.push('<li class="item red">'+ crapword+'</li>');
 		});
 
-		keyword_advices.push('<h3 class="pie_title">Keyword quality ratio</h3>');
-		keyword_advices.push("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
+		keyword_advices.push('<h3 class="pie_title">Keyword Quality Ratio</h3>');
+		keyword_advices.push("<p class='pie_text'>Below is a pie chart displaying you ratio between the good keywords and the bad ones.</p>");
 		
 		console.log('keyword_advices: ', keyword_advices);
 		joined_keyword_advices =keyword_advices.join("");
@@ -601,7 +601,7 @@ window.oncontextmenu = null;
 						.attr("fill", function(d){ return color(d.data);})
 
 		$("#svg_div").append('<h3 class="pie_title">Ok... Now what?</h3>');
-		$("#svg_div").append("<ol id='instructions'><li id='pie_text'>Find new keywords you can replace the crappy ones with.</li><li id='pie_text'>Update the app with the new keywords.</li><li id='pie_text'>Run this test again to check if the new keywords are approved.</li><li id='pie_text'>Repeat until all keywords are approved, and you'll see a significant increase in downloads.</li></ol>");	
+		$("#svg_div").append("<ol id='instructions'><li id='pie_text'>Find new keywords you can replace the bad ones with.</li><li id='pie_text'>Update the app with the new keywords.</li><li id='pie_text'>Run this test again to check if the new keywords are approved.</li><li id='pie_text'>Repeat until all keywords are approved, and you'll see a significant increase in downloads.</li></ol>");	
 
 }
 

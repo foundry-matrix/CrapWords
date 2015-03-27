@@ -6,14 +6,10 @@ $(document).ready(function(){
   function fetch(id){
     $.getJSON('http://'+id[2]+'/fetchdata/'+id[3], function(data){
       if (data){
-          console.log("TABLE");
         table(data);
-          console.log("piearray");
-        createPieArray(data);
-          console.log("barchart");
-        barChart(data);
-          console.log("piechart");
+        pieText(data);
         pieChart(data);
+        // barChart(data);
       }
     });
   }
@@ -24,8 +20,7 @@ $(document).ready(function(){
     $("#appname").append(allData.appName);
   }
 
-
-  function createPieArray(data){
+  function pieText(data){
     console.log("creating pie array");
     allKeywords = JSON.parse(data.keywords);
     var approved_keywords = [];
@@ -54,15 +49,15 @@ $(document).ready(function(){
     var data = [approved_keywords.length, disapproved_keywords.length];
     var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
 
-    $("#pietext").append('<h3 class="pie_title">Approved keywords</h3>');
-    $("#pietext").append("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
+    $("#pietext").append('<h3 class="pie_title">Good Keywords</h3>');
+    $("#pietext").append("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well, however, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
     
     approved_keywords.forEach(function(approved_word){
     $("#pietext").append('<li class="item">'+ approved_word +'</li>');
     });
 
-    $("#pietext").append('<h3 class="pie_title">Crappy keywords</h3>');
-    $("#pietext").append("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
+    $("#pietext").append('<h3 class="pie_title">Bad Keywords</h3>');
+    $("#pietext").append("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are badly ranked and should be swapped out.</p>");
    
 
     disapproved_keywords.forEach(function(crapword){
@@ -104,8 +99,8 @@ $(document).ready(function(){
             .attr("d", arc)
             .attr("fill", function(d){return color(d.data);})
     
-    $("#pietext").append('<h3 class="pie_title">Keyword quality ratio</h3>');
-    $("#pietext").append("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
+    $("#pietext").append('<h3 class="pie_title">Keyword Quality Ratio</h3>');
+    $("#pietext").append("<p class='pie_text'>Below is a pie chart displaying the ratio between the good keywords and bad ones.</p>");
 
     }
 
