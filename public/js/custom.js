@@ -101,6 +101,10 @@ window.oncontextmenu = null;
 	    $('#modal-choose-device').modal('show');
 	});
 
+	$("#modal-clicker-combinations").on('click', function(){
+	    $('#modal-combinations').modal('show');
+	});
+
 	
 
 
