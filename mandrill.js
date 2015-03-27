@@ -80,7 +80,7 @@ function sendEmail (emailAddress, mongoid) {
     var send_at = '';
     mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool, "send_at": send_at}, function(result) {
         console.log('Email sent ----', result);
-        fs.unlink(mongoid+".pdf", function (err) {
+        fs.unlink('reports/'+mongoid+".pdf", function (err) {
           if (err) throw err;
           console.log('successfully deleted report');
         });
