@@ -82,7 +82,7 @@ body {
 
 
 .app_info{
-	margin: 0 auto;
+	margin-top: 25px;
 	text-align: center;
 }
 
@@ -149,7 +149,7 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#69BE79', endColorstr='#107331',GradientType=0 ); 
 
 	background: #08DC30;	
-	border:1px solid #1F7D3D;
+	border:0px solid #1F7D3D;
 	line-height:28px;
 	overflow: visible;
 	font-weight:normal;
@@ -281,6 +281,8 @@ body {
 
 #step3{
 	display:none;
+	margin-bottom: 15px;
+
 }
 
 #step4{
@@ -292,9 +294,15 @@ body {
 
 #step5{
 	display:none;
+	margin-bottom: 10px;
+
 }
 
 
+#step6{
+	display:none;
+	text-align: center;
+}
 
 .button {
 	background-color: #EEBF3F;
@@ -308,9 +316,20 @@ body {
 }
 
 #auto_search{
+	width: 480px;
 	display: block;
 	margin-top: 35px;
 }
+
+
+.ui-menu-item{
+  width: 480px !important;
+}
+
+#ui-id-1{
+ width: 480px !important;
+}
+
 
 
 /* Hiding diagnose_button */
@@ -320,7 +339,6 @@ body {
 }
 
 .app_info{
-	display:none;
 }
 
 #icon_img{
