@@ -89,14 +89,15 @@ window.oncontextmenu = null;
 
 
 
-
-	$("#modal-clicker1").on('click', function(){
-	    $('#modal-content1').modal('show');
+	$("#modal-clicker-why-bother").on('click', function(){
+	    $('#modal-why-bother').modal('show');
+	});
+	
+	$("#modal-clicker-how-to-fetch").on('click', function(){
+	    $('#modal-how-to-fetch').modal('show');
 	});
 
-	$("#modal-clicker2").on('click', function(){
-	    $('#modal-content2').modal('show');
-	});
+	
 
 
 	function hideAndShow(element1,element2){
