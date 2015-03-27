@@ -1,45 +1,82 @@
 $(document).ready(function(){
-  var testdata = [{"keyword":"game", "rank":6},{"keyword":"fun", "rank":10},{"keyword":"child", "rank":2},{"keyword":"racing", "rank":15},{"keyword":"fast", "rank":12},{"keyword":"wow", "rank":13}];
   var url = $(location).attr('href');
   var id = url.split('/');
   fetch(id);
   
-  // table(testdata);
-  // pieChart(testdata);
-  // barChart(testdata);
-
   function fetch(id){
     $.getJSON('http://'+id[2]+'/fetchdata/'+id[3], function(data){
       if (data){
-        console.log(data);
+          console.log("TABLE");
         table(data);
-        pieChart(data);
+          console.log("piearray");
+        createPieArray(data);
+          console.log("barchart");
         barChart(data);
+          console.log("piechart");
+        pieChart(data);
       }
     });
   }
 
   function table(allData){
-    var data = allData.html;
-    $("#reporttable").append(data);
+    console.log("rendering table");
+    $("#reporttable").append(allData.html);
+    $("#appname").append(allData.appName);
   }
 
-  function pieChart(allData){
-    var data = allData.keywords;
-    var goodwords = [];
-    var badwords = [];
 
-    for (var i=0; i<data.length; i++){
-      if(data[i].rank < 10){
-        goodwords.push(data[i].keyword);
-      } else {
-        badwords.push(data[i].keyword);
+  function createPieArray(data){
+    console.log("creating pie array");
+    allKeywords = JSON.parse(data.keywords);
+    var approved_keywords = [];
+    var disapproved_keywords = [];
+    allKeywords.forEach(function(keywordObject){
+      if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === false){
+        disapproved_keywords.push(keywordObject.keyword);
       }
-    }
+      else if (keywordObject.rank >= 15 && keywordObject.single_keyword === true && keywordObject.good_combinations === true){
+        approved_keywords.push(keywordObject.keyword);
+      }
+      else if (keywordObject.rank < 15 && keywordObject.single_keyword === true){
+        approved_keywords.push(keywordObject.keyword);
+      }
+    });
+    console.log('approved_keywords:', approved_keywords);
+    console.log('disapproved_keywords:', disapproved_keywords);
 
-    var piedata = [goodwords.length, badwords.length];
+    
+    createPieText(approved_keywords,disapproved_keywords);
+  }
 
-    var r =100;
+  function createPieText(approved_keywords,disapproved_keywords){
+    console.log("creating pie text");
+
+    var data = [approved_keywords.length, disapproved_keywords.length];
+    var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
+
+    $("#pietext").append('<h3 class="pie_title">Approved keywords</h3>');
+    $("#pietext").append("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
+    
+    approved_keywords.forEach(function(approved_word){
+    $("#pietext").append('<li class="item">'+ approved_word +'</li>');
+    });
+
+    $("#pietext").append('<h3 class="pie_title">Crappy keywords</h3>');
+    $("#pietext").append("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
+   
+
+    disapproved_keywords.forEach(function(crapword){
+    $("#pietext").append('<li class="item red">'+ crapword+'</li>');
+    });
+
+  }
+
+  function pieChart(data){
+    console.log("rendering pie");
+
+    var piedata = data.pieData;
+
+    var r = 100;
     var color = d3.scale.ordinal()
           .range(["rgb(148, 210, 142)", "#D84343"]);
 
@@ -55,7 +92,7 @@ $(document).ready(function(){
             .attr("transform", "translate(100,100)");
 
     var pie = d3.layout.pie()
-          .value(function(d){console.log(d); return d;})
+          .value(function(d){return d;})
 
     var arcs = group.selectAll(".arc")
             .data(pie(piedata))
@@ -65,12 +102,18 @@ $(document).ready(function(){
             
           arcs.append("path")
             .attr("d", arc)
-            .attr("fill", function(d){ console.log(d); return color(d.data);})
-  }
+            .attr("fill", function(d){return color(d.data);})
+    
+    $("#pietext").append('<h3 class="pie_title">Keyword quality ratio</h3>');
+    $("#pietext").append("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
 
-  function barChart(allData){
-    var dataset = allData.keywords;
-    var margin = {top: 40, right: 20, bottom: 30, left: 40},
+    }
+
+  function barChart(data){
+    console.log("rendering bar");
+
+    var dataset = JSON.parse(data.keywords);
+    var margin = {top: 40, right: 20, bottom:150, left: 40},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -108,7 +151,15 @@ $(document).ready(function(){
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+        .call(xAxis)
+        .selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .style("font-size","15px")
+            .attr("transform", function(d) {
+                return "rotate(-65)" 
+                });
 
     svg.append("g")
         .attr("class", "y axis")
@@ -118,7 +169,6 @@ $(document).ready(function(){
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Rank");
 
     svg.selectAll(".bar")
         .data(dataset)

@@ -6,18 +6,16 @@ function sendEmail (emailAddress, mongoid) {
     var email = fs.readFileSync('views/email.html').toString();
     var report = fs.readFileSync(mongoid+".pdf");
     var base64str = Buffer(report).toString('base64'); 
-    var img = fs.readFileSync("public/img/article1.png");
-    var img64 = Buffer(img).toString('base64'); 
 
     var message = {
         "html": email,
-        "text": "This is your App report from Keyword King",
-        "subject": "App Report from Keyword King",
+        "text": "This is your App report from Keyword KING",
+        "subject": "App Report from Keyword KING",
         "from_email": "greg.aubert@yahoo.co.uk",
-        "from_name": "Keyword King",
+        "from_name": "Keyword KING",
         "to": [{
                 "email": emailAddress,
-                "name": "Keyword King",
+                "name": "Keyword KING",
                 "type": "to"
             }],
         "headers": {
@@ -68,14 +66,14 @@ function sendEmail (emailAddress, mongoid) {
             }],
          "attachments": [{
                  "type": "application/pdf",
-                 "name": "Keyword King App Report.pdf",
+                 "name": "Keyword KING App Report.pdf",
                  "content": base64str
              }],
-        "images": [{
-                "type": "image/png",
-                "name": "article1.png",
-                "content": img64
-            }]
+        // "images": [{
+        //         "type": "image/png",
+        //         "name": "article1.png",
+        //         "content": "3223F34F3CSDSDVSDV"
+        //     }]
         };
     var async = false;
     var ip_pool = "Main Pool";
