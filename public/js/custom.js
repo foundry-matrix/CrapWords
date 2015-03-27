@@ -1,7 +1,10 @@
+
+window.oncontextmenu = null;
 	$(document).ready(function(){
 	console.log('jquery is ready!!!');
 	var appName, isValid, device;
 	var allKeywords = [];
+	var app_info = $("#app_info");
 	var step0 = $("#step0");
 	var step1 = $("#step1");
 	var step2 = $("#step2");
@@ -9,9 +12,13 @@
 	var step4 = $("#step4");
 	var step5 = $("#step5");
 
+	var joined_keyword_advices = "";
+	var keyword_advices = [];
 	var HTML = [];
+	var pieData = [];
 	var joinedHTML = "";
 	var diagnose_button = $("#diagnose_button");
+	diagnose_button.hide();
  	var argument_div = $("#argument_div");
  	var auto_search = $("#auto_search");
  	var keyword_container = $("#keyword_container");
@@ -68,23 +75,19 @@
             success: function(response){
             	console.log(response);				
 				name = response.results[0].trackName;
-				img_url = response.results[0].artworkUrl60	
+				img_url = response.results[0].artworkUrl60;
 				$("#app_icon").append("<img id='icon_img' src=" + img_url +">");
 				$("#app_title").append(name);
 				appName = name;
 				appId = response.results[0].trackId;
-			
-				renderStep3()
-		}
+				hideAndShow(step2,step3);	
+				show(app_info);
+			}
+
 	});
 	}
 
-	$("#step0_button").click(function(){
-		step0.hide();
-		step1.show();
-		$("#help_text").hide();
-		$("#tagline").hide();
-	});
+
 
 	$("#modal-clicker-why-bother").on('click', function(){
 	    $('#modal-why-bother').modal('show');
@@ -101,19 +104,49 @@
 	
 
 
+	function hideAndShow(element1,element2){
+		console.log('hideandshow triggered, element1: ', element1);
 
-
-	function renderStep3(){
-		step2.hide();
-		step3.show();
+		element1.fadeOut('fast', function(){
+			element2.fadeIn('fast');
+		})
 	}
+
+	// SHOWING AND HIDING THE VARIOUS STEPS
+	function show(jQueryElement){
+		console.log('show triggered, jQueryElement: ', jQueryElement);
+
+		jQueryElement.fadeIn('fast');
+	}
+
+	function hide(jQueryElement){
+		console.log('hide triggered');
+		jQueryElement.fadeOut('fast');
+
+	}
+
+	$("#step0_button").click(function(){
+		hideAndShow(step0,step1);
+		//hide( step0 );	
+		hide($("#help_text"));
+		hide($("#tagline"));
+		//show( step1 );
+	});
+
+
+
 
 	$(".step1_button").click(function(){
 		device = this.name;
 		console.log('device: ',device);
-		step1.hide();
-		step2.show();
+		hideAndShow(step1,step2);
 	});
+
+
+	function renderStep4(){
+		hideAndShow(step3,step4);
+		show(diagnose_button);
+	}
 
 	$("#single_keyword_form").submit(function(e){
 	    e.preventDefault();
@@ -126,8 +159,20 @@
 	    cleanUpSingleKeywords(str, false);
 	    fetchKeywordsFromTitle();
 	   	
+
+
 	   	renderStep4();
 	
+	});
+
+	$("#diagnose_button").click(function(){
+		$(".spinner").show();
+		hide(step4);
+		hide(diagnose_button);
+		hide(keyword_container);
+		setTimeout(function(){
+			getKeywordResults(allKeywords);
+		}, 500);
 	});
 
 
@@ -190,12 +235,6 @@
 		console.log('allKeywords: ', allKeywords);
 	}
 
-
-	function renderStep4(){
-		step3.hide();
-		step4.show();
-		diagnose_button.show();
-	}
 
 	$("#double_keyword_form").submit(function(e){
 		e.preventDefault();
@@ -279,16 +318,6 @@
 		}
 	}
 
-	$("#diagnose_button").click(function(){
-		console.log('diagnose_button clicked');
-		$(".spinner").show();
-		step4.hide();
-		diagnose_button.hide();
-		keyword_container.hide();
-		setTimeout(function(){
-			getKeywordResults(allKeywords);
-		}, 500);
-	});
 
 
 	function getKeywordResults(allKeywords){
@@ -409,10 +438,12 @@
 			url: ajaxUrl,
 			method: "POST",
 			data: {
-				appName: appName, 
-				email: email_address,
-				report: JSON.stringify(allKeywords),
-				html: joinedHTML
+				appName         : appName, 
+				email           : email_address,
+				report          : JSON.stringify(allKeywords),
+				html            : joinedHTML,
+				keywordAdvice   : joined_keyword_advices,
+				pieData         : pieData
 			},
 			success: function(response){
 				console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);	
@@ -503,23 +534,28 @@
 
 		var data = [approved_keywords.length, disapproved_keywords.length];
 		var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
-
-		$("#svg_div").append('<h3 class="pie_title">Approved keywords</h3>');
-		$("#svg_div").append("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
+		var keyword_advices = [];
+		keyword_advices.push('<h3 class="pie_title">Approved keywords</h3>');
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
 		approved_keywords.forEach(function(approved_word){
-		$("#svg_div").append('<li class="item">'+ approved_word +'</li>');
+		keyword_advices.push('<li class="item">'+ approved_word +'</li>');
 		});
 
-		$("#svg_div").append('<h3 class="pie_title">Crappy keywords</h3>');
-		$("#svg_div").append("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
+		keyword_advices.push('<h3 class="pie_title">Crappy keywords</h3>');
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
 		disapproved_keywords.forEach(function(crapword){
-		$("#svg_div").append('<li class="item red">'+ crapword+'</li>');
+		keyword_advices.push('<li class="item red">'+ crapword+'</li>');
 		});
 
-		$("#svg_div").append('<h3 class="pie_title">Keyword quality ratio</h3>');
-		$("#svg_div").append("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
-		var pieData = [approved_keywords.length,disapproved_keywords.length]
+		keyword_advices.push('<h3 class="pie_title">Keyword quality ratio</h3>');
+		keyword_advices.push("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
+		
+		console.log('keyword_advices: ', keyword_advices);
+		joined_keyword_advices =keyword_advices.join("");
+		$("#svg_div").append(joined_keyword_advices);
+		pieData = [approved_keywords.length,disapproved_keywords.length]
 		renderPie(pieData);
+		
 	}
 
 

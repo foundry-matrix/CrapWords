@@ -160,11 +160,13 @@
 			<div class="row">
 				<img class="title-logo" src="public/img/treasure3.jpg">	
 			</div>
+
 			<h1 class="title"><span class="title-keyword">Keyword</span><span class="title-king"> King</span></h1>
 			<p id="tagline">Identify your iOS app's underperforming keywords in one minute and <span class="subtitle-rule"> rule  the app store.</span></p>
-			<div id="app_icon"></div>
-			<h3 id="app_title"></h3>
-
+			<div class="app_info">
+				<div id="app_icon"></div>
+				<h3 id="app_title"></h3>
+			</div>
 		  			<!-- LOADING WHEEL FOR WHEN THE REPORT IS GENERATED -->
 			<div class="spinner">
 				  <div class="spinner-container container1">
@@ -205,7 +207,7 @@
 				<div id="argument_div" class="row">
 					<div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
 						<h3 class="reason-header">STEP 1</h3>
-						<p class="reason-text">Enter your app's name </p>
+						<p class="reason-text">Enter your app's name or id</p>
 						<span class="col-md-12 col-lg-12 col-sm-12 col-xs-12 reason-span">
 							<i class="fa fa-pencil-square-o fa-5 reason-img"></i>	
 						</span>	
@@ -229,20 +231,24 @@
 			</div>
 
 
+<div id="step1" class="step">
+	<p>Which device is most important for your core users?</p>
+	<div id="help_text">
+		<p id="modal-clicker-choose-device" class="modal-clicker"><a href="#">Why do I have to choose one?</a></p>
+	</div>
+
+	<div class="row">
+	<div class="col-lg-4 col-lg-offset-3 col-md-offset-3 col-md-4 col-sm-offset-3 col-sm-4 col-xs-offset-1 col-xs-6 device-container">
+		<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
+	</div>
+	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 device-container">
+		<input type="image" id="iphone" name="software" alt="iphone" class="step1_button" src="public/img/iphone2.jpg"/>
+	</div>
+</div>
+
+</div>
 
 
-
-			<div id="step1" class="step">
-				<div id="help_text">
-					<p id="modal-clicker-choose-device" class="modal-clicker"><a href="#">Why do I have to choose one?</a></p>
-				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 device-container">
-					<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
-				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 device-container">
-					<input type="image" id="iphone" name="software" alt="iphone" class="step1_button" src="public/img/iphone2.jpg"/>
-				</div>
-			</div>
 
 
 			
@@ -252,32 +258,45 @@
 			<div id="step3" class="step">
 				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker-how-to-fetch" class="modal-clicker" ><p class="help">Get instructions!</p></a>
 				<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
-					<input type="text" id="single_keywords_input" />
-					<input type="submit" value="Add!" />
-					<br/>
-				</form>
+				<input type="text" class="form-control"  id="single_keywords_input" />
+				<input type="submit" value="Add!" class="btn button"/>
+				<br/>
+			</form>
+
+			</div>
 			</div>
 			
 
 
 			<div id="step4" class="step"><h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
 				<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
-					<input type="text" name="double_keywords_input" id="double_keywords_input" />
-					<input type="submit" value="Add!" />
+					<input type="text" class="form-control"  name="double_keywords_input" id="double_keywords_input" />
+					<input type="submit" value="Add!" class="btn button" />
 					<br/>
 				</form>
 			</div>
 					
 
 			<div id="step5" class="step">
-					<input type="text" name="email" id="email_input_field" placeholder="Enter your email..."/>
-					<input type="submit" id="email_input_button"/>
+					<input type="text" name="email" id="email_input_field" class="form-control" placeholder="Enter your email..."/>
+					<input type="submit" id="email_input_button" class="btn button"/>
 			</div>
 			<ul id="keyword_container"></ul>
-			<input type="submit" value="Get diagnosis!" id="diagnose_button">
+			<div>
 
+<input type="submit" class="btn btn-lg button" id="diagnose_button"  value="Get diagnosis!">
+</input>
+
+
+		<!--	<input type="submit" id="diagnose_button" class="btn button">
+-->
+
+
+		</div>
 			<table id="rank_list"></table>
-			<table id="rank_table"></table>
+			<div>
+				<table id="rank_table"></table>
+			</div>
 			<div id="svg_div" class="col-md-10 col-lg-12 col-sm-10 col-xs-10"></div>
 
 		</div> 
