@@ -487,14 +487,19 @@ window.oncontextmenu = null;
 		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Feeddback</th></tr>');
 		keywordsArray.forEach(function(keywordObject){
 			//console.log('keywordObject: ', keywordObject);
-
 			if (keywordObject[1].rank >= 15){
-				
-				if (keywordObject[1].good_combinations === true){
-					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos</td></tr>');
-				
+				if (keywordObject[1].rank === 50){
+					if (keywordObject[1].good_combinations === true){
+						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos</td></tr>');
+					} else {
+						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
+					}
 				} else {
-					HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
+					if (keywordObject[1].good_combinations === true){
+						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos</td></tr>');
+					} else {
+						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
+					}
 				}
 			}
 			else if (keywordObject[1].rank < 15) {
