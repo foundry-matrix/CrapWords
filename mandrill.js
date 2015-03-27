@@ -4,7 +4,7 @@ var fs = require("fs");
 
 function sendEmail (emailAddress, mongoid) {
     var email = fs.readFileSync('views/email.html').toString();
-    var report = fs.readFileSync(mongoid+".pdf");
+    var report = fs.readFileSync('reports/'+mongoid+".pdf");
     var base64str = Buffer(report).toString('base64'); 
 
     var message = {
