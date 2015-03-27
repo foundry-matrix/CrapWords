@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 	<head>   
-		<title>App Store Optimsisation - Free Tool | Keyword King</title>
+		<title>Keyword King</title>
 		<meta name="description" content="Get an instant keyword report to improve the App Store Optimisation for your app. No signup needed. It's free and takes less than one minute.">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="robots" content="index,follow"/>
 		<meta name="keywords" content="app store optimisation,app store optimization,free keyword, keyword tool,diagnosis,app,report"/> 
 		<link href='https://fonts.googleapis.com/css?family=Khula:400,700' rel='stylesheet' type='text/css'>
-		<link rel="icon" type="image/png"  href="http://iconhandbook.co.uk/favicon.ico">
+		<link rel="icon" type="image/png"  href="public/img/favicon.ico">
 		<link rel="stylesheet" href="public/css/jquery-ui.css" />
 		<link href="public/css/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="public/css/style.css" />
@@ -132,8 +132,6 @@
 			<h1 class="title"><span class="title-keyword">Keyword</span><span class="title-king"> King</span></h1>
 			<p id="tagline">Identify your iOS app's underperforming keywords in one minute and <span class="subtitle-rule"> rule  the app store.</span></p>
 			<div class="app_info">
-				<div id="app_icon"></div>
-				<h3 id="app_title"></h3>
 			</div>
 		  			<!-- LOADING WHEEL FOR WHEN THE REPORT IS GENERATED -->
 			<div class="spinner">
@@ -210,48 +208,47 @@
 		<input type="image" id="iphone" name="software" alt="iphone" class="step1_button" src="public/img/iphone2.jpg"/>
 	</div>
 </div>
-
 </div>
 
-
-
-			
-
-
-
-			<div id="step3" class="step">
-
-				<div class="row">
+		<div id="step3" class="step">
+			<div class="row">
 				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker1" ><p class="help">Get instructions!</p></a>
 				<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
-				<input type="text" class="form-control"  id="single_keywords_input" />
-				<input type="submit" value="Add!" class="btn button"/>
+					<input type="text" class="form-control"  id="single_keywords_input" />
+					<input type="submit" value="Add!" class="btn button"/>
 				<br/>
 			</form>
-
 			</div>
-			</div>
+		</div>
 			
 
 
-			<div id="step4" class="step"><h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
+			<div id="step4" class="step" >
+				<div class="row">
+					<h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
 				<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
 					<input type="text" class="form-control"  name="double_keywords_input" id="double_keywords_input" />
 					<input type="submit" value="Add!" class="btn button" />
 					<br/>
 				</form>
+				</div>
 			</div>
 					
 
 			<div id="step5" class="step">
-					<input type="text" name="email" id="email_input_field" class="form-control" placeholder="Enter your email..."/>
+					<input type="text" name="email" id="email_input_field" class="form-control" placeholder="Enter you email..."/>
 					<input type="submit" id="email_input_button" class="btn button"/>
 			</div>
+
+			<div id="step6">
+				<p>Thanks for using KeywordKing. A free report is on its way to your inbox!</p>
+			</div>
+
 			<ul id="keyword_container"></ul>
 			<div>
 
-<input type="submit" class="btn btn-lg button" id="diagnose_button"  value="Get diagnosis!">
-</input>
+			<input type="submit" class="btn btn-lg button" id="diagnose_button"  value="Get diagnosis!">
+			</input>
 
 
 		<!--	<input type="submit" id="diagnose_button" class="btn button">
