@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="public/css/jquery-ui.css" />
 		<link href="public/css/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="public/css/style.css" />
+		<!-- Fonts -->
 		<link href='http://fonts.googleapis.com/css?family=Lato:100,400,700,900,400italic' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 		<!-- GA script -->
@@ -36,19 +37,49 @@
 
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title">Why Bother Doing This?</h4>
+			        <h4 class="modal-title">Calling all app developers</h4>
 			      </div>
 			      
 			      <div class="modal-body">
-			        <p class="modal-text">1. Log in to <a href="https://itunesconnect.apple.com/" target="_blank">iTunes Connect</a></p>
-			        <img class="modal_img" src="public/img/itunes_connect_signin.png">
-			        <p>2. Click 'My Apps' and choose your selected app</p>
-			        <img class="modal_img" src="public/img/itunes_connect_my_apps.png">
-			        <p>3. Scroll down to the "Keywords" section</p>
-			        <img class="modal_img" src="public/img/keywords.png">
-			        <br/>
-			        <p>4. Copy all your keywords and paste them into our input field</p>
-			        <img class="modal_img" src="public/img/keywords_input_field.png">
+			      		<p>
+			      			So you've made a great app and it's in the app store. Congrats!
+			      		</p>
+			      		<p>
+			      			But wait, how do you make sure people find your app?  
+			      			<br>
+			      			It turns out that ranking highly in the app store search results is the most important thing you can do. 
+			      		</p>
+			      			<blockquote class="why-bother-quote">
+			      				<p>63% of iOS consumers use search to discover their apps.</p>
+			      				<p><small>Business Insider</small></p>
+			      			</blockquote>
+			      		<p>
+			      			Apple only gives you 100 characters to define your keywords and those you choose
+			      			will determine whether your app shows up in users' search results. 
+						</p>
+						<p>
+			      			Bottom line - <strong>you must get rid of underperforming keywords</strong> that aren't briging in users (we class underperforming keywords as those for which you rank 50th or below). 
+						</p>
+						<p>
+			      			If you're an app developer or marketer who's wondering why your app isn't getting more attention then Keyword King is for you. 
+						</p>
+						<p>
+			      			We'll instantly give you a free report that identifies your good keywords and the <strong> exact keywords that are holding you back</strong>. 
+			      		</p>
+			      		<div class="row why-bother-icon-container">
+				      		<span class="col-md-4 col-lg-4 col-sm-4 col-xs-4 reason-span">
+								<i class="fa fa-area-chart why-bother-img"></i>	
+							</span>
+							<span class="col-md-4 col-lg-4 col-sm-4 col-xs-4 reason-span">
+								<i class="fa fa-line-chart why-bother-img"></i>	
+							</span>
+							<span class="col-md-4 col-lg-4 col-sm-4 col-xs-4 reason-span">
+								<i class="fa fa-pie-chart why-bother-img"></i>	
+							</span>
+						</div>
+						<p class="why-bother-signoff">
+			      			Banish bad keywords. Rule the app store.  
+			      		</p>
 			      </div>
 
 			      <div class="modal-footer">
@@ -93,41 +124,17 @@
 
 
 
-			<!-- FIRST MODAL  Delete????  -->
-			<div class="modal fade" id="modal-content1">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title">How to choose keywod cobinations</h4>
-			      </div>
-			      
-
-				  
-			      <div class="modal-body">
-			        <p class="modal-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>			    
-			        <img class="modal_img" src="public/img/keywords_input_field.png">
-
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div><!-- /.modal-content -->
-			  </div><!-- /.modal-dialog -->
-			</div><!-- /.modal -->
-			<!-- DELETE THIS??? -->
-
-
-
 			<!-- TITLE BLOCK -->
 			<div class="row">
 				<img class="title-logo" src="public/img/treasure3.jpg">	
 			</div>
+
 			<h1 class="title"><span class="title-keyword">Keyword</span><span class="title-king"> King</span></h1>
 			<p id="tagline">Identify your iOS app's underperforming keywords in one minute and <span class="subtitle-rule"> rule  the app store.</span></p>
-			<div id="app_icon"></div>
-			<h3 id="app_title"></h3>
-
+			<div class="app_info">
+				<div id="app_icon"></div>
+				<h3 id="app_title"></h3>
+			</div>
 		  			<!-- LOADING WHEEL FOR WHEN THE REPORT IS GENERATED -->
 			<div class="spinner">
 				  <div class="spinner-container container1">
@@ -161,11 +168,14 @@
 
 
 			<div id="step0" class="step">
-					<center><input type="submit" value="Start" id="step0_button" class="btn-lg"/></btn>
+				<center><input type="submit" value="Start" id="step0_button" class="btn-lg"/></btn>
+				<div id="help_text">
+					<p id="modal-clicker-why-bother"><a href="#">Why should I do this?</a></p>
+				</div>
 				<div id="argument_div" class="row">
 					<div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
 						<h3 class="reason-header">STEP 1</h3>
-						<p class="reason-text">Enter your app's name </p>
+						<p class="reason-text">Enter your app's name or id</p>
 						<span class="col-md-12 col-lg-12 col-sm-12 col-xs-12 reason-span">
 							<i class="fa fa-pencil-square-o fa-5 reason-img"></i>	
 						</span>	
@@ -189,13 +199,27 @@
 			</div>
 
 
-			<!-- <div id="step1">
-				<input type="submit" id="ipad" value="iPad" class="step1_button"/>
-				<input type="submit" id="iphone" value="iPhone" class="step1_button" />
-			</div>
-			 -->
+
+<<<<<<< HEAD
+<div id="step1" class="step">
+	<p>Which device is most important for your core users?</p>
+
+	<div class="row">
+	<div class="col-lg-4 col-lg-offset-3 col-md-offset-3 col-md-4 col-sm-offset-3 col-sm-4 col-xs-offset-1 col-xs-6 device-container">
+		<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
+	</div>
+	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 device-container">
+		<input type="image" id="iphone" name="software" alt="iphone" class="step1_button" src="public/img/iphone2.jpg"/>
+	</div>
+</div>
+
+</div>
+
+=======
+
 
 			<div id="step1" class="step">
+>>>>>>> master
 
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 device-container">
 					<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
@@ -206,45 +230,54 @@
 			</div>
 
 
-			<!-- Homepage Explanation -->
-			<div id="help_text">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 homepage-explanation">	
-				</div>
-				<p id="modal-clicker-why-bother"><a href="#">Why bother doing this?</a></p>
-				<br>	
-			</div>
+			
 
 
 
 			<div id="step3" class="step">
-				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker-how-to-fetch" ><p class="help">Get instructions!</p></a>
+
+				<div class="row">
+				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker1" ><p class="help">Get instructions!</p></a>
 				<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
-					<input type="text" id="single_keywords_input" />
-					<input type="submit" value="Add!" />
-					<br/>
-				</form>
+				<input type="text" class="form-control"  id="single_keywords_input" />
+				<input type="submit" value="Add!" class="btn button"/>
+				<br/>
+			</form>
+
+			</div>
 			</div>
 			
 
 
 			<div id="step4" class="step"><h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
 				<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
-					<input type="text" name="double_keywords_input" id="double_keywords_input" />
-					<input type="submit" value="Add!" />
+					<input type="text" class="form-control"  name="double_keywords_input" id="double_keywords_input" />
+					<input type="submit" value="Add!" class="btn button" />
 					<br/>
 				</form>
 			</div>
 					
 
 			<div id="step5" class="step">
-					<input type="text" name="email" id="email_input_field" placeholder="Enter your email..."/>
-					<input type="submit" id="email_input_button"/>
+					<input type="text" name="email" id="email_input_field" class="form-control" placeholder="Enter your email..."/>
+					<input type="submit" id="email_input_button" class="btn button"/>
 			</div>
 			<ul id="keyword_container"></ul>
-			<input type="submit" value="Get diagnosis!" id="diagnose_button">
+			<div>
 
+<input type="submit" class="btn btn-lg button" id="diagnose_button"  value="Get diagnosis!">
+</input>
+
+
+		<!--	<input type="submit" id="diagnose_button" class="btn button">
+-->
+
+
+		</div>
 			<table id="rank_list"></table>
-			<table id="rank_table"></table>
+			<div>
+				<table id="rank_table"></table>
+			</div>
 			<div id="svg_div" class="col-md-10 col-lg-12 col-sm-10 col-xs-10"></div>
 
 		</div> 
