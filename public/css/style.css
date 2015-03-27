@@ -48,6 +48,11 @@ body {
 	font-weight: 700;
 }
 
+.modal-clicker {
+	text-align: center;
+	font-size: 18px;
+}
+
 
 
 
@@ -215,6 +220,7 @@ body {
 #ipad {
 	width: 80%;
 	margin-top:0px;
+	padding-right: 6px;
 
 }
 
@@ -222,16 +228,45 @@ body {
   width: 90%;
 }
 
+.device-row-container {
+	padding-right: 16px;
+}
+
 .device-container { 
 	text-align: center;
 }
 
-
-
-
-#step0_device {
-	
+.choose-device-help-text {
+	margin-bottom: 56px;
 }
+
+
+/*Copy and pasting keywords*/
+
+.copy-paste-highlight {
+	text-decoration: underline;
+	font-weight: 900;
+}
+
+.copy-paste-button {
+	margin-top: 4px;
+	float:right;
+	margin-right: 12%;
+}
+
+#single_keywords_input {
+	height:100px;
+}
+
+
+/*Multiple Keyword Combinations*/
+.combinations-img-container {
+	text-align: center;
+	margin:24px 0;
+}
+
+
+
 
 /* Hiding Step 1 description and form */
 #step1 {

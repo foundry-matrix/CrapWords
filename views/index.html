@@ -49,10 +49,10 @@
 			      			<br>
 			      			It turns out that ranking highly in the app store search results is the most important thing you can do. 
 			      		</p>
-			      			<blockquote class="why-bother-quote">
-			      				<p>63% of iOS consumers use search to discover their apps.</p>
-			      				<p><small>Business Insider</small></p>
-			      			</blockquote>
+		      			<blockquote class="why-bother-quote">
+		      				<p>63% of iOS consumers use search to discover their apps.</p>
+		      				<p><small>Business Insider</small></p>
+		      			</blockquote>
 			      		<p>
 			      			Apple only gives you 100 characters to define your keywords and those you choose
 			      			will determine whether your app shows up in users' search results. 
@@ -91,6 +91,38 @@
 			</div><!-- /.modal -->
 			<!-- END OF MODAL -->
 
+			<!-- MODAL - CHOOSE DEVICE -->
+			<div class="modal fade" id="modal-choose-device">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Device is important</h4>
+			      </div>
+			      
+			      <div class="modal-body">
+			      		<p>
+			      			Your app has different rankings depending on whether users are searching on their iPhone or iPad. 
+			      		</p>
+			      		<p>
+			      			To keep your ranking data accurate we tailor your report to either iPhone or iPad users. 
+			   
+			      		</p>
+			      		<p>
+			      			If both devices are important to you, feel free to run the report again to get insights for each one. 
+			      		</p>
+			      </div>
+
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			<!-- END OF MODAL -->
+
 			<!-- MODAL - HOW TO FETCH YOUR ITUNES KEYWORDS -->
 			<div class="modal fade" id="modal-how-to-fetch">
 			  <div class="modal-dialog">
@@ -111,6 +143,49 @@
 			        <br/>
 			        <p>4. Copy all your keywords and paste them into our input field</p>
 			        <img class="modal_img" src="public/img/keywords_input_field.png">
+			      </div>
+
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			<!-- END OF MODAL -->
+
+			<!-- MODAL - COMBINATIONS -->
+			<div class="modal fade" id="modal-combinations">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Multiple word combinations</h4>
+			      </div>
+			      
+			      <div class="modal-body">
+			      		<p>
+			      			So far only <i>single</i> keywords have been added. 
+			      		</p>
+			      		<p>
+			      			If a user enters multiple keywords then it will be a more specific search and your ranking will be different.  
+			   
+			      		</p>
+			      		<p>
+			      			It's possible that a keyword is utterly useless to you by itself but is part of a phrase that is highly important for you. 
+			      		</p>
+			      		<p>
+			      			If this is the case, then we want to make sure we keep that keyword! 
+			      		</p>
+						<div class="combinations-img-container">
+			      			<img class="modal_img" src="public/img/zombiecandyland.jpg">
+			      		</div>
+			      		<p>
+			      			For example: 
+			      			<br>
+			      			If you created a new app called '<i>Zombie Candy Land</i>', then '<i>candy</i>' by itself probably won't do much for you as it's so competitive. But if you're ranking highly for '<i>Zombie Candy Land</i>' then you'll still want to keep it. 
+			      		</p>
 			      </div>
 
 			      <div class="modal-footer">
@@ -198,37 +273,56 @@
 
 
 <div id="step1" class="step">
-	<p>Which device is most important for your core users?</p>
-
-	<div class="row">
-	<div class="col-lg-4 col-lg-offset-3 col-md-offset-3 col-md-4 col-sm-offset-3 col-sm-4 col-xs-offset-1 col-xs-6 device-container">
-		<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
+	<p>Choose the device that is most important for your users</p>
+	<div id="help_text" class="choose-device-help-text">
+		<p id="modal-clicker-choose-device" class="modal-clicker"><a href="#">Why do I have to choose one?</a></p>
 	</div>
-	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 device-container">
-		<input type="image" id="iphone" name="software" alt="iphone" class="step1_button" src="public/img/iphone2.jpg"/>
+
+	<div class="row device-row-container">
+		<div class="col-lg-4 col-lg-offset-3 col-md-offset-2 col-md-4 col-sm-offset-3 col-sm-4 col-xs-offset-1 col-xs-6 device-container">
+		<!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"> -->
+			<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 device-container">
+		<!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"> -->
+			<input type="image" id="iphone" name="software" alt="iphone" class="step1_button" src="public/img/iphone2.jpg"/>
+		</div>
 	</div>
-</div>
+
+
 </div>
 
-		<div id="step3" class="step">
-			<div class="row">
-				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker1" ><p class="help">Get instructions!</p></a>
-				<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
-					<input type="text" class="form-control"  id="single_keywords_input" />
-					<input type="submit" value="Add!" class="btn button"/>
-				<br/>
-			</form>
+
+
+
+
+			<div id="step3" class="step">
+				<div class="row">
+					<p>Copy and paste <span class="copy-paste-highlight">all</span> of your app's keywords from iTunes connect.</p>
+					<a href="#" id="modal-clicker-how-to-fetch" class="modal-clicker" ><p class="help">How do I do this?</p></a>
+					<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
+						<input type="text" class="form-control" rows="40" id="single_keywords_input" />
+						<br>
+						<input type="submit" value="Submit" class="btn button copy-paste-button"/>
+					</form>
+				</div>
+
 			</div>
 		</div>
 			
+			
 
 
-			<div id="step4" class="step" >
-				<div class="row">
-					<h3>Step 2: </h3>Enter important double word combinations. <a href="#" id="modal-clicker2"><p class="help">Hot tips!</p></a>
+
+			<div id="step4" class="step">
+					<div class="row">
+
+				<p>Enter any multiple word combinations.</p> 
+				<a href="#" id="modal-clicker-combinations"><p class="help">What does this mean?</p></a>
+
 				<form action="/fetch" enctype="multipart/form-data" method="GET" id="double_keyword_form">  
 					<input type="text" class="form-control"  name="double_keywords_input" id="double_keywords_input" />
-					<input type="submit" value="Add!" class="btn button" />
+					<input type="submit" value="Add" class="btn button" />
 					<br/>
 				</form>
 				</div>

@@ -46,6 +46,6 @@
   left: 0;
 }
 
-.heading{
-  font-size: 30px;
+#appname{
+  text-align: center;
 }

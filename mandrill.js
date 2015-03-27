@@ -4,7 +4,7 @@ var fs = require("fs");
 
 function sendEmail (emailAddress, mongoid) {
     var email = fs.readFileSync('views/email.html').toString();
-    var report = fs.readFileSync(mongoid+".pdf");
+    var report = fs.readFileSync('reports/'+mongoid+".pdf");
     var base64str = Buffer(report).toString('base64'); 
 
     var message = {
@@ -80,7 +80,7 @@ function sendEmail (emailAddress, mongoid) {
     var send_at = '';
     mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool, "send_at": send_at}, function(result) {
         console.log('Email sent ----', result);
-        fs.unlink(mongoid+".pdf", function (err) {
+        fs.unlink('reports/'+mongoid+".pdf", function (err) {
           if (err) throw err;
           console.log('successfully deleted report');
         });
