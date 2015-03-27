@@ -11,7 +11,8 @@ window.oncontextmenu = null;
 	var step3 = $("#step3");
 	var step4 = $("#step4");
 	var step5 = $("#step5");
-
+	var step6 =$("#step6");
+	var spinner = $(".spinner");
 	var joined_keyword_advices = "";
 	var keyword_advices = [];
 	var HTML = [];
@@ -73,15 +74,31 @@ window.oncontextmenu = null;
             url: 'https://itunes.apple.com/lookup?id=' + id,
             dataType: 'jsonp',
             success: function(response){
+          
+
+				
+
             	console.log(response);				
 				name = response.results[0].trackName;
 				img_url = response.results[0].artworkUrl60;
-				$("#app_icon").append("<img id='icon_img' src=" + img_url +">");
-				$("#app_title").append(name);
 				appName = name;
 				appId = response.results[0].trackId;
-				hideAndShow(step2,step3);	
-				show(app_info);
+			//	$("#app_icon").append("<img id='icon_img' src=" + img_url +">");
+			//	$("#app_title").append(name);
+
+				app_info_html = "<div id='app_icon'><img id='icon_img' src=" + img_url + "></div><h3 id='app_title'>" + name + "</h3>"
+				
+				//$(".app_info").append(app_info_html);
+				//$("#app_info").append(app_info_html).fadeIn();
+
+
+				hideAndShow(step2,step3, function(){
+					$(app_info_html).hide().appendTo(".app_info").fadeIn('fast');
+				});
+
+
+			//	show(app_info);
+			//	app_info.fadeIn('fast');
 			}
 
 	});
@@ -108,11 +125,12 @@ window.oncontextmenu = null;
 	
 
 
-	function hideAndShow(element1,element2){
+	function hideAndShow(element1,element2,callback){
 		console.log('hideandshow triggered, element1: ', element1);
-
 		element1.fadeOut('fast', function(){
 			element2.fadeIn('fast');
+			if (callback) callback();
+
 		})
 	}
 
@@ -125,6 +143,7 @@ window.oncontextmenu = null;
 
 	function hide(jQueryElement){
 		console.log('hide triggered');
+		console.log('jQueryElement: ', jQueryElement);
 		jQueryElement.fadeOut('fast');
 
 	}
@@ -149,7 +168,6 @@ window.oncontextmenu = null;
 
 	function renderStep4(){
 		hideAndShow(step3,step4);
-		show(diagnose_button);
 	}
 
 	$("#single_keyword_form").submit(function(e){
@@ -162,17 +180,16 @@ window.oncontextmenu = null;
 	    }
 	    cleanUpSingleKeywords(str, false);
 	    fetchKeywordsFromTitle();
-	   	
-
-
 	   	renderStep4();
 	
 	});
 
 	$("#diagnose_button").click(function(){
-		$(".spinner").show();
-		hide(step4);
+		hideAndShow(step4,spinner);
+		
+		console.log('hide(diagnose_button);');
 		hide(diagnose_button);
+		console.log('hide(keyword_container);');
 		hide(keyword_container);
 		setTimeout(function(){
 			getKeywordResults(allKeywords);
@@ -235,7 +252,12 @@ window.oncontextmenu = null;
 		for (var i=0,len=keywords.length;i<len;i++){
 			singleKeywordsHTML.push('<li class="rendered_keyword">' + keywords[i].keyword + '</li>');
 		}
-		keyword_container.append(singleKeywordsHTML);
+
+		//keyword_container.append(singleKeywordsHTML);
+		
+		$('#keyword_container').append(singleKeywordsHTML);
+		show(diagnose_button);
+
 		console.log('allKeywords: ', allKeywords);
 	}
 
@@ -271,8 +293,8 @@ window.oncontextmenu = null;
 		if (arr.length > 1){
 			return true;
 		} else {
+			alert(keyword + " is a single keyword and not a double keyword combination.");
 			return false;
-
 		}
 	}
 
@@ -292,6 +314,7 @@ window.oncontextmenu = null;
 				}
 			}
 			if (!isValid){
+				alert(arr[i] + "  is not included amongst your keywords. You can only create double keyword combinations from your existing keyword.")
 				console.log('the keyword doesnt match: ', arr[i]);
 				break;
 			}
@@ -450,7 +473,8 @@ window.oncontextmenu = null;
 				pieData         : pieData
 			},
 			success: function(response){
-				console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);	
+				console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);
+				hideAndShow(step5,step6);	
 			}
 		})
 	});
@@ -480,8 +504,8 @@ window.oncontextmenu = null;
 
 
 	function renderTable(keywordsArray){
-		$(".spinner").hide();
-		step5.show();
+
+
 		console.log('renderTable called');
 		HTML = [];
 		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Feeddback</th></tr>');
@@ -509,7 +533,10 @@ window.oncontextmenu = null;
 
 		joinedHTML = HTML.join("");
 
-		$("#rank_table").append(HTML);
+		hideAndShow(spinner,step5, function(){
+			$("#rank_table").append(HTML);
+
+		});
 
 	}
 
