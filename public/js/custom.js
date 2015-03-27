@@ -1,4 +1,4 @@
-	$(document).ready(function(){
+$(document).ready(function(){
 	console.log('jquery is ready!!!');
 	var appName, isValid, device;
 	var allKeywords = [];
@@ -94,7 +94,6 @@
 	$("#modal-clicker2").on('click', function(){
 	    $('#modal-content2').modal('show');
 	});
-
 
 
 
@@ -498,23 +497,28 @@
 
 		var data = [approved_keywords.length, disapproved_keywords.length];
 		var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
-
-		$("#svg_div").append('<h3 class="pie_title">Approved keywords</h3>');
-		$("#svg_div").append("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
+		var keyword_advices = [];
+		keyword_advices.push('<h3 class="pie_title">Approved keywords</h3>');
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. However, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
 		approved_keywords.forEach(function(approved_word){
-		$("#svg_div").append('<li class="item">'+ approved_word +'</li>');
+		keyword_advices.push('<li class="item">'+ approved_word +'</li>');
 		});
 
-		$("#svg_div").append('<h3 class="pie_title">Crappy keywords</h3>');
-		$("#svg_div").append("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
+		keyword_advices.push('<h3 class="pie_title">Crappy keywords</h3>');
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are crapwords and should be swapped out.</p>");
 		disapproved_keywords.forEach(function(crapword){
-		$("#svg_div").append('<li class="item red">'+ crapword+'</li>');
+		keyword_advices.push('<li class="item red">'+ crapword+'</li>');
 		});
 
-		$("#svg_div").append('<h3 class="pie_title">Keyword quality ratio</h3>');
-		$("#svg_div").append("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
+		keyword_advices.push('<h3 class="pie_title">Keyword quality ratio</h3>');
+		keyword_advices.push("<p class='pie_text'>Below is a pie chart displaying you the ratio between the approved keywords and the crappy ones.</p>");
+		
+		console.log('keyword_advices: ', keyword_advices);
+
+		$("#svg_div").push(keyword_advices.join(""));
 		var pieData = [approved_keywords.length,disapproved_keywords.length]
 		renderPie(pieData);
+		
 	}
 
 
