@@ -29,6 +29,27 @@ body {
 }
 
 
+/*Global Modal Styling*/
+
+.modal p {
+  color: black;
+}
+
+.modal_img{
+  width: 500px;
+  border: 1px solid gray;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+	text-align: center;
+	color: #C2910D;
+	font-size:24px;
+	font-weight: 700;
+}
+
+
+
 
 /*Homepage*/
 .title {
@@ -86,7 +107,10 @@ body {
 	text-align: center;
 }
 
+
+
 #step0_button{
+	margin-bottom: 16px;
 	width: 30%;
 	font-weight: 900;
 	width:30%;
@@ -121,6 +145,43 @@ body {
 	opacity:1.0;
 }
 
+#modal-clicker-why-bother {
+	text-align:center;
+	font-size: 18px;
+}
+
+/*Why Bother Modal*/
+.why-bother-quote {
+	background-color: rgb(255, 249, 239);
+	font-style: italic;
+	margin: 20px 0;
+}
+
+.why-bother-img {
+	text-align: center;
+	color:#eebf3f;
+	font-size: 90px;
+}
+
+.why-bother-icon-container {
+	margin: 24px 0;
+}
+
+.why-bother-signoff {
+	text-align: center;
+	font-size: 20px;
+	font-weight: 900;
+	color:rgb(144, 109, 17)!important;
+}
+
+/*.why-bother-signoff span {
+	font-weight: 900;
+}*/
+
+
+
+
+/*Choosing your device*/
 #ipad {
 	width: 80%;
 	margin-top:40px;
@@ -196,13 +257,12 @@ body {
 }
 
 
-.modal p {
-  color: black;
-}
 
-.modal h4 {
-  color: black;
-}
+
+
+
+
+
 
 .ui-autocomplete-loading{
   background: white url('../img/spinner.gif') no-repeat;
@@ -231,11 +291,7 @@ body {
 
 
 
-.modal_img{
-  width: 500px;
-  border: 1px solid gray;
-  margin-bottom: 20px;
-}
+
 
 
 
