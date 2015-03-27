@@ -49,10 +49,10 @@
 			      			<br>
 			      			It turns out that ranking highly in the app store search results is the most important thing you can do. 
 			      		</p>
-			      			<blockquote class="why-bother-quote">
-			      				<p>63% of iOS consumers use search to discover their apps.</p>
-			      				<p><small>Business Insider</small></p>
-			      			</blockquote>
+		      			<blockquote class="why-bother-quote">
+		      				<p>63% of iOS consumers use search to discover their apps.</p>
+		      				<p><small>Business Insider</small></p>
+		      			</blockquote>
 			      		<p>
 			      			Apple only gives you 100 characters to define your keywords and those you choose
 			      			will determine whether your app shows up in users' search results. 
@@ -79,6 +79,38 @@
 						</div>
 						<p class="why-bother-signoff">
 			      			Banish bad keywords. Rule the app store.  
+			      		</p>
+			      </div>
+
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			<!-- END OF MODAL -->
+
+			<!-- MODAL - CHOOSE DEVICE -->
+			<div class="modal fade" id="modal-choose-device">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Device is important</h4>
+			      </div>
+			      
+			      <div class="modal-body">
+			      		<p>
+			      			Your app has different rankings depending on whether users are searching on their iPhone or iPad. 
+			      		</p>
+			      		<p>
+			      			To keep your ranking data accurate we tailor your report to either iPhone or iPad users. 
+			   
+			      		</p>
+			      		<p>
+			      			If both devices are important to you, feel free to run the report again to get insights for each one. 
 			      		</p>
 			      </div>
 
@@ -201,7 +233,9 @@
 
 
 			<div id="step1" class="step">
-
+				<div id="help_text">
+					<p id="modal-clicker-choose-device" class="modal-clicker"><a href="#">Why do I have to choose one?</a></p>
+				</div>
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 device-container">
 					<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
 				</div>
@@ -216,7 +250,7 @@
 
 
 			<div id="step3" class="step">
-				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker-how-to-fetch" ><p class="help">Get instructions!</p></a>
+				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker-how-to-fetch" class="modal-clicker" ><p class="help">Get instructions!</p></a>
 				<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
 					<input type="text" id="single_keywords_input" />
 					<input type="submit" value="Add!" />
