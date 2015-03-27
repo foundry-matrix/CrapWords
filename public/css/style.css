@@ -70,9 +70,22 @@ body {
 	padding-top:14px;
 }
 
-.step5{
+.step{
+  margin: 30px auto 40px auto;
+	text-align: center;
+}
+
+
+.app_info{
 	margin: 0 auto;
 	text-align: center;
+}
+
+
+/* Positioning the table of keywords*/
+#rank_table{
+  margin: 25px auto
+
 }
 
 .title-king {
@@ -108,12 +121,10 @@ body {
 }
 
 
-
 #step0_button{
 	margin-bottom: 16px;
 	width: 30%;
 	font-weight: 900;
-	width:30%;
 	font-size: 24px;
 	text-align: center;
 	position:relative;
@@ -123,6 +134,15 @@ body {
 	-webkit-border-radius: 8px;
 	cursor: pointer;
 	text-transform:capitalize;
+	background: #107331; 
+	background: -moz-linear-gradient(top, #69BE79 0%, #107331 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#107331), color-stop(100%,#107331)); 
+	background: -webkit-linear-gradient(top, #69BE79 0%,#107331 100%);
+	background: -o-linear-gradient(top, #69BE79 0%,#107331 100%); 
+	background: -ms-linear-gradient(top, #69BE79 0%,#107331 100%); 
+	background: linear-gradient(to bottom, #69BE79 0%,#107331 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#69BE79', endColorstr='#107331',GradientType=0 ); 
+
 	background: #08DC30;	
 	border:1px solid #1F7D3D;
 	line-height:28px;
@@ -132,6 +152,14 @@ body {
 	color: #fff;
 }
 
+
+
+/*input#ipad{
+    background: #ccc url("../img/ipad.jpg") no-repeat top left;
+    padding-left: 16px;
+    height: 16px;
+}*/
+
 #step0_button:hover {
 	background-color:rgb(7, 145, 7);
 }
@@ -139,6 +167,8 @@ body {
 .step1_button {
 	opacity:0.6;
 }
+
+
 
 
 .step1_button:hover {
@@ -184,12 +214,12 @@ body {
 /*Choosing your device*/
 #ipad {
 	width: 80%;
-	margin-top:40px;
+	margin-top:0px;
 
 }
 
 #iphone {
-	width:58%;
+  width: 90%;
 }
 
 .device-container { 
@@ -220,6 +250,8 @@ body {
 
 #step4{
 	display:none;
+	margin-bottom: 15px;
+
 }
 
 
@@ -229,12 +261,36 @@ body {
 
 
 
-/* Hiding diagnose_button */
-#diagnose_button{
-	display:none;
+.button {
+	background-color: #EEBF3F;
 }
 
 
+.form-control{
+	display: inline-block;
+  width: 75%;
+  margin: 10px auto;
+}
+
+#auto_search{
+	display: block;
+	margin-top: 35px;
+}
+
+
+/* Hiding diagnose_button */
+#diagnose_button{
+	display: block;
+  	margin: 20px auto;
+}
+
+.app_info{
+	display:none;
+}
+
+#icon_img{
+	border-radius: 9px;
+}
 
 #title{
 	text-align: center;
@@ -250,6 +306,11 @@ body {
 
 .argument_number{
 	text-align: center;
+}
+
+#argument_div{
+	margin-top: 30px;
+
 }
 
 #email_form_div{
