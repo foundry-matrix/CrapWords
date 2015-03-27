@@ -270,6 +270,7 @@ window.oncontextmenu = null;
 	    	double_keywords_input = "racing fun,online games,multiplayer games,racing game,fun run";
 	    }
 
+	    $("#double_keywords_input").val("");
 
 		console.log('double_keyword_form triggered: ', double_keywords_input);
 		var double_keywords = double_keywords_input.split(',');
