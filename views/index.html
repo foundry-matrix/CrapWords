@@ -91,9 +91,9 @@
 			<h1 class="title"><span class="title-keyword">Keyword</span><span class="title-king"> King</span></h1>
 			<p id="tagline">Identify your iOS app's underperforming keywords in one minute and <span class="subtitle-rule"> rule  the app store.</span></p>
 			<div class="app_info">
-			<div id="app_icon"></div>
-			<h3 id="app_title"></h3>
-		</div>
+				<div id="app_icon"></div>
+				<h3 id="app_title"></h3>
+			</div>
 		  			<!-- LOADING WHEEL FOR WHEN THE REPORT IS GENERATED -->
 			<div class="spinner">
 				  <div class="spinner-container container1">
@@ -164,12 +164,15 @@
 <div id="step1" class="step">
 	<p>Which device is most important for your core users?</p>
 
-	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 device-container">
+	<div class="row">
+	<div class="col-lg-4 col-lg-offset-3 col-md-offset-3 col-md-4 col-sm-offset-3 col-sm-4 col-xs-offset-1 col-xs-6 device-container">
 		<input type="image" id="ipad" alt="iPad" name="iPadSoftware" class="step1_button" src="public/img/ipad3.jpg"/>
 	</div>
-	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 device-container">
+	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 device-container">
 		<input type="image" id="iphone" name="software" alt="iphone" class="step1_button" src="public/img/iphone2.jpg"/>
 	</div>
+</div>
+
 </div>
 
 
@@ -186,12 +189,14 @@
 
 
 			<div id="step3" class="step">
+				<div class="row">
 				<h3>Step 1: </h3>Paste in the keywords you've added in iTunes.<a href="#" id="modal-clicker1" ><p class="help">Get instructions!</p></a>
 				<form action="/" enctype="multipart/form-data" method="GET" id="single_keyword_form">  
 				<input type="text" class="form-control"  id="single_keywords_input" />
 				<input type="submit" value="Add!" class="btn button"/>
 				<br/>
 			</form>
+			</div>
 			</div>
 			
 
@@ -211,7 +216,15 @@
 			</div>
 			<ul id="keyword_container"></ul>
 			<div>
-			<input type="submit" value="Get diagnosis!" id="diagnose_button" class="btn button">
+
+<input type="submit" class="btn btn-lg button" id="diagnose_button"  value="Get diagnosis!">
+</input>
+
+
+		<!--	<input type="submit" id="diagnose_button" class="btn button">
+-->
+
+
 		</div>
 			<table id="rank_list"></table>
 			<div>

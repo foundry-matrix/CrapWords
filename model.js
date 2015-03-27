@@ -65,6 +65,8 @@ function save(object, request){
 	search["keywords"] = object.report;
 	search["date"] = Date.now();
 	search["html"] = object.html;
+	search["keywordAdvice"] = object.keywordAdvice;
+	search["pieData"] = object.pieData;
 
 	searches.push(search);
 	

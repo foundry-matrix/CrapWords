@@ -145,17 +145,19 @@ body {
 }
 
 
+
+
 .step1_button:hover {
 	opacity:1.0;
 }
 
 #ipad {
 	width: 80%;
-	margin-top:40px;
+	margin-top:0px;
 }
 
 #iphone {
-	width:58%;
+  width: 90%;
 }
 
 .device-container { 
@@ -186,6 +188,8 @@ body {
 
 #step4{
 	display:none;
+	margin-bottom: 15px;
+
 }
 
 
@@ -208,6 +212,7 @@ body {
 
 #auto_search{
 	display: block;
+	margin-top: 35px;
 }
 
 
@@ -217,7 +222,13 @@ body {
   	margin: 20px auto;
 }
 
+.app_info{
+	display:none;
+}
 
+#icon_img{
+	border-radius: 9px;
+}
 
 #title{
 	text-align: center;

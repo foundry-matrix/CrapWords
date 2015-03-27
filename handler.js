@@ -85,7 +85,6 @@ function stripAndSaveResults(response,keyword,device){
     var list = response.results;
     list.forEach(function(item,index,array){
         strippedItem = {
-            trackName  : item.trackName,
             trackId    : item.trackId
         }
         strippedList.push(strippedItem);
