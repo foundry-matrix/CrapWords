@@ -97,6 +97,10 @@ window.oncontextmenu = null;
 	    $('#modal-how-to-fetch').modal('show');
 	});
 
+	$("#modal-clicker-choose-device").on('click', function(){
+	    $('#modal-choose-device').modal('show');
+	});
+
 	
 
 
