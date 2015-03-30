@@ -5,7 +5,7 @@ var host = require ('./host.js');
 function takeScreenShot(mongoid, request){
     var options = {
         screenSize : {  width: 2000,
-                        height: 2500 },
+                        height: 3000 },
         renderDelay: 20000,
         quality : 100
     };

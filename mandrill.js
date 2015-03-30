@@ -11,7 +11,7 @@ function sendEmail (emailAddress, mongoid) {
         "html": email,
         "text": "This is your App report from Keyword KING",
         "subject": "App Report from Keyword KING",
-        "from_email": "greg.aubert@yahoo.co.uk",
+        "from_email": "admin@keywordking.co",
         "from_name": "Keyword KING",
         "to": [{
                 "email": emailAddress,
@@ -19,7 +19,7 @@ function sendEmail (emailAddress, mongoid) {
                 "type": "to"
             }],
         "headers": {
-            "Reply-To": "greg.aubert@yahoo.co.uk"
+            "Reply-To": "admin@keywordking.co"
         },
         "important": null,
         "track_opens": null,
