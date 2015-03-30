@@ -11,7 +11,7 @@ window.oncontextmenu = null;
 	var step3 = $("#step3");
 	var step4 = $("#step4");
 	var step5 = $("#step5");
-	var step6 =$("#step6");
+	var step6 = $("#step6");
 	var spinner = $(".spinner");
 	var joined_keyword_advices = "";
 	var keyword_advices = [];
@@ -419,7 +419,8 @@ window.oncontextmenu = null;
 				allKeywords.forEach(function (doubleKeywordObject){
 					if (doubleKeywordObject.single_keyword === false){
 						if (doubleKeywordObject.keyword.indexOf(singleKeywordObject.keyword) > -1){
-							allKeywords[index]["combinations"] = [];
+							//console.log('found combo: '+singleKeywordObject.keyword+' is in ' + doubleKeywordObject.keyword);
+							//allKeywords[index]["combinations"] = [];
 							allKeywords[index].combinations.push(doubleKeywordObject);
 						}
 					}
@@ -438,9 +439,12 @@ window.oncontextmenu = null;
 			var hasGoodCombo = false;
 			if (keywordObject.combinations.length > 0){
 				keywordObject.combinations.forEach(function(combosObject){
+					console.log('Doubleword: ', combosObject.keyword, ' Single word: ',keywordObject.keyword);
+
 					if (combosObject.rank <= 15){
+						console.log(combosObject.keyword, ' is ranked: ' , combosObject.rank , ' so setting hasGoodCombo to true for:', keywordObject.keyword);
 						hasGoodCombo = true;
-					}
+					} 
 				});
 				if (hasGoodCombo === true){
 					keywordObject["good_combinations"] = true;
@@ -515,8 +519,10 @@ window.oncontextmenu = null;
 			if (keywordObject[1].rank >= 15){
 				if (keywordObject[1].rank === 50){
 					if (keywordObject[1].good_combinations === true){
+						console.log('50 rank, but has good combinations: ', keywordObject[1].keyword);
 						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos</td></tr>');
 					} else {
+						console.log('50 rank, but does not have good combinations: ', keywordObject[1].keyword);
 						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
 					}
 				} else {
@@ -573,13 +579,13 @@ window.oncontextmenu = null;
 		var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
 		var keyword_advices = [];
 		keyword_advices.push('<h3 class="pie_title">Good Keywords</h3>');
-		keyword_advices.push("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well, however, we don't have data on how trafficed they are. This is up to you to figure out.</p>");
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. </p>");
 		approved_keywords.forEach(function(approved_word){
 		keyword_advices.push('<li class="item">'+ approved_word +'</li>');
 		});
 
 		keyword_advices.push('<h3 class="pie_title">Bad Keywords</h3>');
-		keyword_advices.push("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are badly ranked and should be swapped out.</p>");
+		keyword_advices.push("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are badly ranked. These are not likely to give your app any downloads and should be swapped out.</p>");
 		disapproved_keywords.forEach(function(crapword){
 		keyword_advices.push('<li class="item red">'+ crapword+'</li>');
 		});
