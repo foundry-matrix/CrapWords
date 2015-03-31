@@ -1,7 +1,7 @@
 
 window.oncontextmenu = null;
 	$(document).ready(function(){
-	console.log('jquery is ready!!!');
+	//console.log('jquery is ready!!!');
 	var appName, isValid, device;
 	var allKeywords = [];
 	var app_info = $("#app_info");
@@ -30,7 +30,7 @@ window.oncontextmenu = null;
 			//var searchUrl = 'https://itunes.apple.com/search?term=yelp&country=us&entity=software';
 			var searchUrl;
 			
-			console.log('device: ', device);
+			//console.log('device: ', device);
 		
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
@@ -49,7 +49,7 @@ window.oncontextmenu = null;
               dataType: 'jsonp',
               success: function( data ) {
               	var i=0;	
-              	console.log(this.url);
+              	//console.log(this.url);
           		results =[];
           		length = data.results.length;
           		for (i=0;i<length;i++){
@@ -64,7 +64,7 @@ window.oncontextmenu = null;
 
 		select: function( event, ui ) {
 		     fetchAppById(ui.item.id);
-		     console.log("select clicked, fetching app with ID: ",ui.item.id);
+		     //console.log("select clicked, fetching app with ID: ",ui.item.id);
 		}
 	});
 
@@ -78,7 +78,7 @@ window.oncontextmenu = null;
 
 				
 
-            	console.log(response);				
+            	//console.log(response);				
 				name = response.results[0].trackName;
 				img_url = response.results[0].artworkUrl60;
 				appName = name;
@@ -126,7 +126,7 @@ window.oncontextmenu = null;
 
 
 	function hideAndShow(element1,element2,callback){
-		console.log('hideandshow triggered, element1: ', element1);
+		//console.log('hideandshow triggered, element1: ', element1);
 		element1.fadeOut('fast', function(){
 			element2.fadeIn('fast');
 			if (callback) callback();
@@ -136,14 +136,14 @@ window.oncontextmenu = null;
 
 	// SHOWING AND HIDING THE VARIOUS STEPS
 	function show(jQueryElement){
-		console.log('show triggered, jQueryElement: ', jQueryElement);
+		//console.log('show triggered, jQueryElement: ', jQueryElement);
 
 		jQueryElement.fadeIn('fast');
 	}
 
 	function hide(jQueryElement){
-		console.log('hide triggered');
-		console.log('jQueryElement: ', jQueryElement);
+		//console.log('hide triggered');
+		//console.log('jQueryElement: ', jQueryElement);
 		jQueryElement.fadeOut('fast');
 
 	}
@@ -161,7 +161,7 @@ window.oncontextmenu = null;
 
 	$(".step1_button").click(function(){
 		device = this.name;
-		console.log('device: ',device);
+		//console.log('device: ',device);
 		hideAndShow(step1,step2);
 	});
 
@@ -172,9 +172,9 @@ window.oncontextmenu = null;
 
 	$("#single_keyword_form").submit(function(e){
 	    e.preventDefault();
-		console.log("#single_keyword_form submitted");
+		//console.log("#single_keyword_form submitted");
 	    var str = $("#single_keywords_input").val();
-	    console.log('single_keywords_input ', str);
+	    //console.log('single_keywords_input ', str);
 	    if ( !$("#single_keywords_input").val()) {
 	    	str = "free,bored,online,games,racing,playing,game,hello,test";
 	    }
@@ -187,9 +187,9 @@ window.oncontextmenu = null;
 	$("#diagnose_button").click(function(){
 		hideAndShow(step4,spinner);
 		
-		console.log('hide(diagnose_button);');
+		//console.log('hide(diagnose_button);');
 		hide(diagnose_button);
-		console.log('hide(keyword_container);');
+		//console.log('hide(keyword_container);');
 		hide(keyword_container);
 		setTimeout(function(){
 			getKeywordResults(allKeywords);
@@ -199,7 +199,7 @@ window.oncontextmenu = null;
 
 	// Cleaning up the string of keywords (separating by commas and spaces plu removing non alphabetic characters and lowercasing all characters)
 	function cleanUpSingleKeywords(str, fromTitle){
-		console.log('cleanUpSingleKeywords triggered');
+		//console.log('cleanUpSingleKeywords triggered');
 		var cleanSingleKeywords = [];
 	    var keywords = str.replace(/[^a-zA-Z, ]/g, "").split(/[, ]/g);
 	    for (var i=0, len=keywords.length; i < len; i++){
@@ -212,7 +212,7 @@ window.oncontextmenu = null;
 
 	// Add the single keywords to the allKeywords array
 	function addToAllKeywords(keywords, fromTitle, singleKeyword){
-		console.log('addToAllKeywords triggered. keywords is: ', keywords);
+		//console.log('addToAllKeywords triggered. keywords is: ', keywords);
 		if (keywords instanceof Array ){
 			console.log('its an array');
 			keywords.forEach(function (keyword){
@@ -240,13 +240,13 @@ window.oncontextmenu = null;
 
 	// fetch keywords form app title
 	function fetchKeywordsFromTitle(){
-		console.log('fetchKeywordsFromTitle triggered');
+		//console.log('fetchKeywordsFromTitle triggered');
 		cleanUpSingleKeywords(appName,true);
 	}
 
 	// render keywords
 	function renderKeywords(keywords){
-		console.log('renderKeywords triggered');
+		//console.log('renderKeywords triggered');
 		keyword_container.html("");
 		var singleKeywordsHTML = [];
 		for (var i=0,len=keywords.length;i<len;i++){
@@ -258,7 +258,7 @@ window.oncontextmenu = null;
 		$('#keyword_container').append(singleKeywordsHTML);
 		show(diagnose_button);
 
-		console.log('allKeywords: ', allKeywords);
+		//console.log('allKeywords: ', allKeywords);
 	}
 
 
@@ -272,17 +272,17 @@ window.oncontextmenu = null;
 
 	    $("#double_keywords_input").val("");
 
-		console.log('double_keyword_form triggered: ', double_keywords_input);
+		//console.log('double_keyword_form triggered: ', double_keywords_input);
 		var double_keywords = double_keywords_input.split(',');
 		for (var i=0,len=double_keywords.length; i<len; i++){
 			double_keywords[i].toLowerCase();
 		}
 		double_keywords.forEach(function(double_keyword){
 			if (isDoubleKeyword(double_keyword) == true) {
-				console.log('isDoubleKeyword is true, double_keyword is:', double_keyword);
+				//console.log('isDoubleKeyword is true, double_keyword is:', double_keyword);
 				isValidDoubleKeyword(double_keyword);
 			} else {
-				console.log(double_keyword,' is not a double keyword');
+				//console.log(double_keyword,' is not a double keyword');
 				// add message to user: this keyword isnt a double keyword combination
 			}
 		});
@@ -302,21 +302,21 @@ window.oncontextmenu = null;
 
 	//checking if the double keyword actually is a combination of your single keywords
 	function isValidDoubleKeyword(double_keyword){
-		console.log('double_keyword is :', double_keyword);
+		//console.log('double_keyword is :', double_keyword);
 		var arr = double_keyword.split(" ");
 		
 		for (var i =0,len=arr.length; i<len;i++){ 
 			isValid = false;
 			for (var j=0,length=allKeywords.length; j<length;j++){
 				if (allKeywords[j].keyword === arr[i]){
-					console.log('Match: ', arr[i], '=', arr[i]);
+					//console.log('Match: ', arr[i], '=', arr[i]);
 					isValid = true;
 					break;
 				}
 			}
 			if (!isValid){
 				alert(arr[i] + "  is not included amongst your keywords. You can only create double keyword combinations from your existing keyword.")
-				console.log('the keyword doesnt match: ', arr[i]);
+				//console.log('the keyword doesnt match: ', arr[i]);
 				break;
 			}
 		}
@@ -333,7 +333,7 @@ window.oncontextmenu = null;
 		for (var i=0,length=allKeywords.length; i<length;i++){
 				if (allKeywords[i].single_keyword == false) {
 					if (allKeywords[i].keyword === double_keyword) {
-						console.log('This double keyword already exists: ', allKeywords[i].keyword, '=', double_keyword);
+						//console.log('This double keyword already exists: ', allKeywords[i].keyword, '=', double_keyword);
 						isUnique = false;
 						break;
 					}
@@ -371,14 +371,14 @@ window.oncontextmenu = null;
 
 	function runAjaxCall(keyword, atIndex, length){
 
-		console.log('runAjaxCall triggered. keywordObject is:', keyword);
-		console.log('device is:', device);
+		//console.log('runAjaxCall triggered. keywordObject is:', keyword);
+		//console.log('device is:', device);
 		var url = $(location).attr('href');
   		var urlsplit = url.split('/');
   		var urlDevice = device;
 		var ajaxUrl ='http://'+urlsplit[2]+'/search/' + device + '/' + keyword;
 		
-		console.log('ajaxUrl: ', ajaxUrl);
+		//console.log('ajaxUrl: ', ajaxUrl);
 		$.ajax({ 
 			url: ajaxUrl,
 			dataType: 'json',
@@ -403,7 +403,7 @@ window.oncontextmenu = null;
 				}
 				ajaxCalls += 1;
 				if (ajaxCalls === length){		
-					console.log('ALL AJAX CALLS FINISHED!');
+					//console.log('ALL AJAX CALLS FINISHED!');
 					insertKeywordCombinations(allKeywords);
 
 				}
@@ -427,7 +427,7 @@ window.oncontextmenu = null;
 				});
 			}
 		if (index === (allKeywords.length - 1)){
-			console.log(allKeywords);
+			//console.log(allKeywords);
 			addGoodCombosStamp(allKeywords);
 		}
 		});
@@ -439,10 +439,10 @@ window.oncontextmenu = null;
 			var hasGoodCombo = false;
 			if (keywordObject.combinations.length > 0){
 				keywordObject.combinations.forEach(function(combosObject){
-					console.log('Doubleword: ', combosObject.keyword, ' Single word: ',keywordObject.keyword);
+					//console.log('Doubleword: ', combosObject.keyword, ' Single word: ',keywordObject.keyword);
 
 					if (combosObject.rank <= 15){
-						console.log(combosObject.keyword, ' is ranked: ' , combosObject.rank , ' so setting hasGoodCombo to true for:', keywordObject.keyword);
+						//console.log(combosObject.keyword, ' is ranked: ' , combosObject.rank , ' so setting hasGoodCombo to true for:', keywordObject.keyword);
 						hasGoodCombo = true;
 					} 
 				});
@@ -451,7 +451,7 @@ window.oncontextmenu = null;
 				} 
 			}
 		});
-		console.log('allkeywords after addGoodCombosStamp: ', allKeywords);
+		//console.log('allkeywords after addGoodCombosStamp: ', allKeywords);
 		createKeywordArray(allKeywords);
 		createPieArray(allKeywords);
 	}
@@ -460,9 +460,9 @@ window.oncontextmenu = null;
 
 
 	$("#email_input_button").click(function(){
-		console.log('HTML: ',HTML);
+		//console.log('HTML: ',HTML);
 		var email_address = $("#email_input_field").val();
-		console.log('send_ajax clicked');
+		//console.log('send_ajax clicked');
 		var url = $(location).attr('href');
   		var urlsplit = url.split('/');
 		var ajaxUrl ='http://'+urlsplit[2]+'/postemail';
@@ -478,7 +478,7 @@ window.oncontextmenu = null;
 				pieData         : pieData
 			},
 			success: function(response){
-				console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);
+				//console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);
 				hideAndShow(step5,step6);	
 			}
 		})
@@ -503,7 +503,7 @@ window.oncontextmenu = null;
 		    }
 		});
 
-		console.log(keywordsArray);
+		//console.log(keywordsArray);
 		renderTable(keywordsArray);
 	}
 
@@ -511,7 +511,7 @@ window.oncontextmenu = null;
 	function renderTable(keywordsArray){
 
 
-		console.log('renderTable called');
+		//console.log('renderTable called');
 		HTML = [];
 		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Feeddback</th></tr>');
 		keywordsArray.forEach(function(keywordObject){
@@ -519,15 +519,15 @@ window.oncontextmenu = null;
 			if (keywordObject[1].rank >= 15){
 				if (keywordObject[1].rank === 50){
 					if (keywordObject[1].good_combinations === true){
-						console.log('50 rank, but has good combinations: ', keywordObject[1].keyword);
-						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos</td></tr>');
+						//console.log('50 rank, but has good combinations: ', keywordObject[1].keyword);
+						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>>' + keywordObject[1].rank + "</td><td>Bad keyword. But it's a part of an important keyword combination.</td></tr>");
 					} else {
-						console.log('50 rank, but does not have good combinations: ', keywordObject[1].keyword);
+						//console.log('50 rank, but does not have good combinations: ', keywordObject[1].keyword);
 						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
 					}
 				} else {
 					if (keywordObject[1].good_combinations === true){
-						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td>Bad keyword. But it has important combos</td></tr>');
+						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + "</td><td>Bad keyword. But it's a part of an important keyword combination.</td></tr>");
 					} else {
 						HTML.push('<tr><td>' + keywordObject[1].keyword + '</td><td>' + keywordObject[1].rank + '</td><td class="bad">Bad keyword. Swap it out!</td></tr>');
 					}
@@ -563,8 +563,8 @@ window.oncontextmenu = null;
 				approved_keywords.push(keywordObject.keyword);
 			}
 		});
-		console.log('approved_keywords:', approved_keywords);
-		console.log('disapproved_keywords:', disapproved_keywords);
+		//console.log('approved_keywords:', approved_keywords);
+		//console.log('disapproved_keywords:', disapproved_keywords);
 
 		
 		createPieText(approved_keywords,disapproved_keywords);
@@ -593,7 +593,7 @@ window.oncontextmenu = null;
 		keyword_advices.push('<h3 class="pie_title">Keyword Quality Ratio</h3>');
 		keyword_advices.push("<p class='pie_text'>Below is a pie chart displaying you ratio between the good keywords and the bad ones.</p>");
 		
-		console.log('keyword_advices: ', keyword_advices);
+		//console.log('keyword_advices: ', keyword_advices);
 		joined_keyword_advices =keyword_advices.join("");
 		$("#svg_div").append(joined_keyword_advices);
 		pieData = [approved_keywords.length,disapproved_keywords.length]
@@ -607,7 +607,7 @@ window.oncontextmenu = null;
 // PASTED IN FROM PREVIOUS PROJECT
 
 	function renderPie(data){
-		console.log("render pie called!");
+		//console.log("render pie called!");
 		var r =100;
 		var color = d3.scale.ordinal()
 					.range(["rgb(148, 210, 142)", "#D84343"]);
