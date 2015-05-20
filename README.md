@@ -13,6 +13,15 @@ test and experimentation repo
 <!--## Tests:-->
 <!--1. run 'npm test' in your terminal-->
 
+
+## Tests:
+This app uses QUnit for testing, and the tests are divided into two parts:
+
+1. Functional tests
+2. UI tests
+
+The tests are runned automatically and are displayed in the browser, at the paths '/tests/tests.html' and '/tests/ui_tests.html'
+
 <!--## Explanation of structure-->
 <!--The functions have been laid out so the app completes each task in the correct order.  Due to node's asynchronous nature we had to careful the app did not get ahead of itself at any stage and try and execute functions too early. -->
 

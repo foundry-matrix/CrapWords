@@ -63,6 +63,16 @@ server.route({
     }
 });
 
+server.route({
+    method: 'GET',
+    path: '/tests/{param*}',
+    handler: {
+        directory: {
+            path: 'tests'
+        }
+    }
+});
+
 
 //
    server.route({          
