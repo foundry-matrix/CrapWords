@@ -6,6 +6,13 @@ A webapp that instantly shows you your app's underperforming keywords in the App
 2. Run npm install
 3. run nodemon app.js in your terminal
 
+## Technologies used
+Backend:
+[Hapi.js](http://hapijs.com/), [MongoDB](https://www.mongodb.org/)
+
+Frontend:
+[jQuery](https://jquery.com/), [D3.js](http://d3js.org/), [Bootstrap](http://getbootstrap.com/)
+
 ## Tests:
 This app uses QUnit for testing, and the tests are divided into two parts:
 
