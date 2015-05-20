@@ -10,12 +10,6 @@ var home = function(request, reply){
 };
 
 
-/*var keywordreport = function(request,reply){
-    console.log('request handler for "/keywordreport"');
-    console.log('request.payload.report: ', request.payload.report);
-    console.log('request.payload.email: ', request.payload.email);
-    model.save(request.payload.email, request);
-}*/
 
 var fetchdata = function(request, reply){
     console.log('request handler for "/fetchdata"');

@@ -1,7 +1,8 @@
 
 window.oncontextmenu = null;
-	$(document).ready(function(){
-	//console.log('jquery is ready!!!');
+var T = (function () {
+	'use-strict';
+
 	var appName, isValid, device;
 	var allKeywords = [];
 	var app_info = $("#app_info");
@@ -24,24 +25,15 @@ window.oncontextmenu = null;
  	var auto_search = $("#auto_search");
  	var keyword_container = $("#keyword_container");
 
- 	
 	$("#auto_search").autocomplete({
 		source: function(request, response){
-			//var searchUrl = 'https://itunes.apple.com/search?term=yelp&country=us&entity=software';
-			var searchUrl;
-			
-			//console.log('device: ', device);
-		
+			var searchUrl;		
 			// If user is searching for app by ID
 			if ( isNaN(request.term) == false ){
-
 				searchUrl = 'https://itunes.apple.com/lookup?id=' + request.term + '&country=us&entity=' + device + '&limit=10';
-			
 			// If user is searching for app by keywords
 			} else {
 				searchUrl = 'https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=' + device + '&limit=10';
-
-				//searchUrl ='https://itunes.apple.com/search?term=' + request.term + '&country=us&entity=' + device + '&limit=10';
 			}
 				
 			$.ajax({  
@@ -49,7 +41,6 @@ window.oncontextmenu = null;
               dataType: 'jsonp',
               success: function( data ) {
               	var i=0;	
-              	//console.log(this.url);
           		results =[];
           		length = data.results.length;
           		for (i=0;i<length;i++){
@@ -64,7 +55,6 @@ window.oncontextmenu = null;
 
 		select: function( event, ui ) {
 		     fetchAppById(ui.item.id);
-		     //console.log("select clicked, fetching app with ID: ",ui.item.id);
 		}
 	});
 
@@ -74,37 +64,21 @@ window.oncontextmenu = null;
             url: 'https://itunes.apple.com/lookup?id=' + id,
             dataType: 'jsonp',
             success: function(response){
-          
-
-				
-
+         		
             	//console.log(response);				
 				name = response.results[0].trackName;
 				img_url = response.results[0].artworkUrl60;
 				appName = name;
 				appId = response.results[0].trackId;
-			//	$("#app_icon").append("<img id='icon_img' src=" + img_url +">");
-			//	$("#app_title").append(name);
 
 				app_info_html = "<div id='app_icon'><img id='icon_img' src=" + img_url + "></div><h3 id='app_title'>" + name + "</h3>"
 				
-				//$(".app_info").append(app_info_html);
-				//$("#app_info").append(app_info_html).fadeIn();
-
-
 				hideAndShow(step2,step3, function(){
 					$(app_info_html).hide().appendTo(".app_info").fadeIn('fast');
 				});
-
-
-			//	show(app_info);
-			//	app_info.fadeIn('fast');
 			}
-
 	});
 	}
-
-
 
 	$("#modal-clicker-why-bother").on('click', function(){
 	    $('#modal-why-bother').modal('show');
@@ -122,11 +96,7 @@ window.oncontextmenu = null;
 	    $('#modal-combinations').modal('show');
 	});
 
-	
-
-
 	function hideAndShow(element1,element2,callback){
-		//console.log('hideandshow triggered, element1: ', element1);
 		element1.fadeOut('fast', function(){
 			element2.fadeIn('fast');
 			if (callback) callback();
@@ -136,28 +106,18 @@ window.oncontextmenu = null;
 
 	// SHOWING AND HIDING THE VARIOUS STEPS
 	function show(jQueryElement){
-		//console.log('show triggered, jQueryElement: ', jQueryElement);
-
 		jQueryElement.fadeIn('fast');
 	}
 
 	function hide(jQueryElement){
-		//console.log('hide triggered');
-		//console.log('jQueryElement: ', jQueryElement);
 		jQueryElement.fadeOut('fast');
-
 	}
 
-	$("#step0_button").click(function(){
+	$("#step0_button").on('click', function(){
 		hideAndShow(step0,step1);
-		//hide( step0 );	
 		hide($("#help_text"));
 		hide($("#tagline"));
-		//show( step1 );
 	});
-
-
-
 
 	$(".step1_button").click(function(){
 		device = this.name;
@@ -178,28 +138,23 @@ window.oncontextmenu = null;
 	    if ( !$("#single_keywords_input").val()) {
 	    	str = "free,bored,online,games,racing,playing,game,hello,test";
 	    }
-	    cleanUpSingleKeywords(str, false);
+	    cleanUpSingleKeywords(str, false, addToAllKeywords);
 	    fetchKeywordsFromTitle();
 	   	renderStep4();
 	
 	});
 
 	$("#diagnose_button").click(function(){
-		hideAndShow(step4,spinner);
-		
-		//console.log('hide(diagnose_button);');
+		hideAndShow(step4,spinner);		
 		hide(diagnose_button);
-		//console.log('hide(keyword_container);');
 		hide(keyword_container);
 		setTimeout(function(){
 			getKeywordResults(allKeywords);
 		}, 500);
 	});
 
-
 	// Cleaning up the string of keywords (separating by commas and spaces plu removing non alphabetic characters and lowercasing all characters)
-	function cleanUpSingleKeywords(str, fromTitle){
-		//console.log('cleanUpSingleKeywords triggered');
+	function cleanUpSingleKeywords(str, fromTitle, callback){
 		var cleanSingleKeywords = [];
 	    var keywords = str.replace(/[^a-zA-Z, ]/g, "").split(/[, ]/g);
 	    for (var i=0, len=keywords.length; i < len; i++){
@@ -207,12 +162,11 @@ window.oncontextmenu = null;
 	    		cleanSingleKeywords.push(keywords[i].toLowerCase());
 	    	}
 	    }
-	    addToAllKeywords(cleanSingleKeywords, fromTitle, true);
+	    callback(cleanSingleKeywords, fromTitle, true);
 	}
 
 	// Add the single keywords to the allKeywords array
 	function addToAllKeywords(keywords, fromTitle, singleKeyword){
-		//console.log('addToAllKeywords triggered. keywords is: ', keywords);
 		if (keywords instanceof Array ){
 			console.log('its an array');
 			keywords.forEach(function (keyword){
@@ -222,7 +176,6 @@ window.oncontextmenu = null;
 						"single_keyword"    : singleKeyword,
 						"combinations"      : [],
 						"good_combinations" : false
-
 					});
 				});
 		} else {
@@ -240,46 +193,35 @@ window.oncontextmenu = null;
 
 	// fetch keywords form app title
 	function fetchKeywordsFromTitle(){
-		//console.log('fetchKeywordsFromTitle triggered');
-		cleanUpSingleKeywords(appName,true);
+		cleanUpSingleKeywords(appName,true, addToAllKeywords);
 	}
 
 	// render keywords
 	function renderKeywords(keywords){
-		//console.log('renderKeywords triggered');
 		keyword_container.html("");
 		var singleKeywordsHTML = [];
 		for (var i=0,len=keywords.length;i<len;i++){
 			singleKeywordsHTML.push('<li class="rendered_keyword">' + keywords[i].keyword + '</li>');
 		}
-
-		//keyword_container.append(singleKeywordsHTML);
 		
 		$('#keyword_container').append(singleKeywordsHTML);
 		show(diagnose_button);
-
-		//console.log('allKeywords: ', allKeywords);
 	}
-
 
 	$("#double_keyword_form").submit(function(e){
 		e.preventDefault();
-
 		var double_keywords_input = $("#double_keywords_input").val();
 		if ( !$("#double_keywords_input").val()) {
 	    	double_keywords_input = "racing fun,online games,multiplayer games,racing game,fun run";
 	    }
 
 	    $("#double_keywords_input").val("");
-
-		//console.log('double_keyword_form triggered: ', double_keywords_input);
 		var double_keywords = double_keywords_input.split(',');
 		for (var i=0,len=double_keywords.length; i<len; i++){
 			double_keywords[i].toLowerCase();
 		}
 		double_keywords.forEach(function(double_keyword){
 			if (isDoubleKeyword(double_keyword) == true) {
-				//console.log('isDoubleKeyword is true, double_keyword is:', double_keyword);
 				isValidDoubleKeyword(double_keyword);
 			} else {
 				//console.log(double_keyword,' is not a double keyword');
@@ -302,21 +244,17 @@ window.oncontextmenu = null;
 
 	//checking if the double keyword actually is a combination of your single keywords
 	function isValidDoubleKeyword(double_keyword){
-		//console.log('double_keyword is :', double_keyword);
 		var arr = double_keyword.split(" ");
-		
 		for (var i =0,len=arr.length; i<len;i++){ 
 			isValid = false;
 			for (var j=0,length=allKeywords.length; j<length;j++){
 				if (allKeywords[j].keyword === arr[i]){
-					//console.log('Match: ', arr[i], '=', arr[i]);
 					isValid = true;
 					break;
 				}
 			}
 			if (!isValid){
 				alert(arr[i] + "  is not included amongst your keywords. You can only create double keyword combinations from your existing keyword.")
-				//console.log('the keyword doesnt match: ', arr[i]);
 				break;
 			}
 		}
@@ -346,39 +284,22 @@ window.oncontextmenu = null;
 		}
 	}
 
-
-
 	function getKeywordResults(allKeywords){
 
 		allKeywords.map(function(keywordObject, index, array){
 			var length = array.length;
 			runAjaxCall(keywordObject.keyword,index, length);
 		});
-
-	/*
-		for (var i=0,len = allKeywords.length;i<len;i++) {
-			runAjaxCall(allKeywords[i],i);
-		}
-	*/
-
 	}
-
-
-
-
 
 	var ajaxCalls = 0;
 
 	function runAjaxCall(keyword, atIndex, length){
-
-		//console.log('runAjaxCall triggered. keywordObject is:', keyword);
-		//console.log('device is:', device);
 		var url = $(location).attr('href');
   		var urlsplit = url.split('/');
   		var urlDevice = device;
 		var ajaxUrl ='http://'+urlsplit[2]+'/search/' + device + '/' + keyword;
 		
-		//console.log('ajaxUrl: ', ajaxUrl);
 		$.ajax({ 
 			url: ajaxUrl,
 			dataType: 'json',
@@ -403,7 +324,6 @@ window.oncontextmenu = null;
 				}
 				ajaxCalls += 1;
 				if (ajaxCalls === length){		
-					//console.log('ALL AJAX CALLS FINISHED!');
 					insertKeywordCombinations(allKeywords);
 
 				}
@@ -419,15 +339,12 @@ window.oncontextmenu = null;
 				allKeywords.forEach(function (doubleKeywordObject){
 					if (doubleKeywordObject.single_keyword === false){
 						if (doubleKeywordObject.keyword.indexOf(singleKeywordObject.keyword) > -1){
-							//console.log('found combo: '+singleKeywordObject.keyword+' is in ' + doubleKeywordObject.keyword);
-							//allKeywords[index]["combinations"] = [];
 							allKeywords[index].combinations.push(doubleKeywordObject);
 						}
 					}
 				});
 			}
 		if (index === (allKeywords.length - 1)){
-			//console.log(allKeywords);
 			addGoodCombosStamp(allKeywords);
 		}
 		});
@@ -439,10 +356,7 @@ window.oncontextmenu = null;
 			var hasGoodCombo = false;
 			if (keywordObject.combinations.length > 0){
 				keywordObject.combinations.forEach(function(combosObject){
-					//console.log('Doubleword: ', combosObject.keyword, ' Single word: ',keywordObject.keyword);
-
 					if (combosObject.rank <= 15){
-						//console.log(combosObject.keyword, ' is ranked: ' , combosObject.rank , ' so setting hasGoodCombo to true for:', keywordObject.keyword);
 						hasGoodCombo = true;
 					} 
 				});
@@ -451,18 +365,26 @@ window.oncontextmenu = null;
 				} 
 			}
 		});
-		//console.log('allkeywords after addGoodCombosStamp: ', allKeywords);
 		createKeywordArray(allKeywords);
 		createPieArray(allKeywords);
 	}
 
 
+	function ajaxCall(successCallback){
+		$.ajax({
+			url: 'https://itunes.apple.com/search?term=jack+johnson',
+			method: 'GET',
+			dataType: 'jsonp',
+			success: function(response){
+				successCallback(response);
+			}
+		});
+	}
+
 
 
 	$("#email_input_button").click(function(){
-		//console.log('HTML: ',HTML);
 		var email_address = $("#email_input_field").val();
-		//console.log('send_ajax clicked');
 		var url = $(location).attr('href');
   		var urlsplit = url.split('/');
 		var ajaxUrl ='http://'+urlsplit[2]+'/postemail';
@@ -478,7 +400,6 @@ window.oncontextmenu = null;
 				pieData         : pieData
 			},
 			success: function(response){
-				//console.log('ALLKEYWORDS SENT TO SERVER.repsonse: ',response);
 				hideAndShow(step5,step6);	
 			}
 		})
@@ -507,11 +428,7 @@ window.oncontextmenu = null;
 		renderTable(keywordsArray);
 	}
 
-
-	function renderTable(keywordsArray){
-
-
-		//console.log('renderTable called');
+	function renderTable(keywordsArray){	
 		HTML = [];
 		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Feeddback</th></tr>');
 		keywordsArray.forEach(function(keywordObject){
@@ -547,8 +464,6 @@ window.oncontextmenu = null;
 
 	}
 
-
-
 	function createPieArray(allKeywords){
 		var approved_keywords = [];
 		var disapproved_keywords = [];
@@ -563,31 +478,24 @@ window.oncontextmenu = null;
 				approved_keywords.push(keywordObject.keyword);
 			}
 		});
-		//console.log('approved_keywords:', approved_keywords);
-		//console.log('disapproved_keywords:', disapproved_keywords);
-
 		
 		createPieText(approved_keywords,disapproved_keywords);
 	}
 
-
-
-
 	function createPieText(approved_keywords,disapproved_keywords){
-
 		var data = [approved_keywords.length, disapproved_keywords.length];
 		var itunes_keywords_length = parseInt(data[0]) + parseInt(data[1]);
 		var keyword_advices = [];
 		keyword_advices.push('<h3 class="pie_title">Good Keywords</h3>');
 		keyword_advices.push("<p class='pie_text'>" + parseInt(data[0]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are ranked well. </p>");
 		approved_keywords.forEach(function(approved_word){
-		keyword_advices.push('<li class="item">'+ approved_word +'</li>');
+			keyword_advices.push('<li class="item">'+ approved_word +'</li>');
 		});
 
 		keyword_advices.push('<h3 class="pie_title">Bad Keywords</h3>');
 		keyword_advices.push("<p class='pie_text'>" + parseInt(data[1]) + " of the " + itunes_keywords_length + " keywords you've added in iTunes are badly ranked. These are not likely to give your app any downloads and should be swapped out.</p>");
 		disapproved_keywords.forEach(function(crapword){
-		keyword_advices.push('<li class="item red">'+ crapword+'</li>');
+			keyword_advices.push('<li class="item red">'+ crapword+'</li>');
 		});
 
 		keyword_advices.push('<h3 class="pie_title">Keyword Quality Ratio</h3>');
@@ -601,11 +509,7 @@ window.oncontextmenu = null;
 		
 	}
 
-
-
-
-// PASTED IN FROM PREVIOUS PROJECT
-
+	// PASTED IN FROM PREVIOUS PROJECT
 	function renderPie(data){
 		//console.log("render pie called!");
 		var r =100;
@@ -626,8 +530,6 @@ window.oncontextmenu = null;
 		var pie = d3.layout.pie()
 					.value(function(d){ return d;})
 
-//		var populated_pie = pie(data);
-
 		var arcs = group.selectAll(".arc")
 						.data(pie(data))
 						.enter()
@@ -644,12 +546,22 @@ window.oncontextmenu = null;
 
 }
 
-	
+	return{
+		allKeywords:allKeywords,
+		fetchAppById: fetchAppById,
+		joined_keyword_advices:joined_keyword_advices,
+		runAjaxCall:runAjaxCall,
+		isDoubleKeyword:isDoubleKeyword,
+		appName: appName,
+		ajaxCall:ajaxCall,
+		auto_search: auto_search,
+		isValid:isValid,
+		device:device,
+		renderKeywords: renderKeywords,
+		step1: step1,
+		testVariable:testVariable,
+		cleanUpSingleKeywords:cleanUpSingleKeywords
+	}
 
 
-
-
-
-
-// End of jQuery
-});
+})();
