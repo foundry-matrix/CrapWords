@@ -1,6 +1,6 @@
 var config 		= require('./config.js');
 var db 			= require ('mongojs').connect(config.db.url, ['userdata','keywordresults']);
-var screenshot 	= require('./screenshot');
+var screenshot 	= require('../screenshot');
 var oid 		= require("mongodb").ObjectID;
 
 function user(email, searches){
@@ -84,10 +84,8 @@ function fetchData(id, reply){
 
 
 function fetchKeywordResultsFromDB(keyword,device,callback){
-	console.log('fetchKeywordResultsFromDB triggered');
 	
 	db.keywordresults.find({ keyword : keyword }, function(err,data){
-		console.log('looking for keywordresults in DB.');
 		if (err){
 			throw err;
 		} 
