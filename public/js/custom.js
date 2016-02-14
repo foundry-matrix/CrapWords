@@ -430,7 +430,7 @@ var T = (function () {
 
 	function renderTable(keywordsArray){	
 		HTML = [];
-		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Feeddback</th></tr>');
+		HTML.push('<tr><th>Keyword</th><th>Your ranking</th><th>Feedback</th></tr>');
 		keywordsArray.forEach(function(keywordObject){
 			//console.log('keywordObject: ', keywordObject);
 			if (keywordObject[1].rank >= 15){
